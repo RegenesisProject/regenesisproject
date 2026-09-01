@@ -1,0 +1,7 @@
+# Allow all crawlers including AI bots (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, etc.)
+User-agent: *
+Allow: /
+
+# Dedicated AI Documentation File
+# See: https://llmstxt.org/
+Sitemap: https://thomasventura.com/sitemap.xml
