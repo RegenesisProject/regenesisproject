@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle2 } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
+import footerLogo from '../assets/images/regenerated_image_1788305533708.png';
 
 interface FooterProps {
   onOpenContact: () => void;
@@ -59,18 +60,18 @@ export const Footer: React.FC<FooterProps> = ({
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
               <img 
-                src="https://res.cloudinary.com/ew2ztpgz/image/upload/v1784747450/Ventura_logo_version_2_3_copy_22_1_ei6hxv.png" 
+                src={footerLogo} 
                 alt="Thomas Ventura Logo" 
                 referrerPolicy="no-referrer"
                 className="h-12 w-auto object-contain shrink-0"
               />
               <div className="flex flex-col items-start justify-center text-left min-w-0">
-                <h3 className="font-playfair font-bold text-2xl text-[#1A1A1A] tracking-wider leading-tight text-left">
+                <span className="font-inter text-[10px] sm:text-xs uppercase tracking-[0.32em] font-bold text-left text-[#6C6863] leading-tight">
                   THOMAS VENTURA
-                </h3>
-                <p className="font-inter text-[9px] uppercase tracking-[0.72em] text-[#6C6863] font-bold text-left leading-tight mt-0.5">
+                </span>
+                <h3 className="font-inter font-black text-xl sm:text-2xl text-[#1A1A1A] tracking-wider leading-tight text-left mt-0.5">
                   THE REGENESIS PROJECT
-                </p>
+                </h3>
               </div>
             </div>
             

@@ -44,7 +44,7 @@ export const WhyThomasSection: React.FC = () => {
               </h3>
 
               <p className="font-sans text-xs sm:text-sm text-[#4A4843] leading-relaxed">
-                Most strategists talk about Mindset (Software). Thomas addresses Biological Capacity (Hardware). He explains why your strategy stops working when your biology hits its limit.
+                Most strategists talk about Mindset (Software). Thomas addresses Biological Capacity (Hardware). He explains why your expansion strategy stops working when your biology hits its limit.
               </p>
             </div>
           </div>

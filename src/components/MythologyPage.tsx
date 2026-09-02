@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import archetypesBgImage from '../assets/images/archetypes_bg_1784904573049.jpg';
 import goldenFigureBg from '../assets/images/golden_figure_bg_1785192950234.jpg';
@@ -162,9 +162,144 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
 }) => {
   const [activeCastIndex, setActiveCastIndex] = useState(0);
   const [matrixViewMode, setMatrixViewMode] = useState<'grid' | 'table'>('grid');
+  
   const carouselTrackRef = useRef<HTMLDivElement>(null);
+  const mobilePillsRef = useRef<HTMLDivElement>(null);
+  const isProgrammaticScrollRef = useRef<boolean>(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isDraggingRef = useRef<boolean>(false);
+  const startXRef = useRef<number>(0);
+  const scrollLeftRef = useRef<number>(0);
+  const hasDraggedRef = useRef<boolean>(false);
+
+  // Mobile touch swipe refs
+  const touchStartXRef = useRef<number>(0);
+  const touchStartYRef = useRef<number>(0);
 
   const currentMember = CAST_MEMBERS[activeCastIndex];
+
+  // Sync scroll position when activeCastIndex is changed via side icons, buttons, or pills
+  useEffect(() => {
+    if (!isProgrammaticScrollRef.current) {
+      const track = carouselTrackRef.current;
+      if (track) {
+        const activeCard = track.querySelector(`#cast-card-${activeCastIndex}`) as HTMLElement;
+        if (activeCard) {
+          const trackWidth = track.clientWidth;
+          const cardOffset = activeCard.offsetLeft;
+          const cardWidth = activeCard.clientWidth;
+          const targetScroll = cardOffset - (trackWidth - cardWidth) / 2;
+
+          isProgrammaticScrollRef.current = true;
+          track.scrollTo({
+            left: Math.max(0, targetScroll),
+            behavior: 'smooth',
+          });
+
+          if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+          scrollTimeoutRef.current = setTimeout(() => {
+            isProgrammaticScrollRef.current = false;
+          }, 500);
+        }
+      }
+    }
+
+    // Sync mobile pills bar
+    const pills = mobilePillsRef.current;
+    if (pills) {
+      const activePill = pills.children[activeCastIndex] as HTMLElement;
+      if (activePill) {
+        const pillsWidth = pills.clientWidth;
+        const pillOffset = activePill.offsetLeft;
+        const pillWidth = activePill.clientWidth;
+        pills.scrollTo({
+          left: Math.max(0, pillOffset - (pillsWidth - pillWidth) / 2),
+          behavior: 'smooth',
+        });
+      }
+    }
+  }, [activeCastIndex]);
+
+  // Sync activeCastIndex when user manually scrolls or swipes the cards track
+  const handleTrackScroll = useCallback(() => {
+    if (isProgrammaticScrollRef.current) return;
+
+    const track = carouselTrackRef.current;
+    if (!track) return;
+
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    CAST_MEMBERS.forEach((_, idx) => {
+      const card = track.querySelector(`#cast-card-${idx}`) as HTMLElement;
+      if (card) {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const distance = Math.abs(cardCenter - trackCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestIndex = idx;
+        }
+      }
+    });
+
+    if (closestIndex !== activeCastIndex) {
+      setActiveCastIndex(closestIndex);
+    }
+  }, [activeCastIndex]);
+
+  // Desktop Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    const track = carouselTrackRef.current;
+    if (!track) return;
+    isDraggingRef.current = true;
+    hasDraggedRef.current = false;
+    startXRef.current = e.pageX - track.offsetLeft;
+    scrollLeftRef.current = track.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    const track = carouselTrackRef.current;
+    if (!track) return;
+    e.preventDefault();
+    const x = e.pageX - track.offsetLeft;
+    const walk = (x - startXRef.current) * 1.4;
+    if (Math.abs(walk) > 5) {
+      hasDraggedRef.current = true;
+    }
+    track.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    isDraggingRef.current = false;
+  };
+
+  // Card click handler that ignores clicks if user was dragging
+  const handleCardClick = (idx: number) => {
+    if (hasDraggedRef.current) return;
+    setActiveCastIndex(idx);
+  };
+
+  // Mobile Touch Swipe Handlers on character artwork
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    const diffX = touchStartXRef.current - e.changedTouches[0].clientX;
+    const diffY = touchStartYRef.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        // Swiped left -> Next card
+        setActiveCastIndex((prev) => (prev < CAST_MEMBERS.length - 1 ? prev + 1 : 0));
+      } else {
+        // Swiped right -> Previous card
+        setActiveCastIndex((prev) => (prev > 0 ? prev - 1 : CAST_MEMBERS.length - 1));
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#F5F5F5] font-sans selection:bg-[#C9A227] selection:text-black">
@@ -264,7 +399,10 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
           <div className="bg-gradient-to-b from-[#0C0A07] via-[#090705] to-[#050505] rounded-[20px] sm:rounded-[32px] p-4 sm:p-8 lg:p-12 border border-[#C9A227]/30 shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col lg:flex-row items-stretch gap-6 sm:gap-8 lg:gap-12 relative overflow-hidden">
             
             {/* MOBILE QUICK-SELECT PILLS BAR */}
-            <div className="lg:hidden flex items-center justify-start gap-2 overflow-x-auto pb-2 -mx-1 px-1 relative z-20 no-scrollbar">
+            <div 
+              ref={mobilePillsRef}
+              className="lg:hidden flex items-center justify-start gap-2 overflow-x-auto pb-2 -mx-1 px-1 relative z-20 no-scrollbar scroll-smooth"
+            >
               {CAST_MEMBERS.map((member, idx) => {
                 const isActive = idx === activeCastIndex;
                 return (
@@ -325,8 +463,12 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                   className="space-y-4 sm:space-y-5"
                 >
                   <div>
-                    {/* MOBILE ARTWORK DISPLAY */}
-                    <div className="lg:hidden relative w-full h-52 sm:h-64 rounded-2xl overflow-hidden mb-4 border-2 border-[#C9A227]/40 shadow-[0_10px_25px_rgba(0,0,0,0.5)] bg-black/90 group">
+                    {/* MOBILE ARTWORK DISPLAY (SWIPEABLE) */}
+                    <div 
+                      onTouchStart={handleTouchStart}
+                      onTouchEnd={handleTouchEnd}
+                      className="lg:hidden relative w-full h-52 sm:h-64 rounded-2xl overflow-hidden mb-4 border-2 border-[#C9A227]/40 shadow-[0_10px_25px_rgba(0,0,0,0.5)] bg-black/90 group touch-pan-y select-none cursor-grab"
+                    >
                       <img 
                         src={currentMember.image} 
                         alt={currentMember.name} 
@@ -426,7 +568,12 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
             <div className="hidden lg:flex lg:w-7/12 relative overflow-hidden py-2 items-center z-10">
               <div 
                 ref={carouselTrackRef}
-                className="w-full flex gap-4 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth px-1"
+                onScroll={handleTrackScroll}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUpOrLeave}
+                onMouseLeave={handleMouseUpOrLeave}
+                className="w-full flex gap-4 overflow-x-auto pb-4 pt-2 scrollbar-none snap-x snap-mandatory scroll-smooth px-1 select-none cursor-grab active:cursor-grabbing touch-pan-x"
               >
                 {CAST_MEMBERS.map((member, idx) => {
                   const isActive = idx === activeCastIndex;
@@ -434,7 +581,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                     <motion.div
                       key={member.id}
                       id={`cast-card-${idx}`}
-                      onClick={() => setActiveCastIndex(idx)}
+                      onClick={() => handleCardClick(idx)}
                       whileHover={{ y: -4 }}
                       animate={{
                         scale: isActive ? 1.02 : 0.95,

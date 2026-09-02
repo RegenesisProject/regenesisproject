@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
+import navbarLogo from '../assets/images/regenerated_image_1788303251158.png';
 
 interface NavbarProps {
   currentPage: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist';
@@ -86,16 +87,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer text-left min-w-0"
         >
           <img 
-            src="https://res.cloudinary.com/ew2ztpgz/image/upload/v1784752107/Ventura_logo_version_2_3_copy_2_dt5rra.png" 
+            src={navbarLogo} 
             alt="Thomas Ventura Logo" 
             referrerPolicy="no-referrer"
             className="h-10 sm:h-12 lg:h-14 w-auto object-contain drop-shadow shrink-0"
           />
           <div className="flex flex-col items-start justify-center text-left min-w-0">
-            <span className={`font-playfair font-bold text-sm sm:text-base lg:text-lg tracking-wider leading-tight text-left text-[#FFFFFF] transition-colors duration-500 truncate ${isScrolled || isScience ? 'group-hover:text-[#D4AF37]' : 'group-hover:text-amber-100'}`}>
+            <span className={`font-inter text-[8px] sm:text-[9px] uppercase tracking-[0.36em] font-bold text-left text-[#FFFFFF]/85 transition-colors duration-500 leading-tight truncate ${isScrolled || isScience ? 'group-hover:text-[#D4AF37]' : 'group-hover:text-amber-100'}`}>
               THOMAS VENTURA
             </span>
-            <span className="font-inter text-[8px] sm:text-[9px] uppercase tracking-[0.36em] text-[#FFFFFF]/85 font-bold text-left group-hover:text-white transition-colors duration-500 leading-tight mt-0.5 truncate">
+            <span className="font-playfair font-bold text-sm sm:text-base lg:text-lg tracking-wider leading-tight text-left text-[#FFFFFF] group-hover:text-white transition-colors duration-500 mt-0.5 truncate">
               THE REGENESIS PROJECT
             </span>
           </div>

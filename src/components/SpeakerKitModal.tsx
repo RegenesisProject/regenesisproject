@@ -7,7 +7,6 @@ interface SpeakerKitModalProps {
 }
 
 export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClose }) => {
-  const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,18 +15,62 @@ export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClos
     eventDate: '',
     notes: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'duplicate' | 'error' | 'invalid'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.name && formData.email && formData.organization && formData.eventType) {
-      setSubmitted(true);
+    if (!formData.name || !formData.email || !formData.organization || !formData.eventType) {
+      return;
+    }
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            source: 'Request the Speaker Kit',
+            name: formData.name,
+            email: formData.email,
+            organization: formData.organization,
+            eventType: formData.eventType,
+            eventDate: formData.eventDate,
+            message: formData.notes,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        setFormStatus('success');
+      } else if (data.status === 'duplicate') {
+        setFormStatus('duplicate');
+      } else if (data.status === 'invalid') {
+        setFormStatus('invalid');
+        setErrorMessage('Please check your email address and try again.');
+      } else {
+        setFormStatus('error');
+        setErrorMessage('Something went wrong. Please check your email and try again.');
+      }
+    } catch (err) {
+      setFormStatus('error');
+      setErrorMessage('Something went wrong. Please check your email and try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleCloseModal = () => {
-    setSubmitted(false);
+    setFormStatus('idle');
+    setErrorMessage('');
     setFormData({
       name: '',
       email: '',
@@ -64,7 +107,7 @@ export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClos
           </p>
         </div>
 
-        {submitted ? (
+        {formStatus === 'success' ? (
           <div className="p-6 bg-[#1A2318] border border-[#4E8B3D]/60 rounded-xl text-[#E2F5DB] flex items-start gap-4">
             <CheckCircle2 className="w-6 h-6 text-[#68D048] shrink-0 mt-0.5" />
             <div className="space-y-2">
@@ -82,8 +125,31 @@ export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClos
               </div>
             </div>
           </div>
+        ) : formStatus === 'duplicate' ? (
+          <div className="p-6 bg-[#232018] border border-[#C9962F]/60 rounded-xl text-[#FCE289] flex items-start gap-4">
+            <CheckCircle2 className="w-6 h-6 text-[#C9962F] shrink-0 mt-0.5" />
+            <div className="space-y-2">
+              <p className="font-bold text-sm sm:text-base text-[#FFFFFF]">Already Requested</p>
+              <p className="font-inter text-xs sm:text-sm leading-relaxed text-[#E6E1D5]">
+                You've already requested the Speaker Kit — check your inbox.
+              </p>
+              <div className="pt-4">
+                <button
+                  onClick={handleCloseModal}
+                  className="px-6 py-2.5 rounded-lg bg-[#C9962F] text-[#000000] font-inter font-bold text-xs uppercase tracking-wider cursor-pointer hover:bg-[#FCE289] transition-colors"
+                >
+                  Close Window
+                </button>
+              </div>
+            </div>
+          </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-5 font-inter text-xs sm:text-sm">
+            {errorMessage && (
+              <div className="p-3 bg-red-950/70 border border-red-500/50 rounded-lg text-red-200 text-xs">
+                {errorMessage}
+              </div>
+            )}
             <div>
               <label className="block text-[#E6E1D5] font-semibold mb-1.5 uppercase tracking-wider text-[10px]">
                 Name <span className="text-[#C9962F]">*</span>
@@ -172,9 +238,10 @@ export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClos
 
             <button
               type="submit"
-              className="w-full h-12 rounded-xl bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-[#000000] font-inter font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_25px_rgba(226,177,61,0.35)] hover:shadow-[0_6px_35px_rgba(226,177,61,0.6)] transition-all"
+              disabled={isSubmitting}
+              className="w-full h-12 rounded-xl bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-[#000000] font-inter font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 cursor-pointer shadow-[0_4px_25px_rgba(226,177,61,0.35)] hover:shadow-[0_6px_35px_rgba(226,177,61,0.6)] transition-all disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              <span>SEND ME THE KIT</span>
+              <span>{isSubmitting ? 'SENDING...' : 'SEND ME THE KIT'}</span>
               <Send className="w-4 h-4 text-[#000000]" />
             </button>
           </form>

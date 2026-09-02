@@ -14,12 +14,50 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'duplicate' | 'error' | 'invalid'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && email) {
-      setSubmitted(true);
+    if (!name || !email) return;
+
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch(
+        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            source: 'Request the Speaker Kit',
+            email,
+            name,
+            company: '',
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        setFormStatus('success');
+      } else if (data.status === 'duplicate') {
+        setFormStatus('duplicate');
+      } else if (data.status === 'invalid') {
+        setFormStatus('invalid');
+        setErrorMessage('Please check your email address and try again.');
+      } else {
+        setFormStatus('error');
+        setErrorMessage('Something went wrong. Please check your email and try again.');
+      }
+    } catch (err) {
+      setFormStatus('error');
+      setErrorMessage('Something went wrong. Please check your email and try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,7 +108,7 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
 
               {/* Download Form / Success State */}
               <div className="pt-2">
-                {submitted ? (
+                {formStatus === 'success' ? (
                   <div className="p-6 bg-[#f7f2e7] border-2 border-[#c89838] rounded-xl text-stone-900 space-y-3 animate-fadeIn">
                     <div className="flex items-center gap-3 text-[#c89838]">
                       <CheckCircle className="w-6 h-6 shrink-0" />
@@ -92,8 +130,25 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
                       <span>Download PDF Blueprint Directly</span>
                     </button>
                   </div>
+                ) : formStatus === 'duplicate' ? (
+                  <div className="p-6 bg-[#f7f2e7] border-2 border-[#c89838] rounded-xl text-stone-900 space-y-3 animate-fadeIn">
+                    <div className="flex items-center gap-3 text-[#c89838]">
+                      <CheckCircle className="w-6 h-6 shrink-0" />
+                      <h3 className="text-base font-bold uppercase tracking-wide">
+                        Already Requested
+                      </h3>
+                    </div>
+                    <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
+                      You&apos;ve already requested the Speaker Kit — check your inbox.
+                    </p>
+                  </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-3">
+                    {errorMessage && (
+                      <div className="p-3 bg-red-100 border border-red-300 rounded-lg text-red-700 text-xs font-medium">
+                        {errorMessage}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input
                         type="text"
@@ -115,9 +170,10 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 px-6 rounded-lg bg-[#c99a38] hover:bg-[#b8892b] text-black font-extrabold text-sm sm:text-base transition-all duration-200 cursor-pointer shadow-md flex items-center justify-center gap-2 hover:brightness-105"
+                      disabled={isSubmitting}
+                      className="w-full py-3.5 px-6 rounded-lg bg-[#c99a38] hover:bg-[#b8892b] text-black font-extrabold text-sm sm:text-base transition-all duration-200 cursor-pointer shadow-md flex items-center justify-center gap-2 hover:brightness-105 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      <span>Get now</span>
+                      <span>{isSubmitting ? 'Sending...' : 'Get now'}</span>
                     </button>
 
                     <p className="text-[11px] text-stone-500 font-sans pt-1">

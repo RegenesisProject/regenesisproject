@@ -201,7 +201,7 @@ export default function App({ initialPath }: AppProps) {
 
     setCurrentPage(page);
 
-    if (page === 'home' && sectionId) {
+    if (sectionId) {
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -216,7 +216,7 @@ export default function App({ initialPath }: AppProps) {
   };
 
   const handleOpenSpeakerKit = () => {
-    handleNavigatePage('keynotes');
+    handleNavigatePage('keynotes', 'speaker-kit-form');
   };
 
   const handleOpenWaitlist = () => {

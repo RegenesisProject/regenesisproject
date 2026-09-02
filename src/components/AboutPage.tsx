@@ -15,6 +15,7 @@ import {
 import { BOOKS_DATA } from '../data/siteData';
 import { BookInfo, PageKey } from '../types';
 import { ScrollReveal } from './ScrollReveal';
+import originDocBg from '../assets/images/origin_documentary_bg_1788304796361.jpg';
 
 interface AboutPageProps {
   onNavigatePage: (page: PageKey, sectionId?: string) => void;
@@ -92,17 +93,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   </div>
                 ))}
               </div>
-
-              {/* Join Waitlist Button */}
-              <div className="mt-5 flex items-center justify-center w-full max-w-[480px] pt-4 border-t border-[#C9A227]/20 mx-auto">
-                <button
-                  onClick={() => onNavigatePage('home', 'books-section')}
-                  className="px-6 py-2.5 bg-[#1A1815] hover:bg-[#C9A227] text-[#C9A227] hover:text-[#0C0B0A] border border-[#C9A227]/50 font-mono text-[11px] uppercase tracking-[0.2em] font-bold rounded-sm transition-all duration-300 flex items-center gap-2 cursor-pointer"
-                >
-                  <span>JOIN THE WAITLIST</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
-              </div>
             </ScrollReveal>
           </div>
 
@@ -162,28 +152,29 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             >
               <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#000000]">
                 <img 
-                  src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=2000" 
-                  alt="Thomas Ventura Keynote Briefing" 
-                  className="w-full h-full object-cover filter contrast-125 brightness-75 group-hover:scale-105 transition-transform duration-500"
+                  src={originDocBg} 
+                  alt="Thomas Ventura Origin Documentary Briefing" 
+                  referrerPolicy="no-referrer"
+                  className="w-full h-full object-cover filter contrast-110 brightness-90 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/30 to-transparent" />
 
                 {/* Duration Badge */}
                 <div className="absolute top-3 right-3 bg-[#0C0B0A]/80 backdrop-blur-md border border-[#C9A227]/50 text-[#C9A227] text-[10px] font-mono font-bold px-2.5 py-1 rounded-md shadow">
-                  06:20 • ORIGIN BRIEFING
+                  IN PRODUCTION • 2027
                 </div>
 
-                {/* Center Play Button */}
+                {/* Center Announcement Content */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
                   <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-[#000000] shadow-[0_0_25px_rgba(226,177,61,0.6)] flex items-center justify-center group-hover:scale-110 transition-transform mb-2">
                     <Play className="w-6 h-6 fill-current ml-1 text-[#000000]" />
                   </div>
-                  <span className="text-xs sm:text-sm font-playfair font-bold uppercase tracking-wider text-[#FFFFFF] drop-shadow-md">
-                    Watch: The Story &amp; Origin of Thomas Ventura
+                  <span className="text-xs sm:text-base font-playfair font-bold uppercase tracking-wider text-[#FFFFFF] drop-shadow-md">
+                    DOCUMENTARY SCHEDULED FOR PRODUCTION IN 2027
                   </span>
-                  <span className="text-[11px] font-mono text-[#C9A227] tracking-wide mt-1 max-w-lg drop-shadow-sm">
-                    From war-zone refugee to running two companies at once — and why none of it fixed the real problem.
+                  <span className="text-xs sm:text-sm font-mono text-[#FCE289] font-medium tracking-wide mt-1.5 max-w-lg drop-shadow-sm">
+                    Check Back Later
                   </span>
                 </div>
               </div>
@@ -191,10 +182,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               <div className="p-3.5 bg-[#12100d] border-t border-[#C9A227]/20 flex items-center justify-between text-xs text-[#D4CEBF]">
                 <span className="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#C9A227]">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>ORIGIN STORY &amp; BRIEFING</span>
+                  <span>ORIGIN DOCUMENTARY</span>
                 </span>
-                <span className="text-[#FFFFFF] font-bold underline group-hover:text-[#C9A227] transition-colors">
-                  Play Video &rarr;
+                <span className="text-[#FFFFFF] font-bold text-xs uppercase tracking-wider group-hover:text-[#C9A227] transition-colors">
+                  Coming 2027 &rarr;
                 </span>
               </div>
             </div>
@@ -210,7 +201,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </p>
 
               <p>
-                He clawed his way up through multiple jobs — including commercial diving for the oil majors — and forced his way into entrepreneurship, where he failed six times before his first exit. He took that momentum and built two multi-million dollar companies, running them simultaneously for over eighteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
+                He clawed his way up through dozens of punishing jobs—surviving a few close calls with death as an elite commercial inspection diver for petrochemical majors—before forcing his way into entrepreneurship to escape the employer trap, ultimately failing six times before his first exit. He took that momentum and built two multi-million dollar companies, running them simultaneously for over eighteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
               </p>
 
               <p>
@@ -220,16 +211,16 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               {/* Pull Quote */}
               <div className="bg-[#181613] border-l-4 border-[#C9A227] border-y border-r border-[#C9A227]/30 rounded-r-xl p-4 sm:p-6 my-4 sm:my-6 shadow-inner">
                 <p className="font-playfair font-bold text-base sm:text-xl text-[#FCE289] leading-snug">
-                  &ldquo;Code can be rewritten. I had to rewrite mine.&rdquo;
+                  &ldquo;The Survival Code can be written. I had to rewrite mine.&rdquo;
                 </p>
               </div>
 
               <p>
-                Refusing to accept the ceiling, Thomas spent the next decade decoding it — mapping the human survival architecture across the sciences and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) quietly limiting your capacity, and reconfigures it.
+                Refusing to accept the ceiling, Thomas spent the next decade decoding it — mapping the human survival architecture across 12 disciplines of sciences and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) quietly limiting your capacity, and reconfigures it.
               </p>
 
               <p>
-                Today, Thomas helps anyone with the drive to build, lead, or create — founders, creators, closers, and builders of every kind — end the internal war between their ambition and their wiring.
+                Today, Thomas helps anyone with the drive to build, lead, or create — founders, creators, closers, and builders of every kind — end the internal war between their desire for expansion and their survival code and wiring.
               </p>
             </div>
 
@@ -351,7 +342,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
             <div className="mb-4">
               <span className="text-[10px] font-mono font-bold text-[#C9A227] uppercase tracking-widest block mb-1">
-                06:20 ORIGIN DOCUMENTARY
+                IN PRODUCTION • 2027
               </span>
               <h3 className="text-xl sm:text-2xl font-playfair font-bold text-[#FFFFFF]">
                 The Story &amp; Origin of Thomas Ventura
@@ -360,19 +351,20 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
             <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-[#C9A227]/30 mb-4 flex items-center justify-center">
               <img 
-                src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=2000"
-                alt="Thomas Ventura Keynote Reel"
+                src={originDocBg}
+                alt="Thomas Ventura Origin Documentary Reel"
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover opacity-60"
               />
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-16 h-16 rounded-full bg-[#C9A227] text-black flex items-center justify-center mb-3 shadow-[0_0_30px_rgba(201,162,39,0.7)]">
-                  <Play className="w-8 h-8 fill-current ml-1 text-black" />
+              <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-6 text-center">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-black flex items-center justify-center mb-3 shadow-[0_0_30px_rgba(201,162,39,0.7)]">
+                  <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1 text-black" />
                 </div>
-                <p className="text-xs font-mono text-[#C9A227] uppercase tracking-widest font-bold">
-                  Documentary Briefing Playing...
+                <p className="text-sm sm:text-base font-playfair uppercase tracking-wider font-bold text-[#FFFFFF] drop-shadow-md">
+                  DOCUMENTARY SCHEDULED FOR PRODUCTION IN 2027
                 </p>
-                <p className="text-xs text-[#D4CEBF] max-w-md mt-2 font-inter">
-                  &ldquo;Managing two multi-million dollar companies simultaneously taught me that strategy is useless if your biology is in survival mode.&rdquo;
+                <p className="text-xs sm:text-sm text-[#FCE289] font-mono max-w-md mt-2 drop-shadow-sm font-medium">
+                  Check Back Later
                 </p>
               </div>
             </div>
