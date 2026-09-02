@@ -12,8 +12,6 @@ export default defineConfig(() => {
       },
     },
     build: {
-      // Emits dist/.vite/manifest.json so the prerender script can map
-      // dev-time asset import paths to their hashed production URLs.
       manifest: true,
     },
     server: {

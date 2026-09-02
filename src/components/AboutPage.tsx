@@ -216,7 +216,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </div>
 
               <p>
-                Refusing to accept the ceiling, Thomas spent the next decade decoding it — mapping the human survival architecture across 12 disciplines of sciences and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) quietly limiting your capacity, and reconfigures it.
+                Refusing to accept the ceiling, Thomas spent years researching and decoding the last 4 decades — mapping the human survival architecture across 12 disciplines of sciences and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) quietly limiting your capacity, and reconfigures it.
               </p>
 
               <p>
