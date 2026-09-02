@@ -323,7 +323,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
           <ScrollReveal>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#18110B] border border-[#C9A227]/40 text-[#C9A227] text-xs font-mono font-bold uppercase tracking-widest mb-6">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>THE ARCHETYPES</span>
+              <span>THE CAST</span>
             </div>
 
             <h1 className="font-playfair font-black text-3xl sm:text-5xl lg:text-7xl text-white tracking-tight uppercase leading-[1.05] mb-6">

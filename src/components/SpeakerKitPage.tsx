@@ -238,7 +238,7 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
               In a high-stakes world, the bottleneck of any organization is rarely the strategy—it is the biological capacity of its leaders. Thomas Ventura doesn't deliver motivational speeches; he provides a <strong className="font-black text-black">Neuro-Biological Translation</strong> for high-performance leadership.
             </p>
             <p className="text-sm sm:text-base md:text-lg font-medium font-sans leading-relaxed max-w-4xl mx-auto text-black">
-              This 6-page Speaker Kit outlines the REGENESIS methodology, keynote topics, and the specific ROI of shifting your team from <strong className="font-black text-black">SOS (Survival Operating System)</strong> to <strong className="font-black text-black">The ONE (Optimized Nervous-system Evolution)</strong>.
+              This 6-page Speaker Kit outlines the REGENESIS methodology, keynote topics, and the specific ROI of shifting your team from <strong className="font-black text-black">SOS (Survival Operating System)</strong> to <strong className="font-black text-black">The ONE (Optimized Neuro-Biological Evolution)</strong>.
             </p>
           </div>
         </ScrollReveal>
