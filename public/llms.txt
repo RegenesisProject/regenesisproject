@@ -36,11 +36,11 @@ A neuro-biological assessment tool that scans the subconscious hardware running 
 - **Book 3: Epigenetic Freedom**: Long-term biological resilience and executive legacy.
 
 ## Key Links & Navigation
-- Home: https://thomasventura.com/
-- About Thomas: https://thomasventura.com/about
-- Keynotes: https://thomasventura.com/keynotes
-- Science Matrix: https://thomasventura.com/science
-- Mythology & Story: https://thomasventura.com/mythology
-- The Mirror Quiz: https://thomasventura.com/mirror-quiz
-- Speaker Kit: https://thomasventura.com/speaker-kit
-- Waitlist: https://thomasventura.com/waitlist
+- Home: https://thomasventura.org/
+- About Thomas: https://thomasventura.org/about
+- Keynotes: https://thomasventura.org/keynotes
+- Science Matrix: https://thomasventura.org/science
+- Mythology & Story: https://thomasventura.org/mythology
+- The Mirror Quiz: https://thomasventura.org/mirror-quiz
+- Speaker Kit: https://thomasventura.org/speaker-kit
+- Waitlist: https://thomasventura.org/waitlist

@@ -35,6 +35,34 @@ async function prerender() {
   // Read the base template index.html produced by Vite
   const templateHtml = fs.readFileSync(indexPath, 'utf-8');
 
+  // The SSR pass below loads App.tsx through Vite's dev module graph, so any
+  // local asset import (e.g. `import logo from './logo.png'`) resolves to its
+  // raw dev-server URL (/src/assets/...) rather than the hashed production
+  // URL (/assets/...-HASH...) that `vite build` actually emits into dist/.
+  // Build a dev-path -> production-path map from the build manifest so we can
+  // rewrite those references before writing each static page.
+  const manifestPath = path.join(distPath, '.vite', 'manifest.json');
+  const assetUrlMap = new Map<string, string>();
+  if (fs.existsSync(manifestPath)) {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+    for (const key of Object.keys(manifest)) {
+      const entry = manifest[key];
+      if (entry?.file && /\.(png|jpe?g|gif|svg|webp|avif)$/i.test(key)) {
+        assetUrlMap.set(`/${key}`, `/${entry.file}`);
+      }
+    }
+  } else {
+    console.warn('No build manifest found at dist/.vite/manifest.json — local image imports in the pre-rendered HTML may point to broken dev-only URLs. Ensure vite.config.ts has build.manifest: true.');
+  }
+
+  const rewriteAssetUrls = (html: string): string => {
+    let result = html;
+    for (const [devUrl, prodUrl] of assetUrlMap) {
+      result = result.split(devUrl).join(prodUrl);
+    }
+    return result;
+  };
+
   // Create a Vite dev server in SSR mode to safely load and transform image/css/tsx imports
   const vite = await createServer({
     server: { middlewareMode: true },
@@ -49,7 +77,9 @@ async function prerender() {
       console.log(`Pre-rendering route: ${route.path} -> dist/${route.outPath}`);
 
       // Render the App component with initialPath for this route
-      const appHtml = renderToString(React.createElement(App, { initialPath: route.path }));
+      const appHtml = rewriteAssetUrls(
+        renderToString(React.createElement(App, { initialPath: route.path }))
+      );
 
       let html = templateHtml;
 

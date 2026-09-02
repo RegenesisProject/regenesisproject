@@ -11,6 +11,11 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      // Emits dist/.vite/manifest.json so the prerender script can map
+      // dev-time asset import paths to their hashed production URLs.
+      manifest: true,
+    },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
       // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
