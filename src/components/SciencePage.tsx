@@ -27,6 +27,7 @@ interface SciencePageProps {
   onOpenSpeakerKit?: () => void;
   onOpenContact?: () => void;
   onOpenWaitlist?: () => void;
+  onNavigatePage?: (page: string, sectionId?: string) => void;
 }
 
 export interface ScienceLens {
@@ -163,7 +164,8 @@ const twelveLensesBg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v178579
 
 export const SciencePage: React.FC<SciencePageProps> = ({ 
   onOpenMirrorQuiz,
-  onNavigateKeynotes
+  onNavigateKeynotes,
+  onNavigatePage
 }) => {
   const [selectedLens, setSelectedLens] = useState<{ lens: ScienceLens; blockTitle: string } | null>(null);
 
@@ -221,6 +223,23 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                 </p>
                 <p className="font-semibold text-white pt-1">
                   REGENESIS reads the machine through twelve lenses of science to find where those settings are costing you — and what it takes to change them.
+                </p>
+                <p className="text-sm sm:text-base text-[#D4CEBF] leading-relaxed pt-1">
+                  <a 
+                    href="/mythology"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (onNavigatePage) {
+                        onNavigatePage('mythology');
+                      } else {
+                        window.location.href = '/mythology';
+                      }
+                    }}
+                    className="text-[#FCE289] hover:text-[#FFFFFF] underline underline-offset-4 decoration-[#C9A227] hover:decoration-[#FFFFFF] font-semibold transition-colors cursor-pointer"
+                  >
+                    The Mythology
+                  </a>{' '}
+                  tells this same system as a story.
                 </p>
               </div>
 
@@ -399,9 +418,6 @@ export const SciencePage: React.FC<SciencePageProps> = ({
               <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-[#997314] via-[#F3E5AB] via-[#D4AF37] to-[#997314]" />
 
               <div className="border-b-2 border-[#D4AF37]/30 pb-6 space-y-2 pt-2">
-                <span className="font-mono text-xs font-black text-[#7E4F11] bg-[#FAF3E0] border border-[#D4AF37] px-3.5 py-1 rounded-full tracking-[0.25em] uppercase inline-block shadow-xs">
-                  SECTION 3
-                </span>
                 <h2 className="font-sans font-black text-3xl sm:text-4xl text-zinc-950 uppercase tracking-tight">
                   WHY TWELVE, AND NOT ONE?
                 </h2>
@@ -438,9 +454,6 @@ export const SciencePage: React.FC<SciencePageProps> = ({
           <ScrollReveal yOffset={24}>
             <div className="bg-[#12100E] border border-[#C9A227]/30 rounded-3xl p-8 sm:p-12 space-y-6 backdrop-blur-md shadow-2xl">
               <div className="border-b border-[#C9A227]/20 pb-4 space-y-1">
-                <span className="font-mono text-xs font-bold text-[#C9A227] tracking-[0.2em] uppercase block">
-                  SECTION 4
-                </span>
                 <h2 className="font-sans font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">
                   THE HONEST STANDARD — HOW WE HOLD THIS
                 </h2>

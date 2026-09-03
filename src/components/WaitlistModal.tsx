@@ -74,9 +74,9 @@ export const WaitlistModal: React.FC<WaitlistModalProps> = ({ isOpen, onClose })
               className="w-full bg-[#FFFFFF] border-b border-[#1A1A1A] text-[#1A1A1A] p-3 outline-none focus:border-[#D4AF37] rounded-none font-inter text-xs"
             >
               <option>All 3 Books (Full Trilogy Set)</option>
-              <option>Book 1: The Survival Source Code (Drops 06-23-26)</option>
-              <option>Book 2: The REGENESIS Protocol (Drops 08-15-26)</option>
-              <option>Book 3: The REGENESIS Blueprint (Drops 10-27-26)</option>
+              <option>Book 1: The Survival Source Code (Coming 2027)</option>
+              <option>Book 2: The REGENESIS Protocol (To Follow)</option>
+              <option>Book 3: The REGENESIS Blueprint (To Follow)</option>
             </select>
           </div>
 

@@ -130,8 +130,7 @@ export const Footer: React.FC<FooterProps> = ({
             </p>
             
             <p className="font-inter text-xs text-[#6C6863] leading-relaxed">
-              Insights and strategy on the internal war — and how to win it.<br />
-              <span className="text-[11px] font-medium opacity-80">(Weekly Newsletter)</span>
+              Insights and strategy on the internal war — and how to win it.
             </p>
 
             <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 pt-2">

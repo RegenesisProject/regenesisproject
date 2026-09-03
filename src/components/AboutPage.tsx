@@ -45,8 +45,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         {/* Main 2-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
           
-          {/* ================= LEFT COLUMN: PORTRAIT & TRILOGY STRIP ================= */}
-          <div className="lg:col-span-5 flex flex-col items-center">
+          {/* ================= LEFT COLUMN: PORTRAIT ================= */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:sticky lg:top-24">
             <ScrollReveal yOffset={20}>
               {/* Executive Portrait Box */}
               <div className="relative w-full max-w-[480px] aspect-[4/5] rounded-xl overflow-hidden border border-[#C9A227]/30 shadow-[0_15px_40px_rgba(0,0,0,0.8)] bg-[#121110] group mx-auto">
@@ -60,38 +60,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 {/* Gradient Vignette Overlays */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-transparent to-black/10 pointer-events-none" />
                 <div className="absolute inset-0 border border-[#C9A227]/20 rounded-xl pointer-events-none" />
-              </div>
-
-              {/* THE TRILOGY STRIP */}
-              <div className="mt-8 text-center space-y-1.5 w-full max-w-[480px] mx-auto">
-                <h3 className="font-playfair font-bold text-base sm:text-lg tracking-[0.2em] sm:tracking-[0.25em] text-[#F3EFE0] uppercase">
-                  THE REGENESIS TRILOGY
-                </h3>
-                <p className="font-mono text-[10px] sm:text-[11px] text-[#C9A227] tracking-wider font-semibold">
-                  The Survival Source Code · The REGENESIS Protocol · The REGENESIS Blueprint
-                </p>
-                <p className="font-inter text-xs text-[#D4CEBF]/80 pt-1">
-                  Book One — Coming 2027. Books Two &amp; Three to follow.
-                </p>
-              </div>
-
-              {/* 3 Book Covers Display Row */}
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-3 w-full max-w-[480px] mt-4 mx-auto">
-                {BOOKS_DATA.map((book) => (
-                  <div 
-                    key={book.id}
-                    onClick={() => onSelectBook(book)}
-                    className="group/book relative cursor-pointer aspect-[1/1.45] rounded-md overflow-hidden border border-[#C9A227]/30 hover:border-[#C9A227] shadow-lg transition-all duration-300 hover:-translate-y-1 bg-[#1A1815]"
-                  >
-                    <img 
-                      src={book.coverImage} 
-                      alt={book.title}
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover/book:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover/book:bg-transparent transition-colors" />
-                  </div>
-                ))}
               </div>
             </ScrollReveal>
           </div>
@@ -124,8 +92,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               {/* STAT CARDS */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-6">
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
-                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">18+ YRS</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">Running Two Companies Simultaneously</span>
+                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">15+ YRS</span>
+                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">Two Operations, Side by Side</span>
                 </div>
 
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
@@ -140,53 +108,42 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
                   <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">1 MISSION</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">End the Internal War CAPPING YOUR CAPACITY</span>
+                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">End the Internal War</span>
                 </div>
               </div>
             </ScrollReveal>
 
-            {/* VIDEO SLOT */}
+            {/* VIDEO PLACEHOLDER */}
             <div 
               onClick={() => setIsVideoOpen(true)}
-              className="group relative my-4 sm:my-6 bg-gradient-to-r from-[#181510] via-[#221c13] to-[#181510] border border-[#C9A227]/30 hover:border-[#C9A227] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+              className="group relative my-4 sm:my-6 bg-[#14120F] border border-[#C9A227]/30 hover:border-[#C9A227] rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
             >
               <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#000000]">
                 <img 
                   src={originDocBg} 
-                  alt="Thomas Ventura Origin Documentary Briefing" 
+                  alt="Watch: The Story & Origin of Thomas Ventura" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover filter contrast-110 brightness-90 group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover filter contrast-105 brightness-75 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/40 to-transparent" />
 
-                {/* Duration Badge */}
-                <div className="absolute top-3 right-3 bg-[#0C0B0A]/80 backdrop-blur-md border border-[#C9A227]/50 text-[#C9A227] text-[10px] font-mono font-bold px-2.5 py-1 rounded-md shadow">
-                  IN PRODUCTION • 2027
-                </div>
-
-                {/* Center Announcement Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-[#000000] shadow-[0_0_25px_rgba(226,177,61,0.6)] flex items-center justify-center group-hover:scale-110 transition-transform mb-2">
-                    <Play className="w-6 h-6 fill-current ml-1 text-[#000000]" />
+                {/* Center Play Button */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-[#000000] shadow-[0_0_25px_rgba(226,177,61,0.6)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1 text-[#000000]" />
                   </div>
-                  <span className="text-xs sm:text-base font-playfair font-bold uppercase tracking-wider text-[#FFFFFF] drop-shadow-md">
-                    DOCUMENTARY SCHEDULED FOR PRODUCTION IN 2027
-                  </span>
-                  <span className="text-xs sm:text-sm font-mono text-[#FCE289] font-medium tracking-wide mt-1.5 max-w-lg drop-shadow-sm">
-                    Check Back Later
-                  </span>
                 </div>
               </div>
 
-              <div className="p-3.5 bg-[#12100d] border-t border-[#C9A227]/20 flex items-center justify-between text-xs text-[#D4CEBF]">
-                <span className="flex items-center gap-1.5 font-mono text-[10px] sm:text-[11px] text-[#C9A227]">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>ORIGIN DOCUMENTARY</span>
-                </span>
-                <span className="text-[#FFFFFF] font-bold text-xs uppercase tracking-wider group-hover:text-[#C9A227] transition-colors">
-                  Coming 2027 &rarr;
-                </span>
+              {/* Caption */}
+              <div className="p-4 sm:p-5 bg-[#12100d] border-t border-[#C9A227]/20">
+                <p className="text-xs sm:text-sm font-playfair font-bold text-[#FFFFFF] leading-snug">
+                  Watch: The Story &amp; Origin of Thomas Ventura
+                </p>
+                <p className="text-xs text-[#D4CEBF] font-inter mt-1 leading-relaxed">
+                  From war-zone refugee to running two operations at once — and why none of it fixed the real problem.
+                </p>
               </div>
             </div>
 
@@ -201,7 +158,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </p>
 
               <p>
-                He clawed his way up through dozens of punishing jobs—surviving a few close calls with death as an elite commercial inspection diver for petrochemical majors—before forcing his way into entrepreneurship to escape the employer trap, ultimately failing six times before his first exit. He took that momentum and built two multi-million dollar companies, running them simultaneously for over eighteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
+                He clawed his way up through multiple jobs — including commercial diving for the oil majors — before forcing his way into entrepreneurship, ultimately failing six times before his first exit. He took that momentum and built two operations, running them side by side for over fifteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
               </p>
 
               <p>
@@ -211,21 +168,55 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               {/* Pull Quote */}
               <div className="bg-[#181613] border-l-4 border-[#C9A227] border-y border-r border-[#C9A227]/30 rounded-r-xl p-4 sm:p-6 my-4 sm:my-6 shadow-inner">
                 <p className="font-playfair font-bold text-base sm:text-xl text-[#FCE289] leading-snug">
-                  &ldquo;The Survival Code can be written. I had to rewrite mine.&rdquo;
+                  &ldquo;Code can be rewritten. I had to rewrite mine.&rdquo;
                 </p>
               </div>
 
               <p>
-                Refusing to accept the ceiling, Thomas spent years researching and decoding the last 4 decades — mapping the human survival architecture across 12 disciplines of sciences and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) quietly limiting your capacity, and reconfigures it.
+                Refusing to accept the ceiling, Thomas spent years researching and decoding the last 4 decades — mapping the human survival architecture across twelve scientific disciplines and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) silently capping your capacity, and reconfigures it.
               </p>
 
               <p>
-                Today, Thomas helps anyone with the drive to build, lead, or create — founders, creators, closers, and builders of every kind — end the internal war between their desire for expansion and their survival code and wiring.
+                Today, Thomas helps anyone with the drive to build, lead, or create — founders, creators, closers, and builders of every kind — end the internal war between their ambition and their wiring.
               </p>
             </div>
 
+            {/* THE TRILOGY STRIP */}
+            <div className="pt-8 border-t border-[#C9A227]/20 space-y-4">
+              <div className="space-y-1">
+                <h3 className="font-playfair font-bold text-base sm:text-lg tracking-[0.2em] sm:tracking-[0.25em] text-[#F3EFE0] uppercase">
+                  THE REGENESIS TRILOGY
+                </h3>
+                <p className="font-mono text-[10px] sm:text-[11px] text-[#C9A227] tracking-wider font-semibold">
+                  The Survival Source Code · The REGENESIS Protocol · The REGENESIS Blueprint
+                </p>
+                <p className="font-inter text-xs text-[#D4CEBF]/80 pt-0.5">
+                  Book One — Coming 2027. Books Two &amp; Three to follow.
+                </p>
+              </div>
+
+              {/* 3 Book Covers Display Row */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 max-w-lg pt-1">
+                {BOOKS_DATA.map((book) => (
+                  <div 
+                    key={book.id}
+                    onClick={() => onSelectBook(book)}
+                    className="group/book relative cursor-pointer aspect-[1/1.45] rounded-md overflow-hidden border border-[#C9A227]/30 hover:border-[#C9A227] shadow-lg transition-all duration-300 hover:-translate-y-1 bg-[#1A1815]"
+                  >
+                    <img 
+                      src={book.coverImage} 
+                      alt={book.title}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover/book:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover/book:bg-transparent transition-colors" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* EXPLORE + CTA */}
-            <div className="pt-6 border-t border-[#C9A227]/20 space-y-4">
+            <div className="pt-8 border-t border-[#C9A227]/20 space-y-4">
               <div className="space-y-1">
                 <h4 className="font-playfair font-bold text-sm sm:text-base text-[#FFFFFF] uppercase tracking-wider">
                   EXPLORE THE FRAMEWORK: The Science · The Mythology · Keynotes
@@ -235,19 +226,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 </p>
               </div>
 
-              {/* Primary CTA */}
-              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <button
-                  onClick={onOpenMirrorQuiz}
-                  className="px-6 py-3.5 bg-gradient-to-r from-[#7E4F11] via-[#C9A227] to-[#E2B13D] hover:opacity-90 text-black font-inter text-xs font-black uppercase tracking-[0.2em] rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg cursor-pointer flex-1"
-                >
-                  <Sparkles className="w-4 h-4 text-black" />
-                  <span>GET EARLY ACCESS TO THE MIRROR QUIZ</span>
-                </button>
-              </div>
-
               {/* Secondary Navigation Links */}
-              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-2">
+              <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 pt-1">
                 <button
                   onClick={() => onNavigatePage('science')}
                   className="px-3.5 sm:px-4 py-2 sm:py-2.5 bg-[#181613] hover:bg-[#C9A227] text-[#FFFFFF] hover:text-[#0C0B0A] border border-[#C9A227]/40 rounded-lg text-xs font-inter font-medium transition-all duration-300 flex items-center gap-2 cursor-pointer shadow-sm flex-1 justify-center"
@@ -270,6 +250,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 >
                   <KeyRound className="w-4 h-4 text-[#C9A227]" />
                   <span>Keynotes</span>
+                </button>
+              </div>
+
+              {/* Primary CTA / Quiz Button */}
+              <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <button
+                  onClick={onOpenMirrorQuiz}
+                  className="px-6 py-3.5 bg-gradient-to-r from-[#7E4F11] via-[#C9A227] to-[#E2B13D] hover:opacity-90 text-black font-inter text-xs font-black uppercase tracking-[0.2em] rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg cursor-pointer flex-1"
+                >
+                  <Sparkles className="w-4 h-4 text-black" />
+                  <span>GET EARLY ACCESS TO THE MIRROR QUIZ</span>
                 </button>
               </div>
             </div>
@@ -341,30 +332,27 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             </button>
 
             <div className="mb-4">
-              <span className="text-[10px] font-mono font-bold text-[#C9A227] uppercase tracking-widest block mb-1">
-                IN PRODUCTION • 2027
-              </span>
-              <h3 className="text-xl sm:text-2xl font-playfair font-bold text-[#FFFFFF]">
-                The Story &amp; Origin of Thomas Ventura
+              <h3 className="text-lg sm:text-xl font-playfair font-bold text-[#FFFFFF]">
+                Watch: The Story &amp; Origin of Thomas Ventura
               </h3>
+              <p className="text-xs sm:text-sm text-[#D4CEBF] font-inter mt-1 leading-relaxed">
+                From war-zone refugee to running two operations at once — and why none of it fixed the real problem.
+              </p>
             </div>
 
             <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-[#C9A227]/30 mb-4 flex items-center justify-center">
               <img 
                 src={originDocBg}
-                alt="Thomas Ventura Origin Documentary Reel"
+                alt="Watch: The Story & Origin of Thomas Ventura"
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover opacity-60"
+                className="w-full h-full object-cover opacity-50"
               />
               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-6 text-center">
                 <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-black flex items-center justify-center mb-3 shadow-[0_0_30px_rgba(201,162,39,0.7)]">
                   <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1 text-black" />
                 </div>
-                <p className="text-sm sm:text-base font-playfair uppercase tracking-wider font-bold text-[#FFFFFF] drop-shadow-md">
-                  DOCUMENTARY SCHEDULED FOR PRODUCTION IN 2027
-                </p>
-                <p className="text-xs sm:text-sm text-[#FCE289] font-mono max-w-md mt-2 drop-shadow-sm font-medium">
-                  Check Back Later
+                <p className="text-xs sm:text-sm font-inter text-[#D4CEBF] tracking-wide font-medium">
+                  Coming soon
                 </p>
               </div>
             </div>

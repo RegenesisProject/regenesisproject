@@ -61,7 +61,7 @@ export const WhyThomasSection: React.FC = () => {
               </h3>
 
               <p className="font-sans text-xs sm:text-sm text-[#4A4843] leading-relaxed">
-                Thomas didn't learn this in a lab. He reverse-engineered it out of an actual war zone, actual poverty, and eighteen years of running two companies at once — decoding his own machine because his life depended on it.
+                Thomas didn't learn this in a lab. He reverse-engineered it out of an actual war zone, actual poverty, and over fifteen years of running two operations side by side — decoding his own machine because his life depended on it.
               </p>
             </div>
           </div>

@@ -93,7 +93,7 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
           <div>
             <h3 className="font-inter font-bold text-xs uppercase tracking-[0.25em] text-[#D4AF37] mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              <span>Core Table of Contents / Modules</span>
+              <span>{book.id === 'survival-source-code' ? 'Table of Contents · Chapter Breakdown' : 'Structure Overview · Sections & Themes'}</span>
             </h3>
 
             <div className="space-y-3">

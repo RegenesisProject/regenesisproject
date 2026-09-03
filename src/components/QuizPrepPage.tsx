@@ -144,7 +144,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
                 className="text-xs font-inter uppercase tracking-[0.2em] text-[#A1ABC0] hover:text-[#F7D36B] transition-colors inline-flex items-center gap-2 cursor-pointer group"
               >
                 <span className="group-hover:-translate-x-1 transition-transform">&larr;</span>
-                <span>BACK TO OVERVIEW</span>
+                <span>BACK TO HOME</span>
               </button>
             </div>
 
@@ -341,7 +341,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
               onClick={scrollToEmail}
               className="px-8 py-4 rounded-lg bg-gradient-to-r from-[#F7D36B] via-[#E7B646] to-[#C9982D] hover:brightness-110 text-[#050505] font-extrabold text-xs uppercase tracking-widest transition-all shadow-[0_8px_25px_rgba(231,182,70,0.4)] cursor-pointer inline-flex items-center gap-2"
             >
-              <span>REGISTER FOR EARLY ACCESS</span>
+              <span>GET EARLY ACCESS</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}

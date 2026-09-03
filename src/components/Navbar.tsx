@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
-import navbarLogo from '../assets/images/regenerated_image_1788303251158.png';
+import navbarLogo from '../assets/images/regenerated_image_1788305533708.png';
 
 interface NavbarProps {
   currentPage: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist';

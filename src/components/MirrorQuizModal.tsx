@@ -76,7 +76,7 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
 
           {/* Intro Paragraph */}
           <p className="text-sm sm:text-base text-gray-300 font-light leading-relaxed mb-6">
-            Most assessments tell you what you&apos;re like. This one reads what&apos;s running underneath — the survival patterns written into your system long before you chose any of them, and where they&apos;re quietly limiting your capacity.
+            Most assessments tell you what you&apos;re like. This one reads what&apos;s running underneath — the survival patterns written into your system long before you chose any of them, and where they&apos;re silently capping your capacity.
           </p>
 
           {/* Subtext */}
@@ -221,7 +221,7 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
               }}
               className="px-6 py-3 rounded-lg bg-[#D4AF37] hover:bg-[#F3E5AB] text-[#0B0C0E] font-bold text-xs uppercase tracking-widest transition-all cursor-pointer inline-flex items-center gap-2"
             >
-              <span>REGISTER FOR EARLY ACCESS</span>
+              <span>GET EARLY ACCESS</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}

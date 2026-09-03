@@ -79,7 +79,7 @@ export const ScienceManifesto: React.FC = () => {
                 </p>
 
                 <p className="text-xs text-stone-300 leading-relaxed font-normal">
-                  <strong className="text-white font-semibold">Rewrite the code.</strong> The protocol for interrupting the old loops and reconfiguring the patterns quietly limiting you.
+                  <strong className="text-white font-semibold">Rewrite the code.</strong> The protocol for interrupting the old loops and reconfiguring the patterns silently capping you.
                 </p>
               </div>
 

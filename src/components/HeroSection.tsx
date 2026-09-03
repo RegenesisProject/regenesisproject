@@ -317,9 +317,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {idx < VIDEOS.length - 1 && (
                 <div 
                   className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-20 items-center justify-center pointer-events-none ${
-                    idx === 0 
-                      ? 'hidden sm:flex left-[calc(100%+0.5rem)] lg:left-[calc(100%+0.625rem)]' 
-                      : 'hidden xl:flex left-[calc(100%+0.625rem)]'
+                    idx === 0 || idx === 2
+                      ? 'hidden sm:flex lg:flex left-[calc(100%+0.625rem)]' 
+                      : 'hidden lg:flex left-[calc(100%+0.625rem)]'
                   }`}
                 >
                   <div className="w-7 h-7 rounded-full bg-[#181108]/95 border border-[#FCE289]/80 flex items-center justify-center text-[#FCE289] shadow-[0_0_15px_rgba(252,226,137,0.5)] backdrop-blur-md animate-pulse">

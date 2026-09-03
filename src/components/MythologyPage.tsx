@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import archetypesBgImage from '../assets/images/archetypes_bg_1784904573049.jpg';
+import castBgImage from '../assets/images/mythology_bg_1784904573049.jpg';
 import goldenFigureBg from '../assets/images/golden_figure_bg_1785192950234.jpg';
 import { ScrollReveal } from './ScrollReveal';
 import { 
@@ -45,16 +45,16 @@ const CAST_MEMBERS: CastMember[] = [
   {
     id: 'commander',
     name: 'THE COMMANDER',
-    role: 'The Operational Center',
+    role: 'The Force of Command',
     image: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1787348010/commander_2.2_bnwgkl.png',
     iconUrl: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1787348010/commander_2.2_bnwgkl.png',
     description: 'Structure, discipline, the will to impose order on chaos. The Commander builds the scaffold and holds the line.\n\nHe is the voice that says: we do this because we decided to, not because we feel like it. When the Commander is offline, nothing sustains.',
-    wounded: 'Rigid control. Imposes order to manage internal anxiety. Can\'t adapt, can\'t yield, can\'t let anyone else drive.',
+    wounded: 'Goes offline. When the load gets heavy enough, the Commander shuts down and the reactive parts take the wheel — which is why you can know exactly what to do and do the opposite anyway.',
     integrated: 'Clear direction, clean delegation, the capacity to hold standard without crushing the people inside it.',
-    science: 'Prefrontal cortex executive function, locus of control.',
-    woundedTrigger: 'Threat of chaos or loss of control.',
+    science: 'Prefrontal executive function — regulation and top-down control',
+    woundedTrigger: 'Being under heavy load',
     costsYou: 'Turns strength into isolation. Everyone around you becomes dependent or resentful.',
-    quote: '"Order is a tool. When it becomes a shield, you\'ve already lost the field."'
+    quote: '"A plan is worth nothing if nobody\'s at the wheel when the pressure hits."'
   },
   {
     id: 'eagle',
@@ -65,66 +65,66 @@ const CAST_MEMBERS: CastMember[] = [
     description: 'Altitude. The part that sees the whole board, reads what\'s coming, and runs the future in your head before it arrives.',
     wounded: 'Circles. Runs disaster simulations so vivid your body reacts to them, or sees every angle and commits to none.',
     integrated: 'Clarity at height — and the discipline to land.',
-    science: 'Default mode network, predictive processing, anticipatory anxiety.',
-    woundedTrigger: 'Over-anticipation of threat or missed opportunity.',
+    science: 'Perception, pattern recognition, and mental simulation',
+    woundedTrigger: 'Not knowing what\'s coming',
     costsYou: 'Paralysis by foresight. You live in what might happen and never execute what must.',
-    quote: '"Altitude without descent is just a higher view of nothing getting done."'
+    quote: '"You can\'t navigate the storm from inside the clouds."'
   },
   {
     id: 'tiger',
     name: 'THE TIGER',
-    role: 'The Raw Engine',
+    role: 'The Force of Mobilization',
     image: tigerImg,
     iconUrl: tigerImg,
     description: 'Intensity, velocity, the strike. When the Tiger takes the wheel, you don\'t negotiate with the problem — you run through it. The engine of every breakthrough and the source of every crater.',
     wounded: 'Attacks everything as a threat. Burns the room down to win the point. Leaves a trail of scorched earth and spent energy.',
     integrated: 'Pure precision power. Deployed on purpose, dialed to the target, powered down when the job is done.',
-    science: 'Sympathetic nervous system, dopamine drive, amygdala activation.',
-    woundedTrigger: 'Perceived resistance, delay, or challenge to dominance.',
+    science: 'Sympathetic Overdrive — threat mobilization',
+    woundedTrigger: 'Being blocked or disrespected',
     costsYou: 'Collateral damage. The wins are real, but the cost of the cleanup keeps compounding.',
-    quote: '"Power without brakes isn\'t strength. It\'s just speed before the impact."'
+    quote: '"The Tiger burns the village, or it fuels the engine. You decide where the fire goes."'
   },
   {
     id: 'wolf',
     name: 'THE WOLF',
-    role: 'The Pack Intelligence',
+    role: 'The Force of Belonging',
     image: wolfImg,
     iconUrl: wolfImg,
     description: 'The social radar. Tracks allegiance, reads room dynamics, feels betrayal before it happens. Built to keep you connected and keep you alive in the group.',
-    wounded: 'Hyper-vigilant for rejection. Reads neutral behavior as abandonment. Pre-emptively attacks or withdraws to protect itself.',
+    wounded: 'Appeases. Says yes when it means no, keeps the peace at your own expense, manages everyone\'s comfort but your own.',
     integrated: 'Deep loyalty, extraordinary relational intelligence, the ability to read and lead a pack without needing to control them.',
-    science: 'Attachment circuitry, oxytocin/vasopressin systems, social threat sensitivity.',
-    woundedTrigger: 'Shift in allegiance, exclusion, or perceived disloyalty.',
+    science: 'Social Compliance Appeasement — bonding and co-regulation',
+    woundedTrigger: 'Being left out',
     costsYou: 'Relational exhaustion. You\'re managing politics that only exist in your head.',
-    quote: '"A pack built on fear of abandonment isn\'t a team. It\'s a hostage situation."'
+    quote: '"The pack is worth belonging to. It was never worth disappearing into."'
   },
   {
     id: 'lion',
     name: 'THE LION',
-    role: 'The Sovereign Presence',
+    role: 'The Force of Presence',
     image: lionEmblemImg,
     iconUrl: lionEmblemImg,
     description: 'Natural authority, ease in the center, the weight that steadies a room just by being in it. Doesn\'t fight for status — assumes it.',
-    wounded: 'Performative sovereignty. Needs constant validation of the crown. Fragile underneath, devastatingly reactive to disrespect.',
+    wounded: 'Shrinks. Goes quiet in the rooms that matter, defers on instinct, then resents the silence.',
     integrated: 'Effortless authority that creates safety for everyone beneath it. Doesn\'t need to prove what\'s already true.',
-    science: 'Serotonergic status regulation, social dominance theory.',
-    woundedTrigger: 'Public challenge, perceived disrespect, or loss of deference.',
+    science: 'The biology of presence — steadiness under social pressure',
+    woundedTrigger: 'Being judged or overlooked',
     costsYou: 'Kingdom without subjects. When authority demands deference, respect becomes performance.',
-    quote: '"True sovereignty doesn\'t demand the room. The room settles because it\'s there."'
+    quote: '"The Lion doesn\'t roar to be heard. It\'s heard before it speaks."'
   },
   {
     id: 'phoenix',
     name: 'THE PHOENIX',
-    role: 'The Engine of Regeneration',
+    role: 'The Force of Rebirth',
     image: phoenixImg,
     iconUrl: phoenixImg,
     description: 'The capacity to end something cleanly and begin again. Not bouncing back — evolving through the fire. The Phoenix knows how to let the old version die.',
-    wounded: 'Addicted to the burn. Destroys what\'s working just to feel the thrill of rebuilding from the ashes. Confuses trauma with transformation.',
+    wounded: 'Dormant. Loyal to a version of yourself that expired years ago.',
     integrated: 'Regenerates on purpose. Clean transitions, deliberate evolutions, zero wasted suffering.',
-    science: 'Neuroplasticity, post-traumatic growth, epigenetic adaptability.',
-    woundedTrigger: 'Plateau, boredom, or the discomfort of sustained stability.',
+    science: 'Neuroplasticity — the system\'s capacity to change',
+    woundedTrigger: 'Staying the same too long',
     costsYou: 'Chronic instability. You keep setting fire to what took years to build.',
-    quote: '"Not everything that burns was meant to. Some things were just meant to be tended."'
+    quote: '"Every ending is a beginning disguised in smoke."'
   },
   {
     id: 'egon',
@@ -135,24 +135,24 @@ const CAST_MEMBERS: CastMember[] = [
     description: 'The voice that talks you out of things. EGON isn\'t your enemy and he isn\'t trying to hold you back — he\'s trying to keep you safe, and he was built when safety was the only thing that mattered.\n\nHis vow was made when you were small: keep you unnoticed so you\'re never targeted, keep you grinding so you\'re never caught short. He kept it. He\'s still keeping it.\n\nHe\'ll shut down the launch before he\'ll risk the exposure.',
     wounded: 'Runs the whole show. Every expansion reads as exposure, so nothing ships.',
     integrated: 'Stands down. Still watching, no longer deciding.',
-    science: 'Default Mode Network self-referential processing, protective schemas.',
-    woundedTrigger: 'Exposure, vulnerability, or any move outside the known envelope.',
+    science: 'Default Mode Network — the self-protective narrator',
+    woundedTrigger: 'Being seen or exposed',
     costsYou: 'A smaller life than you were built for. Perfectly safe, permanently capped.',
-    quote: '"Protection that never stands down becomes the prison it was built to prevent."'
+    quote: '"EGON doesn\'t want you to be great. He wants you to be safe."'
   },
   {
     id: 'ghost',
     name: 'THE GHOST',
-    role: 'The Unprocessed Origin',
+    role: 'The Undated Files',
     image: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1787347828/ghost_1_m7wqyg.png',
     iconUrl: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1787347828/ghost_1_m7wqyg.png',
     description: 'The thing that happened before you had words for it. The original threat that taught your system it wasn\'t safe.\n\nThe Ghost doesn\'t have an agenda. It doesn\'t want to hurt you. It\'s just an open loop — an unfiled event that your nervous system treats as happening right now, every time a shadow crosses the room.',
     wounded: 'Runs the background program. Every decision is quietly routed around the original wound.',
     integrated: 'Filed as history. What happened is acknowledged, integrated, and finally in the past.',
-    science: 'Implicit memory, unresolved trauma loops, somatic markers.',
-    woundedTrigger: 'Contextual cues that match the original imprint.',
+    science: 'Early experience stored without a timestamp',
+    woundedTrigger: 'Something that echoes the past',
     costsYou: 'Living in reaction to a threat that ended years ago.',
-    quote: '"The ghost only haunts the rooms you refuse to turn the light on in."'
+    quote: '"The threat ended years ago. Nobody told your body."'
   }
 ];
 
@@ -323,7 +323,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
           <ScrollReveal>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#18110B] border border-[#C9A227]/40 text-[#C9A227] text-xs font-mono font-bold uppercase tracking-widest mb-6">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>THE CAST</span>
+              <span>THE MYTHOLOGY</span>
             </div>
 
             <h1 className="font-playfair font-black text-3xl sm:text-5xl lg:text-7xl text-white tracking-tight uppercase leading-[1.05] mb-6">
@@ -333,9 +333,23 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
               </span>
             </h1>
 
-            <p className="font-playfair italic text-lg sm:text-2xl text-[#FFE18A] max-w-3xl mx-auto leading-relaxed mb-8">
-              Every human system is populated. Inside every operator is a cast — formed early, shaped by survival, and running the controls.
-            </p>
+            <div className="max-w-3xl mx-auto space-y-4 text-stone-200 font-sans text-sm sm:text-base md:text-lg leading-relaxed mb-8 text-center font-normal">
+              <p className="font-playfair italic text-lg sm:text-2xl text-[#FFE18A] leading-relaxed font-normal">
+                Your biology doesn&apos;t explain itself. It just acts — and then you spend years wondering why you snapped, why you shrank, why you couldn&apos;t start.
+              </p>
+              <p className="font-bold text-white text-base sm:text-lg">
+                So we gave it a cast.
+              </p>
+              <p className="text-stone-300">
+                The Commander, the Eagle, the Tiger, the Wolf, the Lion, the Phoenix, EGON, and the Ghost aren&apos;t personality types. They&apos;re your parts — the same parts everyone has. They&apos;re what your survival system looks like when you can finally see it working.
+              </p>
+              <p className="text-stone-300">
+                This is the story layer of REGENESIS: the same architecture the science describes, told the way you actually live it.
+              </p>
+              <p className="text-[#FFE18A] font-medium pt-1">
+                The Mythology tells the same system the Science page explains — in the language you actually live it in.
+              </p>
+            </div>
 
             <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#C9A227] to-transparent mx-auto" />
           </ScrollReveal>
@@ -357,7 +371,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                 Each one has two states. <span className="text-[#DC2626] font-bold">Wounded</span>, when it's protecting you from something that already happened. <span className="text-[#B8860B] font-bold">Integrated</span>, when it's working for the life you're actually building.
               </p>
               <p className="font-inter text-xs sm:text-sm text-[#8B6508] font-bold leading-relaxed pt-2 border-t border-[#C9A227]/30">
-                Nothing here needs to be killed. The Tiger isn't the problem. An unrestrained Tiger is.
+                Nothing here needs to be killed. The Tiger isn't the problem. An unsupervised Tiger is.
               </p>
             </div>
           </ScrollReveal>
@@ -370,7 +384,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
         {/* Background Image with Contrast Vignette */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img 
-            src={archetypesBgImage} 
+            src={castBgImage} 
             alt="The Cast Background" 
             className="w-full h-full object-cover object-center opacity-70 contrast-125 saturate-110"
           />
@@ -763,13 +777,18 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                       </div>
 
                       {/* What it costs you */}
-                      <div className="mt-5 pt-4 border-t border-[#322312]">
-                        <span className="text-[11px] font-mono font-black uppercase text-stone-300 tracking-wider block mb-1">
-                          WHAT IT COSTS YOU
-                        </span>
-                        <p className="text-xs text-stone-200 italic font-medium leading-relaxed bg-[#0A0704]/60 p-2.5 rounded-md border border-white/5">
-                          "{item.costsYou}"
-                        </p>
+                      <div className="mt-5 pt-4 border-t border-[#322312] space-y-3">
+                        <div>
+                          <span className="text-[11px] font-mono font-black uppercase text-stone-300 tracking-wider block mb-1">
+                            WHAT IT COSTS YOU
+                          </span>
+                          <p className="text-xs text-stone-200 italic font-medium leading-relaxed bg-[#0A0704]/60 p-2.5 rounded-md border border-white/5">
+                            "{item.costsYou}"
+                          </p>
+                        </div>
+                        <div className="p-3 rounded-lg bg-[#1A150C] border-l-2 border-[#E2B13D] text-xs text-[#FCE289] italic font-playfair leading-relaxed">
+                          {item.quote}
+                        </div>
                       </div>
                     </div>
                   ))}

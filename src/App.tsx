@@ -48,56 +48,56 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
   home: {
     title: "Thomas Ventura — The REGENESIS Project™",
     description: "Official portal for Thomas Ventura, featuring the Twelve Lenses of Science, The Mirror Quiz, Signature Keynotes, Speaker Kit, and Book Trilogy.",
-    canonical: "https://thomasventura.org/",
+    canonical: "https://www.regenesisproject.com/",
     ogTitle: "Thomas Ventura — The REGENESIS Project™",
-    ogDescription: "Decodes the Survival Operating System (SOS) beneath habits and reconfigures the patterns quietly limiting your capacity.",
+    ogDescription: "Decodes the Survival Operating System (SOS) beneath habits and reconfigures the patterns silently capping your capacity.",
   },
   about: {
-    title: "About Thomas Ventura | REGENESIS",
-    description: "From a war-zone refugee to multi-million dollar operator over 18+ years across two companies, Thomas Ventura decodes the Survival Operating System (SOS) beneath habits.",
-    canonical: "https://thomasventura.org/about",
-    ogTitle: "About Thomas Ventura",
+    title: "About Thomas Ventura — Creator of The REGENESIS Project",
+    description: "From a war-zone refugee to multi-million dollar operator with two operations run side by side for over fifteen years, Thomas Ventura decodes the Survival Operating System (SOS) beneath habits.",
+    canonical: "https://www.regenesisproject.com/about",
+    ogTitle: "About Thomas Ventura — Creator of The REGENESIS Project",
     ogDescription: "Discover the journey, operator experience, and framework of Thomas Ventura.",
   },
   keynotes: {
-    title: "Keynotes — Thomas Ventura | The REGENESIS Project™",
+    title: "Keynotes — Thomas Ventura | The REGENESIS Project",
     description: "Keynote speaking for teams, events, and organizations. Thomas Ventura on why biology — not strategy — becomes the ceiling on performance, and what it takes to move it.",
-    canonical: "https://thomasventura.org/keynotes",
-    ogTitle: "Keynotes — Thomas Ventura | The REGENESIS Project™",
+    canonical: "https://www.regenesisproject.com/keynotes",
+    ogTitle: "Keynotes — Thomas Ventura | The REGENESIS Project",
     ogDescription: "Keynote speaking for teams, events, and organizations. Thomas Ventura on why biology — not strategy — becomes the ceiling on performance, and what it takes to move it.",
   },
   science: {
-    title: "The Twelve Lenses of Science — REGENESIS | Thomas Ventura",
-    description: "Explore the Twelve Lenses of Science across Four Blocks (Neuroscience, Biophysics, Somatic Science, Bio-Energetics, Epigenetics, Autonomic Regulation, Cybernetics, Memory Science, and more) powering REGENESIS.",
-    canonical: "https://thomasventura.org/science",
-    ogTitle: "The Twelve Lenses of Science — REGENESIS",
-    ogDescription: "A rigorous-heuristic identity-architecture framework integrating Twelve Lenses of Science.",
+    title: "The Science — The Twelve Lenses | The REGENESIS Project",
+    description: "Twelve lenses of science for reading one machine: the native system you were born as, the survival layer installed over it, and what those settings are still costing you.",
+    canonical: "https://www.regenesisproject.com/science",
+    ogTitle: "The Science — The Twelve Lenses | The REGENESIS Project",
+    ogDescription: "Twelve lenses of science for reading one machine: the native system you were born as, the survival layer installed over it, and what those settings are still costing you.",
   },
   mythology: {
-    title: "The Mythology — The Theater of Identity | The REGENESIS Project™",
+    title: "The Mythology — The Theater of Identity | The REGENESIS Project",
     description: "The story layer of REGENESIS: the eight universal forces every human system runs under pressure — and what it takes to command them in an integrated state.",
-    canonical: "https://thomasventura.org/mythology",
-    ogTitle: "The Mythology — The Theater of Identity | The REGENESIS Project™",
+    canonical: "https://www.regenesisproject.com/mythology",
+    ogTitle: "The Mythology — The Theater of Identity | The REGENESIS Project",
     ogDescription: "The story layer of REGENESIS: the eight universal forces every human system runs under pressure — and what it takes to command them in an integrated state.",
   },
   quiz: {
     title: "The Mirror Quiz — A Free System Scan | The REGENESIS Project",
-    description: "A free scan of the survival patterns running beneath your habits — and where they're quietly limiting your capacity. Coming soon.",
-    canonical: "https://thomasventura.org/mirror-quiz",
+    description: "A free scan of the survival patterns running beneath your habits — and where they're quietly holding you back. Coming soon.",
+    canonical: "https://www.regenesisproject.com/mirror-quiz",
     ogTitle: "The Mirror Quiz — A Free System Scan | The REGENESIS Project",
-    ogDescription: "A free scan of the survival patterns running beneath your habits — and where they're quietly limiting your capacity. Coming soon.",
+    ogDescription: "A free scan of the survival patterns running beneath your habits — and where they're quietly holding you back. Coming soon.",
   },
   'speaker-kit': {
     title: "Speaker Kit & Keynotes — Thomas Ventura | REGENESIS",
     description: "Keynote speeches, speaker requirements, and booking details for Thomas Ventura at leadership summits.",
-    canonical: "https://thomasventura.org/speaker-kit",
+    canonical: "https://www.regenesisproject.com/speaker-kit",
     ogTitle: "Speaker Kit & Keynotes — Thomas Ventura",
     ogDescription: "Book Thomas Ventura for keynotes and corporate summits.",
   },
   waitlist: {
     title: "The Trilogy Waitlist — The REGENESIS Project",
     description: "Be first to know when The Survival Source Code arrives. Book One coming 2027; Books Two and Three to follow.",
-    canonical: "https://thomasventura.org/waitlist",
+    canonical: "https://www.regenesisproject.com/waitlist",
     ogTitle: "The Trilogy Waitlist — The REGENESIS Project",
     ogDescription: "Be first to know when The Survival Source Code arrives. Book One coming 2027; Books Two and Three to follow.",
   },
@@ -274,6 +274,8 @@ export default function App({ initialPath }: AppProps) {
                 onOpenContact={() => setContactOpen(true)}
                 onOpenWaitlist={handleOpenWaitlist}
                 onOpenMirrorQuiz={() => handleNavigatePage('quiz')}
+                onNavigatePage={handleNavigatePage}
+                onNavigateKeynotes={() => handleNavigatePage('keynotes')}
               />
             ) : currentPage === 'keynotes' ? (
               <KeynotesPage 

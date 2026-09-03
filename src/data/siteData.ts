@@ -12,9 +12,11 @@ export const BOOKS_DATA: BookInfo[] = [
     tagline: 'Book One',
     description: 'Decodes the survival hardware written in your earliest years — the code shaping your behavior, identity, and drive today.',
     chapters: [
-      'Awareness & Origin',
-      'Decoding Survival Hardware',
-      'The Hidden Architecture of Drive'
+      'Chapter 01: The War You Didn\'t Choose',
+      'Chapter 02: The Architecture of the Survival OS',
+      'Chapter 03: Decoding Early Neural Wiring',
+      'Chapter 04: The Biological Ceiling on Drive',
+      'Chapter 05: Mapping Your Origin Hardware'
     ],
     coverColor: 'from-[#3a200b] to-[#140b03]',
     coverImage: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_1.2_-_Copy_op3afs.png',
@@ -26,11 +28,11 @@ export const BOOKS_DATA: BookInfo[] = [
     title: 'The REGENESIS Protocol',
     subtitle: 'Interruption & Rewrite',
     tagline: 'Book Two',
-    description: 'Hands you the protocol for interrupting survival conditioning and reconfiguring the patterns quietly limiting your capacity.',
+    description: 'Hands you the protocol for interrupting survival conditioning and reconfiguring the patterns silently capping your capacity.',
     chapters: [
-      'Interruption & Rewrite',
-      'Deconditioning Survival Conditioning',
-      'Reconfiguring Biological Capacity'
+      'Section I: Mechanics of Pattern Interruption',
+      'Section II: Deconditioning the Survival Loop',
+      'Section III: Biological Capacity Reconfiguration'
     ],
     coverColor: 'from-[#4a2e0e] to-[#1a1005]',
     coverImage: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_2.2_awqfr6.png',
@@ -44,9 +46,9 @@ export const BOOKS_DATA: BookInfo[] = [
     tagline: 'Book Three',
     description: 'The 365-day blueprint for living the new configuration, making it your default — and becoming The ONE.',
     chapters: [
-      'Embodiment & Scaling',
-      'The 365-Day Daily Blueprint',
-      'Becoming The ONE'
+      'Theme I: Embodiment & Daily Architecture',
+      'Theme II: The 365-Day Operating Framework',
+      'Theme III: Identity Integration & The Default State'
     ],
     coverColor: 'from-[#35200a] to-[#0f0902]',
     coverImage: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_3.2_nptruj.png',

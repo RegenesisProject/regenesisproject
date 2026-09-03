@@ -4,4 +4,4 @@ Allow: /
 
 # Dedicated AI Documentation File
 # See: https://llmstxt.org/
-Sitemap: https://thomasventura.org/sitemap.xml
+Sitemap: https://www.regenesisproject.com/sitemap.xml

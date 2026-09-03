@@ -203,7 +203,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
                   Not a motivational speaker.
                 </h2>
                 <p className="text-stone-300 text-sm sm:text-base font-sans leading-relaxed">
-                  A battle-tested operator who built and ran two multi-million dollar companies simultaneously for over eighteen years.
+                  A battle-tested operator who built and ran two multi-million dollar operations side by side for over fifteen years.
                 </p>
               </div>
 
@@ -343,11 +343,11 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
               </div>
 
               <p className="text-xs sm:text-sm text-stone-300 font-sans max-w-xl mx-auto leading-relaxed pt-2">
-                The speaker kit includes Thomas&apos;s bio, keynote descriptions, technical requirements, and photography. Tell us about your event and we&apos;ll send it over.
+                Tell us about your event and we&apos;ll send it over.
               </p>
 
               <p className="text-xs font-mono text-[#D4AF37]">
-                For press and media enquiries: <a href="mailto:hello@thomasventura.com" className="underline hover:text-white transition-colors">hello@thomasventura.com</a>
+                For press and media enquiries: <a href="mailto:social@regenesisproject.com" className="underline hover:text-white transition-colors">social@regenesisproject.com</a>
               </p>
             </section>
           </div>
@@ -479,11 +479,11 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
                       onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
                       className="w-full h-10 px-3.5 rounded-lg bg-[#161B2A] border border-gray-700 text-white focus:outline-none focus:border-[#D4AF37] transition-all"
                     >
-                      <option value="Conference">Conference</option>
-                      <option value="Leadership offsite">Leadership offsite</option>
-                      <option value="Accelerator or founder program">Accelerator or founder program</option>
-                      <option value="Sales or team event">Sales or team event</option>
-                      <option value="Other">Other</option>
+                      <option value="Conference" className="bg-[#161B2A] text-white">Conference</option>
+                      <option value="Leadership offsite" className="bg-[#161B2A] text-white">Leadership offsite</option>
+                      <option value="Accelerator or founder program" className="bg-[#161B2A] text-white">Accelerator or founder program</option>
+                      <option value="Sales or team event" className="bg-[#161B2A] text-white">Sales or team event</option>
+                      <option value="Other" className="bg-[#161B2A] text-white">Other</option>
                     </select>
                   </div>
 
@@ -521,6 +521,10 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
                     <span>{isSubmitting ? 'SENDING...' : 'SEND ME THE KIT'}</span>
                     <Send className="w-4 h-4 text-[#090A0C]" />
                   </button>
+
+                  <p className="text-[11px] sm:text-xs text-stone-400 text-center font-sans mt-2.5">
+                    You&apos;re signing up to receive emails from Thomas Ventura.
+                  </p>
                 </form>
               )}
             </div>
