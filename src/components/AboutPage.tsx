@@ -158,7 +158,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </p>
 
               <p>
-                He clawed his way up through multiple jobs — including commercial diving for the oil majors — before forcing his way into entrepreneurship, ultimately failing six times before his first exit. He took that momentum and built two operations, running them side by side for over fifteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
+                He worked dozens of dead-end jobs until he trained into underwater inspection — commercial diving for the oil majors, on sites across the country and overseas. He almost drowned twice. That forced him to find another path — one out of the employee trap. He fought his way into entrepreneurship, failing six times before his first exit. He took that momentum and built two multi-million dollar operations, running them side by side for over fifteen years: national logistics, complex supply chains, heavy manufacturing, and a cumulative eight-figure revenue stream across both.
               </p>
 
               <p>
@@ -173,7 +173,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </div>
 
               <p>
-                Refusing to accept the ceiling, Thomas spent years researching and decoding the last 4 decades — mapping the human survival architecture across twelve scientific disciplines and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) silently capping your capacity, and reconfigures it.
+                Refusing to accept the ceiling, Thomas spent years decoding it — mapping the human survival architecture across twelve scientific disciplines and testing everything on the hardest subject he had: himself. The result is <strong className="text-[#FFFFFF]">The REGENESIS Project</strong> — an identity-architecture framework that decodes the Survival Operating System (SOS) silently capping your capacity, and reconfigures it.
               </p>
 
               <p>

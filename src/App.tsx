@@ -19,6 +19,7 @@ import { AboutPage } from './components/AboutPage';
 import { QuizPrepPage } from './components/QuizPrepPage';
 import { SpeakerKitPage } from './components/SpeakerKitPage';
 import { WaitlistPage } from './components/WaitlistPage';
+import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
 import { ScrollReveal } from './components/ScrollReveal';
 import { ScrollProgress } from './components/ScrollProgress';
@@ -32,9 +33,7 @@ import { WaitlistModal } from './components/WaitlistModal';
 import { ContactModal } from './components/ContactModal';
 import { LegalModal } from './components/LegalModal';
 
-import { BookInfo, KeynoteInfo } from './types';
-
-export type PageKey = 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist';
+import { BookInfo, KeynoteInfo, PageKey } from './types';
 
 export interface RouteMeta {
   title: string;
@@ -42,22 +41,23 @@ export interface RouteMeta {
   canonical: string;
   ogTitle: string;
   ogDescription: string;
+  image?: string;
 }
 
 export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
   home: {
     title: "Thomas Ventura — The REGENESIS Project™",
-    description: "Official portal for Thomas Ventura, featuring the Twelve Lenses of Science, The Mirror Quiz, Signature Keynotes, Speaker Kit, and Book Trilogy.",
+    description: "The hardest part of building your dreams isn't strategy, mindset, or willpower. REGENESIS decodes the Survival Operating System beneath your habits — and reconfigures the patterns silently capping your capacity.",
     canonical: "https://www.regenesisproject.com/",
     ogTitle: "Thomas Ventura — The REGENESIS Project™",
-    ogDescription: "Decodes the Survival Operating System (SOS) beneath habits and reconfigures the patterns silently capping your capacity.",
+    ogDescription: "The hardest part of building your dreams isn't strategy, mindset, or willpower. REGENESIS decodes the Survival Operating System beneath your habits — and reconfigures the patterns silently capping your capacity.",
   },
   about: {
     title: "About Thomas Ventura — Creator of The REGENESIS Project",
-    description: "From a war-zone refugee to multi-million dollar operator with two operations run side by side for over fifteen years, Thomas Ventura decodes the Survival Operating System (SOS) beneath habits.",
+    description: "From a war-zone refugee to two multi-million dollar operations run side by side for over fifteen years — and the framework he built after his own biology stopped him.",
     canonical: "https://www.regenesisproject.com/about",
     ogTitle: "About Thomas Ventura — Creator of The REGENESIS Project",
-    ogDescription: "Discover the journey, operator experience, and framework of Thomas Ventura.",
+    ogDescription: "From a war-zone refugee to two multi-million dollar operations run side by side for over fifteen years — and the framework he built after his own biology stopped him.",
   },
   keynotes: {
     title: "Keynotes — Thomas Ventura | The REGENESIS Project",
@@ -72,6 +72,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/science",
     ogTitle: "The Science — The Twelve Lenses | The REGENESIS Project",
     ogDescription: "Twelve lenses of science for reading one machine: the native system you were born as, the survival layer installed over it, and what those settings are still costing you.",
+    image: "https://res.cloudinary.com/ew2ztpgz/image/upload/v1785797732/the_science_3_vt6yab.png",
   },
   mythology: {
     title: "The Mythology — The Theater of Identity | The REGENESIS Project",
@@ -86,6 +87,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/mirror-quiz",
     ogTitle: "The Mirror Quiz — A Free System Scan | The REGENESIS Project",
     ogDescription: "A free scan of the survival patterns running beneath your habits — and where they're quietly holding you back. Coming soon.",
+    image: "https://www.regenesisproject.com/assets/gold_mirror_anatomy_1785193115649-JQuhZoZE.jpg",
   },
   'speaker-kit': {
     title: "Speaker Kit & Keynotes — Thomas Ventura | REGENESIS",
@@ -100,6 +102,14 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/waitlist",
     ogTitle: "The Trilogy Waitlist — The REGENESIS Project",
     ogDescription: "Be first to know when The Survival Source Code arrives. Book One coming 2027; Books Two and Three to follow.",
+    image: "https://res.cloudinary.com/ew2ztpgz/image/upload/v1786988163/rearrange_2_oabx2u.png",
+  },
+  contact: {
+    title: "Contact Thomas Ventura — The REGENESIS Project",
+    description: "For keynote bookings, press and media enquiries, or anything else. Inquire directly with Thomas Ventura.",
+    canonical: "https://www.regenesisproject.com/contact",
+    ogTitle: "Contact Thomas Ventura — The REGENESIS Project",
+    ogDescription: "For keynote bookings, press and media enquiries, or anything else. Inquire directly with Thomas Ventura.",
   },
 };
 
@@ -112,6 +122,7 @@ export const getPageFromPath = (path: string): PageKey => {
   if (cleanPath === '/mirror-quiz' || cleanPath === '/quiz') return 'quiz';
   if (cleanPath === '/speaker-kit') return 'speaker-kit';
   if (cleanPath === '/waitlist') return 'waitlist';
+  if (cleanPath === '/contact') return 'contact';
   return 'home';
 };
 
@@ -145,9 +156,20 @@ export default function App({ initialPath }: AppProps) {
     if (typeof window === 'undefined') return;
 
     const syncRouteFromLocation = () => {
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
+      if (path === '/keynote') {
+        window.history.replaceState({}, '', '/keynotes');
+        setCurrentPage('keynotes');
+        return;
+      }
       const page = getPageFromPath(window.location.pathname);
       setCurrentPage(page);
     };
+
+    const initialClean = window.location.pathname.toLowerCase().replace(/\/$/, '');
+    if (initialClean === '/keynote') {
+      window.history.replaceState({}, '', '/keynotes');
+    }
 
     // Update document head metadata dynamically when page changes in browser
     const meta = ROUTE_METADATA[currentPage] || ROUTE_METADATA.home;
@@ -168,12 +190,19 @@ export default function App({ initialPath }: AppProps) {
     const ogUrlEl = document.querySelector('meta[property="og:url"]');
     if (ogUrlEl) ogUrlEl.setAttribute('content', meta.canonical);
 
+    const twTitleEl = document.querySelector('meta[name="twitter:title"]');
+    if (twTitleEl) twTitleEl.setAttribute('content', meta.ogTitle);
+
+    const twDescEl = document.querySelector('meta[name="twitter:description"]');
+    if (twDescEl) twDescEl.setAttribute('content', meta.ogDescription);
+
     const brandImg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_1.2_-_Copy_op3afs.png';
+    const pageImg = meta.image || brandImg;
     const ogImgEl = document.querySelector('meta[property="og:image"]');
-    if (ogImgEl) ogImgEl.setAttribute('content', brandImg);
+    if (ogImgEl) ogImgEl.setAttribute('content', pageImg);
 
     const twImgEl = document.querySelector('meta[name="twitter:image"]');
-    if (twImgEl) twImgEl.setAttribute('content', brandImg);
+    if (twImgEl) twImgEl.setAttribute('content', pageImg);
 
     window.addEventListener('popstate', syncRouteFromLocation);
     return () => window.removeEventListener('popstate', syncRouteFromLocation);
@@ -189,6 +218,7 @@ export default function App({ initialPath }: AppProps) {
       quiz: '/mirror-quiz',
       'speaker-kit': '/speaker-kit',
       waitlist: '/waitlist',
+      contact: '/contact',
     };
 
     const targetPath = pageToPathMap[page] || '/';
@@ -267,6 +297,7 @@ export default function App({ initialPath }: AppProps) {
                 onOpenContact={() => setContactOpen(true)}
                 onOpenWaitlist={handleOpenWaitlist}
                 onOpenMirrorQuiz={() => handleNavigatePage('quiz')}
+                onNavigatePage={handleNavigatePage}
               />
             ) : currentPage === 'science' ? (
               <SciencePage 
@@ -298,6 +329,13 @@ export default function App({ initialPath }: AppProps) {
                 onOpenContact={() => setContactOpen(true)}
                 onOpenMirrorQuiz={() => handleNavigatePage('quiz')}
                 onNavigatePage={handleNavigatePage}
+              />
+            ) : currentPage === 'contact' ? (
+              <ContactPage 
+                onNavigateHome={() => handleNavigatePage('home')}
+                onNavigatePage={handleNavigatePage}
+                onOpenSpeakerKit={handleOpenSpeakerKit}
+                onOpenWaitlist={handleOpenWaitlist}
               />
             ) : (
               <>

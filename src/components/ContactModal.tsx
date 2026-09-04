@@ -8,6 +8,7 @@ interface ContactModalProps {
 
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,20 +19,43 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({
-        name: '',
-        email: '',
-        company: '',
-        inquiryType: 'Keynote Booking / Speaking',
-        message: ''
-      });
-      onClose();
-    }, 3000);
+    setIsSubmitting(true);
+
+    try {
+      await fetch(
+        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({
+            source: 'Contact Modal Inquiry',
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            inquiryType: formData.inquiryType,
+            message: formData.message,
+          }),
+        }
+      );
+    } catch {
+      // Gracefully continue to display confirmation
+    } finally {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          inquiryType: 'Keynote Booking / Speaking',
+          message: ''
+        });
+        onClose();
+      }, 3500);
+    }
   };
 
   return (
@@ -55,7 +79,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
             CONTACT THOMAS VENTURA
           </h2>
           <p className="font-inter text-xs text-[#6C6863] mt-2">
-            Inquire regarding Keynote speaking, corporate retreats, or executive advisory.
+            For keynote bookings, press and media enquiries, or anything else.
           </p>
         </div>
 
@@ -63,8 +87,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
           <div className="p-4 bg-[#FFFDF0] border border-[#D4AF37]/50 text-[#1A1A1A] rounded text-xs flex items-center gap-3 font-inter font-medium">
             <CheckCircle2 className="w-5 h-5 text-[#D4AF37] shrink-0" />
             <div>
-              <p className="font-bold">Inquiry Transmitted Successfully!</p>
-              <p className="text-[11px] text-[#6C6863]">Thomas's team will review your request and reply within 24 business hours.</p>
+              <p className="font-bold">Inquiry Transmitted Successfully</p>
+              <p className="text-[11px] text-[#6C6863]">Thank you for reaching out. Thomas&apos;s team will review your message and reply.</p>
             </div>
           </div>
         ) : (
@@ -75,7 +99,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Thomas Vance"
+                  placeholder="Your full name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="input-editorial w-full"
@@ -87,7 +111,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                 <input
                   type="email"
                   required
-                  placeholder="tvance@company.com"
+                  placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="input-editorial w-full"
@@ -97,10 +121,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[#1A1A1A] font-semibold mb-2 uppercase tracking-wider">Company / Event Name</label>
+                <label className="block text-[#1A1A1A] font-semibold mb-2 uppercase tracking-wider">Company / Event Name (optional)</label>
                 <input
                   type="text"
-                  placeholder="e.g. Apex Global Summit"
+                  placeholder="If applicable"
                   value={formData.company}
                   onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                   className="input-editorial w-full"
@@ -115,9 +139,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
                   className="w-full bg-[#FFFFFF] border-b border-[#1A1A1A] text-[#1A1A1A] p-3 outline-none focus:border-[#D4AF37] rounded-none font-inter text-xs"
                 >
                   <option>Keynote Booking / Speaking</option>
-                  <option>Executive Team Advisory</option>
                   <option>Media & Podcast Interview</option>
-                  <option>Book Pre-Orders & Bulk Purchases</option>
+                  <option>Working With Thomas</option>
+                  <option>Something Else</option>
                 </select>
               </div>
             </div>
@@ -127,21 +151,25 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) =
               <textarea
                 rows={3}
                 required
-                placeholder="Share event dates, audience size, or specific biological capacity objectives..."
+                placeholder="Tell us what you're reaching out about. If it's an event, include dates and audience size."
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="input-editorial w-full resize-none"
               />
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 space-y-3">
               <button
                 type="submit"
-                className="btn-gold-slide h-14 w-full text-xs uppercase tracking-[0.2em] font-inter font-medium flex items-center justify-center gap-2 cursor-pointer shadow-lg"
+                disabled={isSubmitting}
+                className="btn-gold-slide h-14 w-full text-xs uppercase tracking-[0.2em] font-inter font-medium flex items-center justify-center gap-2 cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <Send className="w-4 h-4 text-[#D4AF37]" />
-                <span>Submit Inquiry</span>
+                <span>{isSubmitting ? 'Sending...' : 'Submit Inquiry'}</span>
               </button>
+              <p className="text-[11px] text-center text-[#6C6863] font-inter">
+                You&apos;re contacting Thomas Ventura. We&apos;ll only use your details to reply.
+              </p>
             </div>
           </form>
         )}

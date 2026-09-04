@@ -6,7 +6,7 @@ import { createServer } from 'vite';
 
 interface RouteConfig {
   path: string;
-  pageKey: 'home' | 'about' | 'keynotes' | 'science' | 'mythology' | 'quiz' | 'speaker-kit' | 'waitlist';
+  pageKey: 'home' | 'about' | 'keynotes' | 'science' | 'mythology' | 'quiz' | 'speaker-kit' | 'waitlist' | 'contact';
   outPath: string;
 }
 
@@ -19,6 +19,7 @@ const ROUTES: RouteConfig[] = [
   { path: '/mirror-quiz', pageKey: 'quiz', outPath: 'mirror-quiz/index.html' },
   { path: '/speaker-kit', pageKey: 'speaker-kit', outPath: 'speaker-kit/index.html' },
   { path: '/waitlist', pageKey: 'waitlist', outPath: 'waitlist/index.html' },
+  { path: '/contact', pageKey: 'contact', outPath: 'contact/index.html' },
 ];
 
 function loadManifest(distPath: string): Record<string, { file: string; src?: string }> {
@@ -147,6 +148,16 @@ async function prerender() {
         html = html.replace(/<meta property="og:title" content="[^"]*"/, `<meta property="og:title" content="${meta.ogTitle}"`);
         html = html.replace(/<meta property="og:description" content="[^"]*"/, `<meta property="og:description" content="${meta.ogDescription}"`);
         html = html.replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${meta.canonical}"`);
+
+        // Twitter Title & Description
+        html = html.replace(/<meta name="twitter:title" content="[^"]*"/, `<meta name="twitter:title" content="${meta.ogTitle}"`);
+        html = html.replace(/<meta name="twitter:description" content="[^"]*"/, `<meta name="twitter:description" content="${meta.ogDescription}"`);
+
+        // Social Image (og:image & twitter:image)
+        if (meta.image) {
+          html = html.replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${meta.image}"`);
+          html = html.replace(/<meta name="twitter:image" content="[^"]*"/, `<meta name="twitter:image" content="${meta.image}"`);
+        }
       }
 
       // Inject rendered app HTML into root div
@@ -176,7 +187,45 @@ async function prerender() {
       console.log(`✓ Wrote ${route.outPath} (${fs.statSync(targetFilePath).size} bytes)`);
     }
 
-    console.log('Successfully pre-rendered all 8 static HTML routes!');
+    // Write 301 static redirect page for /keynote -> /keynotes
+    const keynoteRedirectPath = path.join(distPath, 'keynote', 'index.html');
+    fs.mkdirSync(path.dirname(keynoteRedirectPath), { recursive: true });
+    const keynoteRedirectHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=/keynotes">
+  <link rel="canonical" href="https://www.regenesisproject.com/keynotes" />
+  <title>Redirecting to /keynotes...</title>
+  <script>window.location.replace('/keynotes');</script>
+</head>
+<body>
+  <p>Redirecting to <a href="/keynotes">/keynotes</a>...</p>
+</body>
+</html>`;
+    fs.writeFileSync(keynoteRedirectPath, keynoteRedirectHtml, 'utf-8');
+    console.log('✓ Wrote keynote/index.html (301 redirect to /keynotes)');
+
+    // Write 301 static redirect page for /quiz -> /mirror-quiz
+    const quizRedirectPath = path.join(distPath, 'quiz', 'index.html');
+    fs.mkdirSync(path.dirname(quizRedirectPath), { recursive: true });
+    const quizRedirectHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=/mirror-quiz">
+  <link rel="canonical" href="https://www.regenesisproject.com/mirror-quiz" />
+  <title>Redirecting to /mirror-quiz...</title>
+  <script>window.location.replace('/mirror-quiz');</script>
+</head>
+<body>
+  <p>Redirecting to <a href="/mirror-quiz">/mirror-quiz</a>...</p>
+</body>
+</html>`;
+    fs.writeFileSync(quizRedirectPath, quizRedirectHtml, 'utf-8');
+    console.log('✓ Wrote quiz/index.html (301 redirect to /mirror-quiz)');
+
+    console.log('Successfully pre-rendered all static HTML routes!');
   } finally {
     await vite.close();
   }

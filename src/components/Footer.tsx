@@ -22,19 +22,19 @@ export const Footer: React.FC<FooterProps> = ({
 }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [buttonText, setButtonText] = useState('Subscribe');
+  const [buttonText, setButtonText] = useState('JOIN THE LIST');
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setLoading(true);
-    setButtonText('Subscribing...');
+    setButtonText('JOINING...');
 
     const res = await submitEmail(email, 'newsletter');
 
     if (res.status === 'success') {
-      setButtonText('Subscribed ✓');
+      setButtonText('JOINED ✓');
       setEmail('');
       setLoading(false);
     } else if (res.status === 'duplicate') {
@@ -89,7 +89,13 @@ export const Footer: React.FC<FooterProps> = ({
             <ul className="space-y-3 font-inter text-xs text-[#6C6863]">
               <li>
                 <button 
-                  onClick={onOpenContact}
+                  onClick={() => {
+                    if (onNavigatePage) {
+                      onNavigatePage('contact');
+                    } else {
+                      onOpenContact();
+                    }
+                  }}
                   className="hover:text-[#D4AF37] transition-colors font-semibold tracking-wider uppercase cursor-pointer flex items-center gap-2"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
@@ -124,34 +130,44 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           {/* Newsletter Input (4 Cols) */}
-          <div className="lg:col-span-4 space-y-4">
-            <p className="font-playfair font-bold text-sm text-[#1A1A1A]">
-              The REGENESIS Newsletter
+          <div className="lg:col-span-4 space-y-3 sm:space-y-4">
+            <p className="font-playfair font-bold text-sm text-[#1A1A1A] uppercase tracking-wider">
+              THE REGENESIS NEWSLETTER
             </p>
             
             <p className="font-inter text-xs text-[#6C6863] leading-relaxed">
               Insights and strategy on the internal war — and how to win it.
             </p>
 
-            <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 pt-2">
-              <input
-                type="email"
-                required
-                placeholder="Enter your email address"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (buttonText !== 'Subscribe') setButtonText('Subscribe');
-                }}
-                className="input-editorial flex-1 text-xs font-inter"
-              />
-              <button
-                type="submit"
-                disabled={loading || buttonText === 'Subscribed ✓'}
-                className="btn-gold-slide h-11 px-6 text-xs uppercase tracking-[0.2em] font-inter font-medium cursor-pointer shrink-0 disabled:opacity-80"
-              >
-                <span>{buttonText}</span>
-              </button>
+            <p className="font-inter text-xs text-[#6C6863] leading-relaxed">
+              Not sending yet. Put your name down and you&apos;ll get it from the first issue.
+            </p>
+
+            <form onSubmit={handleSubscribe} className="space-y-2 pt-1">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  required
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (buttonText !== 'JOIN THE LIST') setButtonText('JOIN THE LIST');
+                  }}
+                  className="input-editorial flex-1 text-xs font-inter"
+                />
+                <button
+                  type="submit"
+                  disabled={loading || buttonText === 'JOINED ✓'}
+                  className="btn-gold-slide h-11 px-6 text-xs uppercase tracking-[0.2em] font-inter font-medium cursor-pointer shrink-0 disabled:opacity-80"
+                >
+                  <span>{buttonText}</span>
+                </button>
+              </div>
+
+              <p className="text-[11px] sm:text-xs text-[#6C6863] font-inter">
+                You&apos;re signing up to receive emails from Thomas Ventura.
+              </p>
             </form>
           </div>
 

@@ -62,15 +62,13 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
       <div className="max-w-[1050px] mx-auto space-y-12 sm:space-y-16 relative z-10">
         
         {/* Back Navigation Button */}
-        {onNavigateHome && (
-          <button
-            onClick={onNavigateHome}
-            className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-stone-500 hover:text-[#c99a38] transition-colors cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Main Page</span>
-          </button>
-        )}
+        <button
+          onClick={onNavigateHome || (() => onNavigatePage?.('home'))}
+          className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-stone-500 hover:text-[#c99a38] transition-colors cursor-pointer group"
+        >
+          <span className="group-hover:-translate-x-1 transition-transform">←</span>
+          <span>BACK TO HOME</span>
+        </button>
 
         {/* STEP 1: CENTERED HERO TOP HEADER */}
         <ScrollReveal>
@@ -126,7 +124,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
               
               <div>
                 <span className="text-xs font-mono font-bold tracking-widest text-[#c99a38] uppercase block mb-1">
-                  EXCLUSIVE ACCESS
+                  BE FIRST TO KNOW
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-sans font-bold text-[#111111] tracking-tight">
                   Join the waitlist
@@ -178,27 +176,6 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
                   referrerPolicy="no-referrer"
                 />
               </div>
-
-              {/* Book Labels Row Below the Stack */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4 text-center">
-                
-                <div className="px-3 py-1.5 rounded-full bg-[#14161D] text-white text-[10px] font-mono flex items-center gap-1.5 border border-[#D4AF37]/50 shadow-sm">
-                  <span className="font-extrabold text-[#FCE338] bg-[#222530] px-1.5 py-0.5 rounded uppercase">BOOK 1</span>
-                  <span className="text-stone-300 font-sans font-medium text-[11px]">The Survival Source Code</span>
-                </div>
-
-                <div className="px-3 py-1.5 rounded-full bg-[#14161D] text-white text-[10px] font-mono flex items-center gap-1.5 border border-stone-800 shadow-sm">
-                  <span className="font-bold text-stone-400 bg-[#222530] px-1.5 py-0.5 rounded uppercase">BOOK 2</span>
-                  <span className="text-stone-400 font-sans font-medium text-[11px]">The REGENESIS Protocol</span>
-                </div>
-
-                <div className="px-3 py-1.5 rounded-full bg-[#14161D] text-white text-[10px] font-mono flex items-center gap-1.5 border border-stone-800 shadow-sm">
-                  <span className="font-bold text-stone-400 bg-[#222530] px-1.5 py-0.5 rounded uppercase">BOOK 3</span>
-                  <span className="text-stone-400 font-sans font-medium text-[11px]">The REGENESIS Blueprint</span>
-                </div>
-
-              </div>
-
             </div>
 
           </div>

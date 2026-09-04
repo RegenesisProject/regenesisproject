@@ -23,6 +23,14 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
     setLoading(true);
     setButtonText('Submitting...');
 
+    try {
+      const existing = JSON.parse(localStorage.getItem('mirror_quiz_waitlist') || '[]');
+      existing.push({ email: email.trim(), source: 'earlyaccess', date: new Date().toISOString() });
+      localStorage.setItem('mirror_quiz_waitlist', JSON.stringify(existing));
+    } catch (err) {
+      // localStorage error handling
+    }
+
     const res = await submitEmail(email.trim(), 'earlyaccess');
 
     if (res.status === 'success') {
@@ -110,6 +118,10 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
             </button>
           </form>
 
+          <p className="text-[11px] sm:text-xs text-gray-400 font-sans mt-2.5 mb-2">
+            You&apos;re signing up to receive emails from Thomas Ventura.
+          </p>
+
           <p className="text-[11px] text-gray-500 font-mono">
             No spam. One email when it&apos;s live.
           </p>
@@ -119,12 +131,12 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
             <span className="px-3 py-1 rounded bg-[#151822] border border-[#D4AF37]/20 text-[#F3E5AB] font-mono text-[11px]">
               Free
             </span>
-            <span className="text-gray-600">•</span>
+            <span className="text-gray-500 font-mono text-xs px-1.5"> • </span>
             <span className="px-3 py-1 rounded bg-[#151822] border border-[#D4AF37]/20 text-[#F3E5AB] font-mono text-[11px]">
               Short &amp; Scenario-Based
             </span>
-            <span className="text-gray-600">•</span>
-            <span className="px-3 py-1 rounded bg-[#151822] border border-[#D4AF37]/20 text-[#F3E5AB] font-mono text-[11px] flex items-center gap-1">
+            <span className="text-gray-500 font-mono text-xs px-1.5"> • </span>
+            <span className="px-3 py-1 rounded bg-[#151822] border border-[#D4AF37]/20 text-[#F3E5AB] font-mono text-[11px] flex items-center gap-1.5">
               <Shield className="w-3 h-3 text-[#D4AF37]" />
               100% Confidential
             </span>
@@ -176,28 +188,28 @@ export const MirrorQuizModal: React.FC<MirrorQuizModalProps> = ({ isOpen, onClos
             <li className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Short.</strong>
+                <strong className="text-white block mb-1 font-semibold">Short. </strong>
                 <span className="text-gray-400">A handful of scenario-based questions, not a personality inventory.</span>
               </div>
             </li>
             <li className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Instinct-based.</strong>
+                <strong className="text-white block mb-1 font-semibold">Instinct-based. </strong>
                 <span className="text-gray-400">You&apos;ll answer with your first reaction under pressure, not your best intention.</span>
               </div>
             </li>
             <li className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Private.</strong>
+                <strong className="text-white block mb-1 font-semibold">Private. </strong>
                 <span className="text-gray-400">Your answers are yours. We don&apos;t sell or share them.</span>
               </div>
             </li>
             <li className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Immediate.</strong>
+                <strong className="text-white block mb-1 font-semibold">Immediate. </strong>
                 <span className="text-gray-400">You get your read the moment you finish, plus your first move — free.</span>
               </div>
             </li>

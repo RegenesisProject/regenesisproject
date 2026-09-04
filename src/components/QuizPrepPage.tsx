@@ -23,6 +23,14 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
     setLoading(true);
     setButtonText('Submitting...');
 
+    try {
+      const existing = JSON.parse(localStorage.getItem('mirror_quiz_waitlist') || '[]');
+      existing.push({ email: email.trim(), source: 'earlyaccess', date: new Date().toISOString() });
+      localStorage.setItem('mirror_quiz_waitlist', JSON.stringify(existing));
+    } catch (err) {
+      // localStorage error handling
+    }
+
     const res = await submitEmail(email.trim(), 'earlyaccess');
 
     if (res.status === 'success') {
@@ -141,10 +149,10 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <div>
               <button
                 onClick={() => onNavigatePage('home')}
-                className="text-xs font-inter uppercase tracking-[0.2em] text-[#A1ABC0] hover:text-[#F7D36B] transition-colors inline-flex items-center gap-2 cursor-pointer group"
+                className="text-xs font-inter uppercase tracking-[0.2em] text-[#A1ABC0] hover:text-[#F7D36B] transition-colors inline-flex items-center gap-1.5 cursor-pointer group"
               >
-                <span className="group-hover:-translate-x-1 transition-transform">&larr;</span>
-                <span>BACK TO HOME</span>
+                <span className="group-hover:-translate-x-1 transition-transform">←</span>
+                <span> BACK TO HOME</span>
               </button>
             </div>
 
@@ -231,6 +239,10 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             </button>
           </form>
 
+          <p className="text-[11px] sm:text-xs text-[#A1A1A1] font-sans mt-2.5 mb-2 text-center">
+            You&apos;re signing up to receive emails from Thomas Ventura.
+          </p>
+
           <p className="text-[11px] text-gray-500 font-mono mb-6">
             No spam. One email when it&apos;s live.
           </p>
@@ -240,12 +252,12 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <span className="px-3 py-1 rounded bg-[#151822] border border-[#E7B646]/20 text-[#FFF2B0] font-mono text-[11px]">
               Free
             </span>
-            <span className="text-gray-600">•</span>
+            <span className="text-gray-500 font-mono text-xs px-1.5"> • </span>
             <span className="px-3 py-1 rounded bg-[#151822] border border-[#E7B646]/20 text-[#FFF2B0] font-mono text-[11px]">
               Short &amp; Scenario-Based
             </span>
-            <span className="text-gray-600">•</span>
-            <span className="px-3 py-1 rounded bg-[#151822] border border-[#E7B646]/20 text-[#FFF2B0] font-mono text-[11px] flex items-center gap-1">
+            <span className="text-gray-500 font-mono text-xs px-1.5"> • </span>
+            <span className="px-3 py-1 rounded bg-[#151822] border border-[#E7B646]/20 text-[#FFF2B0] font-mono text-[11px] flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-[#F7D36B]" />
               100% Confidential
             </span>
@@ -296,7 +308,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <div className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#F7D36B] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Short.</strong>
+                <strong className="text-white block mb-1 font-semibold">Short. </strong>
                 <span className="text-gray-400">A handful of scenario-based questions, not a personality inventory.</span>
               </div>
             </div>
@@ -304,7 +316,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <div className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#F7D36B] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Instinct-based.</strong>
+                <strong className="text-white block mb-1 font-semibold">Instinct-based. </strong>
                 <span className="text-gray-400">You&apos;ll answer with your first reaction under pressure, not your best intention.</span>
               </div>
             </div>
@@ -312,7 +324,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <div className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#F7D36B] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Private.</strong>
+                <strong className="text-white block mb-1 font-semibold">Private. </strong>
                 <span className="text-gray-400">Your answers are yours. We don&apos;t sell or share them.</span>
               </div>
             </div>
@@ -320,7 +332,7 @@ export const QuizPrepPage: React.FC<QuizPrepPageProps> = ({
             <div className="p-4 rounded-lg bg-[#12151E] border border-gray-800/80 flex items-start gap-3">
               <CheckCircle2 className="w-4 h-4 text-[#F7D36B] shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block mb-0.5 font-semibold">Immediate.</strong>
+                <strong className="text-white block mb-1 font-semibold">Immediate. </strong>
                 <span className="text-gray-400">You get your read the moment you finish, plus your first move — free.</span>
               </div>
             </div>

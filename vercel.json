@@ -1,15 +1,18 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/keynote", "destination": "/keynotes", "permanent": true },
+    { "source": "/quiz", "destination": "/mirror-quiz", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/about", "destination": "/about/index.html" },
     { "source": "/keynotes", "destination": "/keynotes/index.html" },
-    { "source": "/keynote", "destination": "/keynotes/index.html" },
     { "source": "/science", "destination": "/science/index.html" },
     { "source": "/mythology", "destination": "/mythology/index.html" },
     { "source": "/mirror-quiz", "destination": "/mirror-quiz/index.html" },
-    { "source": "/quiz", "destination": "/mirror-quiz/index.html" },
     { "source": "/speaker-kit", "destination": "/speaker-kit/index.html" },
-    { "source": "/waitlist", "destination": "/waitlist/index.html" }
+    { "source": "/waitlist", "destination": "/waitlist/index.html" },
+    { "source": "/contact", "destination": "/contact/index.html" }
   ]
 }

@@ -1,4 +1,4 @@
-export type PageKey = 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist';
+export type PageKey = 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist' | 'contact';
 
 export interface BookInfo {
 

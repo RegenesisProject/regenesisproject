@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, FileText, ArrowRight, Shield, Zap, CheckCircle, Send } from 'lucide-react';
-import { portraitImg as keynoteBiologyBg, portraitImg } from '../data/content';
+import { portraitImg as keynoteBiologyBg, speakerKitVenueImg } from '../data/content';
 
 interface KeynotesPageProps {
   onOpenBooking: () => void;
@@ -53,6 +53,21 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
       const data = await response.json();
 
       if (data.status === 'success') {
+        try {
+          const existing = JSON.parse(localStorage.getItem('speaker_kit_inquiries') || '[]');
+          existing.push({
+            name: formData.name,
+            email: formData.email,
+            organization: formData.organization,
+            eventType: formData.eventType,
+            eventDate: formData.eventDate,
+            message: formData.notes,
+            submittedAt: new Date().toISOString(),
+          });
+          localStorage.setItem('speaker_kit_inquiries', JSON.stringify(existing));
+        } catch (e) {
+          // localStorage error handling
+        }
         setFormStatus('success');
       } else if (data.status === 'duplicate') {
         setFormStatus('duplicate');
@@ -347,7 +362,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
               </p>
 
               <p className="text-xs font-mono text-[#D4AF37]">
-                For press and media enquiries: <a href="mailto:social@regenesisproject.com" className="underline hover:text-white transition-colors">social@regenesisproject.com</a>
+                For press and media enquiries: <a href="mailto:press@regenesisproject.com" className="underline hover:text-white transition-colors">press@regenesisproject.com</a>
               </p>
             </section>
           </div>
@@ -380,14 +395,13 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
               <div className="pt-2">
                 <div className="rounded-2xl overflow-hidden shadow-2xl border border-[#D4AF37]/40 bg-stone-900 max-w-sm">
                   <img 
-                    src={portraitImg} 
-                    alt="Thomas Ventura — Keynote Speaker" 
-                    className="w-full h-64 object-cover object-top"
+                    src={speakerKitVenueImg} 
+                    alt="Speaker Kit" 
+                    className="w-full h-64 object-cover object-center"
                     referrerPolicy="no-referrer"
                   />
                   <div className="p-3 bg-[#0d0f17] text-[#F3E5AB] font-serif text-xs italic flex items-center justify-between">
-                    <span>Thomas Ventura — Keynote Speaker</span>
-                    <span className="text-[10px] font-mono not-italic uppercase tracking-widest text-[#D4AF37]">Speaker Bio</span>
+                    <span>Speaker Kit</span>
                   </div>
                 </div>
               </div>

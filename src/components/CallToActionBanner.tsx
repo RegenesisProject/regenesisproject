@@ -22,7 +22,7 @@ export const CallToActionBanner: React.FC<CallToActionBannerProps> = ({
         </h2>
 
         <p className="font-inter text-xs xs:text-sm sm:text-base text-[#FFFFFF]/80 max-w-2xl mx-auto leading-relaxed mb-8 sm:mb-12">
-          Reserve Thomas Ventura for your upcoming annual executive retreat, keynote event, or corporate leadership summit.
+          Reserve Thomas Ventura for your upcoming keynote event, conference, or corporate leadership summit.
         </p>
 
         <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 max-w-3xl mx-auto">

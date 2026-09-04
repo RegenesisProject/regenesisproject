@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ScrollReveal } from './ScrollReveal';
+import lensesSectionBg from '../assets/images/magnifier_dna_human_1785264440424.jpg';
 import { 
   Atom, 
   Brain, 
@@ -17,6 +18,7 @@ import {
   Layers, 
   X,
   ChevronRight,
+  ChevronDown,
   ShieldAlert,
   Cpu
 } from 'lucide-react';
@@ -160,14 +162,25 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
   }
 ];
 
-const twelveLensesBg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785797732/the_science_3_vt6yab.png';
-
 export const SciencePage: React.FC<SciencePageProps> = ({ 
   onOpenMirrorQuiz,
   onNavigateKeynotes,
   onNavigatePage
 }) => {
   const [selectedLens, setSelectedLens] = useState<{ lens: ScienceLens; blockTitle: string } | null>(null);
+  const [collapsedBlocks, setCollapsedBlocks] = useState<Record<string, boolean>>({
+    'BLOCK 1': false,
+    'BLOCK 2': true,
+    'BLOCK 3': true,
+    'BLOCK 4': true,
+  });
+
+  const toggleBlock = (blockNumber: string) => {
+    setCollapsedBlocks(prev => ({
+      ...prev,
+      [blockNumber]: !prev[blockNumber]
+    }));
+  };
 
   return (
     <div className="relative min-h-screen bg-[#0C0B0A] text-[#E8E3D5] font-inter overflow-hidden pb-24 pt-28">
@@ -259,15 +272,15 @@ export const SciencePage: React.FC<SciencePageProps> = ({
 
       {/* ================= SECTION 2 — THE TWELVE LENSES ================= */}
       <section className="w-full left-0 right-0 relative z-10 py-16 bg-[#0A0908] text-white overflow-hidden">
-        {/* Topic-Related Background Image with Dark Luxury Overlay */}
+        {/* Dedicated Science/Architecture Topic Background with Dark Luxury Overlay */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <img
-            src={twelveLensesBg}
+            src={lensesSectionBg}
             alt="The Twelve Lenses Background"
             referrerPolicy="no-referrer"
-            className="w-full h-full object-cover object-center opacity-95 scale-100"
+            className="w-full h-full object-cover object-center opacity-30 scale-100"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0908]/65 via-[#0A0908]/15 to-[#0A0908]/65" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0A0908] via-[#0A0908]/80 to-[#0A0908]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -286,13 +299,16 @@ export const SciencePage: React.FC<SciencePageProps> = ({
           </ScrollReveal>
 
           {/* Four Sequential Blocks */}
-          <div className="space-y-16">
+          <div className="space-y-12 sm:space-y-16">
             {SCIENCE_BLOCKS.map((block, blockIdx) => (
               <ScrollReveal key={block.number} delay={blockIdx * 0.1} yOffset={20}>
                 <div className="bg-[#28221C]/95 border border-[#C9A227]/40 rounded-3xl p-6 sm:p-10 relative overflow-hidden backdrop-blur-md shadow-2xl">
                   
-                  {/* Block Header */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#C9A227]/20 pb-6 mb-8 gap-4">
+                  {/* Block Header (Interactive toggle on mobile, static on desktop) */}
+                  <div 
+                    onClick={() => toggleBlock(block.number)}
+                    className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#C9A227]/20 pb-6 mb-8 gap-4 cursor-pointer md:cursor-default select-none"
+                  >
                     <div>
                       <span className="font-mono text-xs font-bold text-[#C9A227] tracking-[0.2em] uppercase block mb-1">
                         {block.number}
@@ -301,13 +317,20 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                         {block.title}
                       </h3>
                     </div>
-                    <p className="font-playfair italic text-base sm:text-lg text-[#FCE289] max-w-xl">
-                      {block.subtitle}
-                    </p>
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
+                      <p className="font-playfair italic text-base sm:text-lg text-[#FCE289] max-w-xl">
+                        {block.subtitle}
+                      </p>
+                      {/* Mobile Expand / Collapse Indicator */}
+                      <div className="md:hidden inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#362E25] border border-[#C9A227]/40 text-[#FCE289] text-xs font-mono font-bold tracking-wider mt-1">
+                        <span>{collapsedBlocks[block.number] ? 'View 3 Lenses' : 'Collapse'}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200 ${collapsedBlocks[block.number] ? '' : 'rotate-180'}`} />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* 3 Lenses Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* 3 Lenses Grid — Collapsible on mobile, always visible 3-column grid on desktop */}
+                  <div className={`grid-cols-1 md:grid-cols-3 gap-6 ${collapsedBlocks[block.number] ? 'hidden md:grid' : 'grid'}`}>
                     {block.lenses.map((lens, lensIdx) => {
                       const IconComponent = lens.icon;
                       const lensNum = (blockIdx * 3 + lensIdx + 1).toString().padStart(2, '0');

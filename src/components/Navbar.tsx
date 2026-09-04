@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles } from 'lucide-react';
 import navbarLogo from '../assets/images/regenerated_image_1788305533708.png';
+import { PageKey } from '../types';
 
 interface NavbarProps {
-  currentPage: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist';
-  onNavigatePage: (page: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist', sectionId?: string) => void;
+  currentPage: PageKey;
+  onNavigatePage: (page: PageKey, sectionId?: string) => void;
   onOpenMirrorQuiz: () => void;
   onOpenSpeakerKit: () => void;
   onOpenWaitlist: () => void;
@@ -37,12 +38,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavClick = (page: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist', sectionId?: string) => {
+  const handleNavClick = (page: PageKey, sectionId?: string) => {
     setMobileMenuOpen(false);
     onNavigatePage(page, sectionId);
   };
 
-  const getNavLinkClass = (page: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist') => {
+  const getNavLinkClass = (page: PageKey) => {
     const isActive = currentPage === page;
     if (isScrolled) {
       return `transition-colors duration-300 cursor-pointer ${isActive ? 'text-[#D4AF37] underline underline-offset-8 decoration-2 font-black' : 'text-[#E2E8F0] hover:text-[#D4AF37]'}`;
@@ -53,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     return `transition-colors duration-300 cursor-pointer ${isActive ? 'text-[#000000] underline underline-offset-8 decoration-2 font-black' : 'text-[#FFFFFF] hover:text-[#000000]'}`;
   };
 
-  const getMobileNavLinkClass = (page: 'home' | 'science' | 'mythology' | 'about' | 'keynotes' | 'quiz' | 'speaker-kit' | 'waitlist') => {
+  const getMobileNavLinkClass = (page: PageKey) => {
     const isActive = currentPage === page;
     if (isScrolled || isScience) {
       return `block w-full text-left py-2 ${isActive ? 'text-[#D4AF37] font-black' : 'text-white hover:text-[#D4AF37]'}`;
