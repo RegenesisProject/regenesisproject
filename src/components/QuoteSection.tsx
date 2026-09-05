@@ -9,7 +9,7 @@ interface ClosingBeatProps {
 export const QuoteSection: React.FC<ClosingBeatProps> = ({ onOpenMirrorQuiz }) => {
   return (
     <section 
-      className="relative bg-fixed bg-cover bg-center text-[#FFFFFF] py-28 px-6 sm:px-12 lg:px-16 border-t border-b border-[#C9962F]/30 overflow-hidden"
+      className="relative bg-scroll sm:bg-fixed bg-cover bg-center text-[#FFFFFF] py-16 sm:py-28 px-4 sm:px-12 lg:px-16 border-t border-b border-[#C9962F]/30 overflow-hidden"
       style={{ backgroundImage: `url('${mountainTriumphImg}')` }}
     >
       {/* Dark Gradient Overlay */}
@@ -18,16 +18,16 @@ export const QuoteSection: React.FC<ClosingBeatProps> = ({ onOpenMirrorQuiz }) =
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         <div className="flex flex-col items-center">
           
-          <h2 className="font-playfair font-extrabold text-3xl sm:text-5xl lg:text-6xl text-[#FFFFFF] leading-tight tracking-tight mb-8 drop-shadow-lg">
+          <h2 className="font-playfair font-extrabold text-2xl sm:text-5xl lg:text-6xl text-[#FFFFFF] leading-tight tracking-tight mb-8 drop-shadow-lg">
             Stop fighting your biology. <span className="bg-gradient-to-r from-[#FCE289] via-[#E2B13D] to-[#C9962F] bg-clip-text text-transparent">Command it.</span>
           </h2>
 
           <button
             onClick={onOpenMirrorQuiz}
-            className="h-14 px-10 rounded-xl bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-[#000000] font-inter font-black text-xs uppercase tracking-[0.2em] inline-flex items-center justify-center gap-3 cursor-pointer shadow-[0_4px_35px_rgba(226,177,61,0.5)] hover:shadow-[0_6px_45px_rgba(226,177,61,0.8)] hover:scale-105 transition-all duration-300"
+            className="w-full sm:w-auto min-h-[48px] h-auto py-3.5 px-4 sm:px-10 rounded-xl bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-[#000000] font-inter font-black text-[11px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-[0.2em] inline-flex items-center justify-center gap-2.5 cursor-pointer shadow-[0_4px_35px_rgba(226,177,61,0.5)] hover:shadow-[0_6px_45px_rgba(226,177,61,0.8)] hover:scale-105 transition-all duration-300 text-center"
           >
             <span>GET EARLY ACCESS TO THE MIRROR QUIZ</span>
-            <ArrowRight className="w-4 h-4 text-[#000000]" />
+            <ArrowRight className="w-4 h-4 text-[#000000] shrink-0" />
           </button>
 
         </div>

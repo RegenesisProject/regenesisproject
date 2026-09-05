@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-[#FFFFFF] text-[#1A1A1A] border-t border-[#1A1A1A]/20 py-12 sm:py-20 px-3 sm:px-8 lg:px-16">
+    <footer className="bg-[#FFFFFF] text-[#1A1A1A] border-t border-[#1A1A1A]/20 py-12 sm:py-20 px-4 sm:px-8 lg:px-16">
       
       <div className="max-w-[1600px] mx-auto">
         
@@ -159,7 +159,7 @@ export const Footer: React.FC<FooterProps> = ({
                 <button
                   type="submit"
                   disabled={loading || buttonText === 'JOINED ✓'}
-                  className="btn-gold-slide h-11 px-6 text-xs uppercase tracking-[0.2em] font-inter font-medium cursor-pointer shrink-0 disabled:opacity-80"
+                  className="btn-gold-slide min-h-[44px] h-11 w-full sm:w-auto px-6 text-xs uppercase tracking-[0.2em] font-inter font-medium cursor-pointer shrink-0 disabled:opacity-80 flex items-center justify-center"
                 >
                   <span>{buttonText}</span>
                 </button>
@@ -174,14 +174,14 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-inter text-xs text-[#6C6863]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-inter text-xs text-[#6C6863] text-center sm:text-left">
           <p>© 2026 Thomas Ventura & The REGENESIS Project™. All Rights Reserved.</p>
           
-          <div className="flex items-center space-x-6">
-            <button onClick={onOpenPrivacy} className="hover:text-[#1A1A1A] transition-colors cursor-pointer">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <button onClick={onOpenPrivacy} className="hover:text-[#1A1A1A] transition-colors cursor-pointer py-1">
               Privacy Policy
             </button>
-            <button onClick={onOpenTerms} className="hover:text-[#1A1A1A] transition-colors cursor-pointer">
+            <button onClick={onOpenTerms} className="hover:text-[#1A1A1A] transition-colors cursor-pointer py-1">
               Terms of Service
             </button>
           </div>

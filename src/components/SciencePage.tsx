@@ -34,6 +34,7 @@ interface SciencePageProps {
 
 export interface ScienceLens {
   id: string;
+  number: string;
   name: string;
   headline: string;
   description: string;
@@ -55,6 +56,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
     lenses: [
       {
         id: 'neuroscience',
+        number: '01',
         name: 'NEUROSCIENCE',
         headline: "The brain's structures and circuits",
         description: 'How threat, focus, and decision-making are physically routed, and why the thinking brain goes offline first when the system is under load.',
@@ -62,6 +64,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'biophysics',
+        number: '02',
         name: 'BIOPHYSICS',
         headline: 'The electrical and structural layer',
         description: 'Signal speed, insulation, and conduction. Why some systems process fast and clean, and others run with lag.',
@@ -69,6 +72,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'somatic',
+        number: '03',
         name: 'SOMATIC SCIENCE',
         headline: 'The body as a sensing instrument',
         description: 'Muscle, fascia, posture, and physical tension. Where the system stores what was never discharged.',
@@ -83,6 +87,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
     lenses: [
       {
         id: 'bioenergetics',
+        number: '04',
         name: 'BIO-ENERGETICS',
         headline: 'Cellular energy and the real cost of running your life',
         description: 'Why "laziness" is usually a power problem, not a character problem — and what happens when the system runs on emergency reserves instead of fuel.',
@@ -90,6 +95,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'microbiology',
+        number: '05',
         name: 'MICROBIOLOGY',
         headline: 'The gut and its signaling relationship with the brain',
         description: 'The internal environment that shapes baseline mood, steadiness, and how much load the system can carry.',
@@ -97,6 +103,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'epigenetics',
+        number: '06',
         name: 'EPIGENETICS',
         headline: 'How environment and experience change gene expression',
         description: 'The layer that explains why the same hardware runs differently under different conditions.',
@@ -111,6 +118,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
     lenses: [
       {
         id: 'autonomic',
+        number: '07',
         name: 'AUTONOMIC REGULATION',
         headline: 'The automatic state-switching underneath every reaction',
         description: 'Mobilization, appeasement, or shutdown. Where most people mistake a state for a personality.',
@@ -118,6 +126,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'cybernetics',
+        number: '08',
         name: 'CYBERNETICS & PREDICTIVE PROCESSING',
         headline: 'Your system runs on predictions, not fresh data',
         description: "It guesses what's coming based on what happened before — which is exactly why an old threat can drive a present-day reaction.",
@@ -125,6 +134,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'systems',
+        number: '09',
         name: 'SYSTEMS THEORY',
         headline: 'Nothing in the machine moves alone',
         description: 'Change one layer and the others respond — which is why isolated fixes don\'t hold, and why architecture works where tactics fail.',
@@ -139,6 +149,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
     lenses: [
       {
         id: 'memory',
+        number: '10',
         name: 'MEMORY SCIENCE',
         headline: 'How experience gets stored',
         description: 'What happens when a file is saved without a date on it — so the system keeps replaying an old threat as if it were happening now.',
@@ -146,6 +157,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'neurosociology',
+        number: '11',
         name: 'NEURO-SOCIOLOGY',
         headline: "Nervous systems don't run in isolation",
         description: 'Being near other people changes your state — how you read a room, and how a room reads you.',
@@ -153,6 +165,7 @@ export const SCIENCE_BLOCKS: ScienceBlock[] = [
       },
       {
         id: 'psychology',
+        number: '12',
         name: 'PSYCHOLOGY',
         headline: 'Identity, narrative, and the story the system tells',
         description: "The layer most personal development starts and ends with, and the reason it so often isn't enough on its own.",
@@ -168,15 +181,18 @@ export const SciencePage: React.FC<SciencePageProps> = ({
   onNavigatePage
 }) => {
   const [selectedLens, setSelectedLens] = useState<{ lens: ScienceLens; blockTitle: string } | null>(null);
-  const [collapsedBlocks, setCollapsedBlocks] = useState<Record<string, boolean>>({
+  
+  // Mobile accordion state: all 4 blocks closed by default on mobile.
+  // On desktop (md:), all 4 blocks are open by default (always visible 3-column grid).
+  const [mobileOpenBlocks, setMobileOpenBlocks] = useState<Record<string, boolean>>({
     'BLOCK 1': false,
-    'BLOCK 2': true,
-    'BLOCK 3': true,
-    'BLOCK 4': true,
+    'BLOCK 2': false,
+    'BLOCK 3': false,
+    'BLOCK 4': false,
   });
 
-  const toggleBlock = (blockNumber: string) => {
-    setCollapsedBlocks(prev => ({
+  const toggleMobileBlock = (blockNumber: string) => {
+    setMobileOpenBlocks(prev => ({
       ...prev,
       [blockNumber]: !prev[blockNumber]
     }));
@@ -213,10 +229,10 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                 <span>THE SCIENCE</span>
               </div>
 
-              <h1 className="font-sans font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl text-white tracking-tight leading-[1.05] uppercase drop-shadow-xl">
-                YOU WERE BORN<br />
-                AS ONE SYSTEM.<br />
-                <span className="text-[#FCE289] font-playfair italic font-extrabold normal-case block mt-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+              <h1 className="font-sans font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl text-white tracking-tight leading-[1.05] uppercase drop-shadow-xl space-y-1">
+                <span className="block">YOU WERE BORN</span>
+                <span className="block">AS ONE SYSTEM.</span>
+                <span className="text-[#FCE289] font-playfair italic font-extrabold normal-case block pt-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
                   Another was installed on top.
                 </span>
               </h1>
@@ -306,7 +322,7 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                   
                   {/* Block Header (Interactive toggle on mobile, static on desktop) */}
                   <div 
-                    onClick={() => toggleBlock(block.number)}
+                    onClick={() => toggleMobileBlock(block.number)}
                     className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#C9A227]/20 pb-6 mb-8 gap-4 cursor-pointer md:cursor-default select-none"
                   >
                     <div>
@@ -323,17 +339,16 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                       </p>
                       {/* Mobile Expand / Collapse Indicator */}
                       <div className="md:hidden inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#362E25] border border-[#C9A227]/40 text-[#FCE289] text-xs font-mono font-bold tracking-wider mt-1">
-                        <span>{collapsedBlocks[block.number] ? 'View 3 Lenses' : 'Collapse'}</span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200 ${collapsedBlocks[block.number] ? '' : 'rotate-180'}`} />
+                        <span>{mobileOpenBlocks[block.number] ? 'Collapse' : 'View 3 Lenses'}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200 ${mobileOpenBlocks[block.number] ? 'rotate-180' : ''}`} />
                       </div>
                     </div>
                   </div>
 
-                  {/* 3 Lenses Grid — Collapsible on mobile, always visible 3-column grid on desktop */}
-                  <div className={`grid-cols-1 md:grid-cols-3 gap-6 ${collapsedBlocks[block.number] ? 'hidden md:grid' : 'grid'}`}>
-                    {block.lenses.map((lens, lensIdx) => {
+                  {/* 3 Lenses Grid — Collapsed by default on mobile, always visible 3-column grid on desktop */}
+                  <div className={`grid-cols-1 md:grid-cols-3 gap-6 ${mobileOpenBlocks[block.number] ? 'grid' : 'hidden'} md:grid`}>
+                    {block.lenses.map((lens) => {
                       const IconComponent = lens.icon;
-                      const lensNum = (blockIdx * 3 + lensIdx + 1).toString().padStart(2, '0');
 
                       return (
                         <div
@@ -343,8 +358,8 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                         >
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                              <span className="font-mono text-xs font-bold text-[#C9A227]">
-                                {lensNum}
+                              <span className="font-mono text-xs font-bold text-[#C9A227] tracking-wider">
+                                {lens.number}
                               </span>
                               <div className="w-9 h-9 rounded-xl bg-[#C9A227]/10 border border-[#C9A227]/30 flex items-center justify-center text-[#C9A227] group-hover:scale-105 transition-transform">
                                 <IconComponent className="w-4 h-4" />
@@ -393,9 +408,14 @@ export const SciencePage: React.FC<SciencePageProps> = ({
               </button>
 
               <div className="space-y-2">
-                <span className="font-mono text-xs font-bold text-[#C9A227] tracking-widest uppercase">
-                  {selectedLens.blockTitle}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#C9A227]/20 border border-[#C9A227]/50 font-mono text-xs font-bold text-[#FFE18A]">
+                    LENS {selectedLens.lens.number}
+                  </span>
+                  <span className="font-mono text-xs font-bold text-[#C9A227] tracking-widest uppercase">
+                    {selectedLens.blockTitle}
+                  </span>
+                </div>
                 <h3 className="font-sans font-black text-2xl text-white uppercase tracking-tight">
                   {selectedLens.lens.name}
                 </h3>

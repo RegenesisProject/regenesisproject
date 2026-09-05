@@ -54,7 +54,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
           ) : (
             <>
               <p>
-                Thomas Ventura is committed to protecting the privacy and confidentiality of high-level executives, founders, and event organizers.
+                Thomas Ventura is committed to protecting the privacy and confidentiality of founders, builders, and event organizers.
               </p>
               <h4 className="font-playfair font-bold text-base text-[#1A1A1A]">1. Information Collection</h4>
               <p>
@@ -62,7 +62,7 @@ export const LegalModal: React.FC<LegalModalProps> = ({ type, onClose }) => {
               </p>
               <h4 className="font-playfair font-bold text-base text-[#1A1A1A]">2. Confidentiality Guarantee</h4>
               <p>
-                We never sell, lease, or distribute executive contact details or quiz assessment scores to third parties.
+                We never sell, lease, or distribute contact details or quiz assessment scores to third parties.
               </p>
             </>
           )}

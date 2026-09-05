@@ -3,16 +3,16 @@ import { Compass, Zap, ShieldCheck } from 'lucide-react';
 
 export const ScienceManifesto: React.FC = () => {
   return (
-    <section id="science" className="bg-[#090A0C] text-white py-20 px-4 sm:px-6 lg:px-8 border-b border-[#3d2e1b]">
+    <section id="science" className="bg-[#090A0C] text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-[#3d2e1b]">
       <div className="max-w-5xl mx-auto">
         
-        <div className="relative bg-gradient-to-b from-[#120f0a] via-[#0d0a07] to-[#0a0805] border border-[#3d2e1b] rounded-3xl p-8 sm:p-12 lg:p-16 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] overflow-hidden">
+        <div className="relative bg-gradient-to-b from-[#120f0a] via-[#0d0a07] to-[#0a0805] border border-[#3d2e1b] rounded-2xl sm:rounded-3xl p-5 sm:p-12 lg:p-16 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] overflow-hidden">
           
           {/* Subtle Corner Accents */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#e2b13d]/10 via-transparent to-transparent pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#e2b13d]/10 via-transparent to-transparent pointer-events-none" />
 
-          <div className="max-w-4xl mx-auto text-center space-y-8">
+          <div className="max-w-4xl mx-auto text-center space-y-6 sm:space-y-8">
             
             {/* Eyebrow Badge */}
             <div className="flex flex-col items-center gap-3">
@@ -23,12 +23,12 @@ export const ScienceManifesto: React.FC = () => {
             </div>
 
             {/* Headline */}
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-playfair font-bold leading-tight text-white tracking-tight">
+            <h2 className="text-xl sm:text-3xl lg:text-4xl font-playfair font-bold leading-tight text-white tracking-tight">
               REGENESIS is built on one premise: the hardest limits in your life aren't in your strategy or your discipline — <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FCE289] via-[#E2B13D] to-[#C9962F]">they're written into your survival wiring.</span>
             </h2>
 
             {/* Explanatory Text */}
-            <p className="text-sm sm:text-base lg:text-lg text-[#D4CEBF] max-w-3xl mx-auto leading-relaxed font-sans font-normal">
+            <p className="text-xs sm:text-base lg:text-lg text-[#D4CEBF] max-w-3xl mx-auto leading-relaxed font-sans font-normal">
               It explains how your <strong className="text-white font-semibold">Survival Source Code</strong> was written — shaping the behavior, identity, and neurochemistry running your life today — and how to rewrite that code and reclaim the capacity it's been holding back.
             </p>
 

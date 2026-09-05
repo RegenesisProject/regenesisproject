@@ -69,7 +69,7 @@ export const KEYNOTES_DATA: KeynoteInfo[] = [
       'Understand why standard mindset tools fail when nervous system capacity is breached.',
       'Identify the 3 subconscious trigger states that lead to operator burnout.',
       'Implement real-time biological recalibration techniques during high-stakes decisions.',
-      'Eliminate the "Survival Tax" draining capacity.'
+      'Interrupt the "Survival Tax" draining capacity.'
     ],
     targetAudience: 'CEOs, Founders, Enterprise Leadership Teams, Operators.'
   },
@@ -83,7 +83,7 @@ export const KEYNOTES_DATA: KeynoteInfo[] = [
     fullDetails: 'Thomas delivers a battle-tested roadmap derived from two decades in commercial operations and neural architecture. This session equips organizations with the exact tools to transform leadership capacity into a durable asset.',
     outcomes: [
       'Overcome key-person dependency by aligning nervous system trust with operational delegation.',
-      'Convert emergency stress overdrive into sustained executive stamina.',
+      'Convert emergency stress overdrive into sustained stamina.',
       'Build organizational coherence that increases velocity across operations.',
       'Shift from reactive survival mode into systematic, sustained capacity.'
     ],

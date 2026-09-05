@@ -58,6 +58,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/about",
     ogTitle: "About Thomas Ventura — Creator of The REGENESIS Project",
     ogDescription: "From a war-zone refugee to two multi-million dollar operations run side by side for over fifteen years — and the framework he built after his own biology stopped him.",
+    image: "https://res.cloudinary.com/ew2ztpgz/image/upload/v1784828493/regenerated_image_1784798224610-B1a6fML__1_wqi17x.png",
   },
   keynotes: {
     title: "Keynotes — Thomas Ventura | The REGENESIS Project",
@@ -80,6 +81,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/mythology",
     ogTitle: "The Mythology — The Theater of Identity | The REGENESIS Project",
     ogDescription: "The story layer of REGENESIS: the eight universal forces every human system runs under pressure — and what it takes to command them in an integrated state.",
+    image: "https://res.cloudinary.com/ew2ztpgz/image/upload/v1784903667/myth_hero_jilt9p.png",
   },
   quiz: {
     title: "The Mirror Quiz — A Free System Scan | The REGENESIS Project",
@@ -113,16 +115,37 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
   },
 };
 
+export const ROUTE_REDIRECTS: Record<string, string> = {
+  '/keynote': '/keynotes',
+  '/abouts': '/about',
+  '/sciences': '/science',
+  '/mythologies': '/mythology',
+  '/quiz': '/mirror-quiz',
+  '/quizzes': '/mirror-quiz',
+  '/mirrorquiz': '/mirror-quiz',
+  '/mirrorquizzes': '/mirror-quiz',
+  '/speaker-kits': '/speaker-kit',
+  '/speakerkit': '/speaker-kit',
+  '/speakerkits': '/speaker-kit',
+  '/waitlists': '/waitlist',
+  '/contacts': '/contact',
+};
+
 export const getPageFromPath = (path: string): PageKey => {
   const cleanPath = path.toLowerCase().replace(/\/$/, '') || '/';
   if (cleanPath === '/about') return 'about';
-  if (cleanPath === '/keynotes' || cleanPath === '/keynote') return 'keynotes';
+  if (cleanPath === '/keynotes') return 'keynotes';
   if (cleanPath === '/science') return 'science';
   if (cleanPath === '/mythology') return 'mythology';
-  if (cleanPath === '/mirror-quiz' || cleanPath === '/quiz') return 'quiz';
+  if (cleanPath === '/mirror-quiz') return 'quiz';
   if (cleanPath === '/speaker-kit') return 'speaker-kit';
   if (cleanPath === '/waitlist') return 'waitlist';
   if (cleanPath === '/contact') return 'contact';
+
+  // Check aliases/singulars/plurals for redirection
+  if (ROUTE_REDIRECTS[cleanPath]) {
+    return getPageFromPath(ROUTE_REDIRECTS[cleanPath]);
+  }
   return 'home';
 };
 
@@ -133,13 +156,19 @@ interface AppProps {
 export default function App({ initialPath }: AppProps) {
   // Navigation state initialized from initialPath or window location
   const [currentPage, setCurrentPage] = useState<PageKey>(() => {
-    if (initialPath) {
-      return getPageFromPath(initialPath);
+    let initial = initialPath;
+    if (!initial && typeof window !== 'undefined') {
+      initial = window.location.pathname;
     }
-    if (typeof window !== 'undefined') {
-      return getPageFromPath(window.location.pathname);
+    const clean = (initial || '/').toLowerCase().replace(/\/$/, '') || '/';
+    if (ROUTE_REDIRECTS[clean]) {
+      const dest = ROUTE_REDIRECTS[clean];
+      if (typeof window !== 'undefined') {
+        window.history.replaceState({}, '', dest);
+      }
+      return getPageFromPath(dest);
     }
-    return 'home';
+    return getPageFromPath(clean);
   });
 
   // Modal states
@@ -156,19 +185,21 @@ export default function App({ initialPath }: AppProps) {
     if (typeof window === 'undefined') return;
 
     const syncRouteFromLocation = () => {
-      const path = window.location.pathname.toLowerCase().replace(/\/$/, '');
-      if (path === '/keynote') {
-        window.history.replaceState({}, '', '/keynotes');
-        setCurrentPage('keynotes');
+      const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+      if (ROUTE_REDIRECTS[path]) {
+        const canonicalDest = ROUTE_REDIRECTS[path];
+        window.history.replaceState({}, '', canonicalDest);
+        setCurrentPage(getPageFromPath(canonicalDest));
         return;
       }
       const page = getPageFromPath(window.location.pathname);
       setCurrentPage(page);
     };
 
-    const initialClean = window.location.pathname.toLowerCase().replace(/\/$/, '');
-    if (initialClean === '/keynote') {
-      window.history.replaceState({}, '', '/keynotes');
+    const initialClean = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+    if (ROUTE_REDIRECTS[initialClean]) {
+      const canonicalDest = ROUTE_REDIRECTS[initialClean];
+      window.history.replaceState({}, '', canonicalDest);
     }
 
     // Update document head metadata dynamically when page changes in browser

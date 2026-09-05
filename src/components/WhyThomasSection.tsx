@@ -33,7 +33,7 @@ export const WhyThomasSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           {/* Card 1 */}
-          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-8 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
+          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-6 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
             <div>
               <div className="w-10 h-10 bg-[#FAF6ED] border border-[#D4AF37] text-[#8B6E14] flex items-center justify-center font-mono text-xs font-bold mb-6 rounded-md shadow-sm">
                 01
@@ -50,7 +50,7 @@ export const WhyThomasSection: React.FC = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-8 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
+          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-6 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
             <div>
               <div className="w-10 h-10 bg-[#FAF6ED] border border-[#D4AF37] text-[#8B6E14] flex items-center justify-center font-mono text-xs font-bold mb-6 rounded-md shadow-sm">
                 02
@@ -67,7 +67,7 @@ export const WhyThomasSection: React.FC = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-8 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
+          <div className="bg-[#FFFFFF] border-t-2 border-[#D4AF37] p-6 sm:p-10 border-x border-b border-[#E8E3D5] rounded-b-xl flex flex-col justify-between group hover:border-[#B8860B] transition-all duration-500 shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_15px_35px_rgba(184,134,11,0.15)] transform hover:-translate-y-1">
             <div>
               <div className="w-10 h-10 bg-[#FAF6ED] border border-[#D4AF37] text-[#8B6E14] flex items-center justify-center font-mono text-xs font-bold mb-6 rounded-md shadow-sm">
                 03

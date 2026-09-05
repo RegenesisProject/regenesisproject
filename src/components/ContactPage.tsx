@@ -231,7 +231,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <span>Keynote Engagements</span>
               </div>
               <p className="text-xs text-[#6C6863] leading-relaxed">
-                For corporate summits, conferences, or executive assemblies, please specify dates, location, and audience size.
+                For corporate summits, conferences, or leadership assemblies, please specify dates, location, and audience size.
               </p>
               <button
                 onClick={() => {

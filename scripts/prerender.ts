@@ -118,7 +118,7 @@ async function prerender() {
 
   try {
     // Dynamically load src/App.tsx through Vite SSR module loader
-    const { default: App, ROUTE_METADATA } = await vite.ssrLoadModule('/src/App.tsx');
+    const { default: App, ROUTE_METADATA, ROUTE_REDIRECTS } = await vite.ssrLoadModule('/src/App.tsx');
 
     for (const route of ROUTES) {
       console.log(`Pre-rendering route: ${route.path} -> dist/${route.outPath}`);
@@ -187,43 +187,30 @@ async function prerender() {
       console.log(`✓ Wrote ${route.outPath} (${fs.statSync(targetFilePath).size} bytes)`);
     }
 
-    // Write 301 static redirect page for /keynote -> /keynotes
-    const keynoteRedirectPath = path.join(distPath, 'keynote', 'index.html');
-    fs.mkdirSync(path.dirname(keynoteRedirectPath), { recursive: true });
-    const keynoteRedirectHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/keynotes">
-  <link rel="canonical" href="https://www.regenesisproject.com/keynotes" />
-  <title>Redirecting to /keynotes...</title>
-  <script>window.location.replace('/keynotes');</script>
-</head>
-<body>
-  <p>Redirecting to <a href="/keynotes">/keynotes</a>...</p>
-</body>
-</html>`;
-    fs.writeFileSync(keynoteRedirectPath, keynoteRedirectHtml, 'utf-8');
-    console.log('✓ Wrote keynote/index.html (301 redirect to /keynotes)');
+    // Write static redirect pages with canonical link & meta refresh for all redirect mappings
+    if (ROUTE_REDIRECTS) {
+      for (const [fromPath, toPath] of Object.entries(ROUTE_REDIRECTS)) {
+        const cleanFrom = fromPath.replace(/^\//, '');
+        const redirectFilePath = path.join(distPath, cleanFrom, 'index.html');
+        fs.mkdirSync(path.dirname(redirectFilePath), { recursive: true });
 
-    // Write 301 static redirect page for /quiz -> /mirror-quiz
-    const quizRedirectPath = path.join(distPath, 'quiz', 'index.html');
-    fs.mkdirSync(path.dirname(quizRedirectPath), { recursive: true });
-    const quizRedirectHtml = `<!DOCTYPE html>
+        const redirectHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=/mirror-quiz">
-  <link rel="canonical" href="https://www.regenesisproject.com/mirror-quiz" />
-  <title>Redirecting to /mirror-quiz...</title>
-  <script>window.location.replace('/mirror-quiz');</script>
+  <meta http-equiv="refresh" content="0; url=${toPath}">
+  <link rel="canonical" href="https://www.regenesisproject.com${toPath}" />
+  <title>Redirecting to ${toPath}...</title>
+  <script>window.location.replace('${toPath}');</script>
 </head>
 <body>
-  <p>Redirecting to <a href="/mirror-quiz">/mirror-quiz</a>...</p>
+  <p>Redirecting to <a href="${toPath}">${toPath}</a>...</p>
 </body>
 </html>`;
-    fs.writeFileSync(quizRedirectPath, quizRedirectHtml, 'utf-8');
-    console.log('✓ Wrote quiz/index.html (301 redirect to /mirror-quiz)');
+        fs.writeFileSync(redirectFilePath, redirectHtml, 'utf-8');
+        console.log(`✓ Wrote ${cleanFrom}/index.html (redirect -> ${toPath})`);
+      }
+    }
 
     console.log('Successfully pre-rendered all static HTML routes!');
   } finally {

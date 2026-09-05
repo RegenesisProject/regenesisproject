@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, FileText, ArrowRight, Shield, Zap, CheckCircle, Send } from 'lucide-react';
-import { portraitImg as keynoteBiologyBg, speakerKitVenueImg } from '../data/content';
+import { portraitImg as keynoteBiologyBg } from '../data/content';
+import keynoteStageImg from '../assets/images/keynote_stage_lighting_1788618057460.jpg';
 
 interface KeynotesPageProps {
   onOpenBooking: () => void;
@@ -357,11 +358,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
                 </button>
               </div>
 
-              <p className="text-xs sm:text-sm text-stone-300 font-sans max-w-xl mx-auto leading-relaxed pt-2">
-                Tell us about your event and we&apos;ll send it over.
-              </p>
-
-              <p className="text-xs font-mono text-[#D4AF37]">
+              <p className="text-xs font-mono text-[#D4AF37] pt-2">
                 For press and media enquiries: <a href="mailto:press@regenesisproject.com" className="underline hover:text-white transition-colors">press@regenesisproject.com</a>
               </p>
             </section>
@@ -395,8 +392,8 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
               <div className="pt-2">
                 <div className="rounded-2xl overflow-hidden shadow-2xl border border-[#D4AF37]/40 bg-stone-900 max-w-sm">
                   <img 
-                    src={speakerKitVenueImg} 
-                    alt="Speaker Kit" 
+                    src={keynoteStageImg} 
+                    alt="Keynote Stage & Auditorium" 
                     className="w-full h-64 object-cover object-center"
                     referrerPolicy="no-referrer"
                   />

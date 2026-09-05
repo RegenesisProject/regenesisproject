@@ -51,7 +51,7 @@ const CAST_MEMBERS: CastMember[] = [
     description: 'The part of you that decides. Runs the day, holds the line under pressure, and can talk the rest of the system down mid-reaction.',
     wounded: 'Goes offline. When the load gets heavy enough, the Commander shuts down and the reactive parts take the wheel — which is why you can know exactly what to do and do the opposite anyway.',
     integrated: 'Stays online when it counts. The steady hand that keeps the whole cast working for you instead of against you.',
-    science: 'Prefrontal executive function — regulation and top-down control',
+    science: 'Prefrontal neural regulation — regulation and top-down control',
     woundedTrigger: 'Being under heavy load',
     costsYou: 'The decisions you\'d never have made if you\'d been fully at the wheel.',
     quote: '"A plan is worth nothing if nobody\'s at the wheel when the pressure hits."'
@@ -191,7 +191,8 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
             </div>
 
             <h1 className="font-playfair font-black text-3xl sm:text-5xl lg:text-7xl text-white tracking-tight uppercase leading-[1.05] mb-6">
-              THE CAST OF YOUR<br className="hidden sm:inline" />{' '}
+              THE CAST OF YOUR
+              <br />
               <span className="bg-gradient-to-r from-[#FFE18A] via-[#C9A227] to-[#8C6D1F] bg-clip-text text-transparent">
                 INTERNAL THEATER
               </span>
@@ -323,23 +324,11 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                   referrerPolicy="no-referrer"
                   className="absolute inset-0 w-full h-full object-cover object-center contrast-110" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/40 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 pointer-events-none" />
                 
-                <div className="relative z-10 flex items-center justify-between">
+                <div className="relative z-10 flex items-center justify-end">
                   <span className="px-3.5 py-1.5 bg-black/75 backdrop-blur-md rounded-full border border-[#C9A227]/50 font-mono text-xs text-[#FFE18A] uppercase font-bold tracking-widest">
-                    CHARACTER {String(activeCastIndex + 1).padStart(2, '0')} OF {String(CAST_MEMBERS.length).padStart(2, '0')}
-                  </span>
-                  <span className="font-mono text-xs text-stone-400 font-bold uppercase tracking-widest">
                     THE CAST
-                  </span>
-                </div>
-
-                <div className="relative z-10 space-y-1.5">
-                  <h3 className="font-playfair font-black text-3xl xl:text-4xl text-white uppercase tracking-tight">
-                    {currentMember.name}
-                  </h3>
-                  <span className="font-mono text-xs font-bold text-[#FFE18A] uppercase tracking-wider block">
-                    {currentMember.role}
                   </span>
                 </div>
               </div>
@@ -372,19 +361,19 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
 
                   {/* Field 2 & 3: Wounded & Integrated States */}
                   <div className="grid grid-cols-2 gap-4 pt-1">
-                    <div className="p-4 rounded-xl bg-[#140C08] border border-[#EF4444]/40 space-y-1.5">
+                    <div className="p-4 rounded-xl bg-[#140C08] border border-[#EF4444]/40 space-y-2">
                       <span className="font-mono text-[10px] text-[#EF4444] uppercase font-bold tracking-wider block">
                         WOUNDED STATE
                       </span>
-                      <span className="font-mono text-[11px] text-[#F87171] font-bold block">
+                      <div className="font-mono text-[11px] text-[#F87171] font-bold block">
                         Trigger: {currentMember.woundedTrigger}
-                      </span>
+                      </div>
                       <p className="font-inter text-xs text-stone-300 leading-relaxed">
                         {currentMember.wounded}
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-[#0E150C] border border-[#C9A227]/40 space-y-1.5">
+                    <div className="p-4 rounded-xl bg-[#0E150C] border border-[#C9A227]/40 space-y-2">
                       <span className="font-mono text-[10px] text-[#FCE289] uppercase font-bold tracking-wider block">
                         INTEGRATED STATE
                       </span>
@@ -519,6 +508,9 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                               <span className="text-[9px] font-mono font-bold text-[#C9A227] uppercase tracking-wider block mt-0.5">
                                 {item.role}
                               </span>
+                              <p className="text-[11px] text-[#FCE289] italic font-playfair mt-2 leading-tight">
+                                {item.quote}
+                              </p>
                             </div>
                           </div>
                         </td>
@@ -529,11 +521,16 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                         </td>
 
                         {/* Wounded State */}
-                        <td className="p-4 sm:p-5 align-top text-xs text-[#EF4444] font-medium leading-relaxed bg-[#1C0A0A]/20">
-                          <span className="font-bold block text-[10px] uppercase text-[#EF4444]/90 mb-1">
+                        <td className="p-4 sm:p-5 align-top text-xs leading-relaxed bg-[#1C0A0A]/20">
+                          <div className="font-mono text-[10px] font-bold uppercase text-[#EF4444] mb-1.5 tracking-wider">
+                            WOUNDED STATE
+                          </div>
+                          <div className="font-mono text-[11px] font-bold text-[#F87171] mb-1.5">
                             Trigger: {item.woundedTrigger}
-                          </span>
-                          {item.wounded}
+                          </div>
+                          <p className="text-xs text-[#EF4444] font-medium leading-relaxed">
+                            {item.wounded}
+                          </p>
                         </td>
 
                         {/* Integrated State */}
@@ -581,14 +578,14 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                       </p>
                     </div>
 
-                    <div className="space-y-1">
+                    <div className="space-y-1.5">
                       <span className="text-[10px] font-mono font-black uppercase text-[#EF4444] tracking-wider block">
                         WOUNDED STATE
                       </span>
-                      <div className="bg-[#280D0D]/70 p-2.5 rounded-lg border border-[#EF4444]/30 space-y-1">
-                        <span className="font-bold block text-[10px] uppercase text-[#F87171]">
+                      <div className="bg-[#280D0D]/70 p-3 rounded-lg border border-[#EF4444]/30 space-y-2">
+                        <div className="font-mono text-[11px] font-bold uppercase text-[#F87171]">
                           Trigger: {item.woundedTrigger}
-                        </span>
+                        </div>
                         <p className="text-xs text-red-200 leading-relaxed">
                           {item.wounded}
                         </p>
@@ -611,6 +608,15 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                       <p className="text-xs text-stone-300 italic leading-relaxed bg-[#0A0704]/60 p-2.5 rounded-lg border border-white/5">
                         {item.costsYou}
                       </p>
+                    </div>
+
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-black uppercase text-[#C9A227] tracking-wider block">
+                        QUOTE
+                      </span>
+                      <div className="p-3 rounded-lg bg-[#1A150C] border-l-2 border-[#C9A227] italic font-playfair text-xs sm:text-sm text-[#FCE289]">
+                        {item.quote}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -670,7 +676,7 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
 
             <div className="pt-6 border-t border-[#D4AF37]/30">
               <p className="font-playfair font-bold text-base sm:text-xl text-[#7E4F11] italic">
-                &ldquo;Master the system. Command the theater. Operate as the ONE.&rdquo;
+                &ldquo;Master the Beasts, Rule the Theater. Become the ONE.&rdquo;
               </p>
             </div>
 

@@ -15,7 +15,7 @@ import {
 import { BOOKS_DATA } from '../data/siteData';
 import { BookInfo, PageKey } from '../types';
 import { ScrollReveal } from './ScrollReveal';
-import originDocBg from '../assets/images/origin_documentary_bg_1788304796361.jpg';
+import journeySilhouette from '../assets/images/journey_silhouette_1788616759304.jpg';
 
 interface AboutPageProps {
   onNavigatePage: (page: PageKey, sectionId?: string) => void;
@@ -34,7 +34,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   return (
-    <div className="bg-[#0C0B0A] text-[#F3EFE0] min-h-screen py-10 sm:py-16 px-3 sm:px-8 lg:px-16 border-b border-[#C9A227]/20 relative overflow-hidden font-inter">
+    <div className="bg-[#0C0B0A] text-[#F3EFE0] min-h-screen py-10 sm:py-16 px-4 sm:px-8 lg:px-16 border-b border-[#C9A227]/20 relative overflow-hidden font-inter">
       
       {/* Background Ambient Glows */}
       <div className="absolute top-10 left-1/4 w-[600px] h-[600px] bg-[#C9A227]/5 rounded-full blur-[160px] pointer-events-none" />
@@ -69,13 +69,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <ScrollReveal delay={0.15} yOffset={24}>
               
               {/* HERO / IDENTITY */}
-              <div className="font-mono text-[10px] sm:text-[11px] font-bold text-[#C9A227] tracking-[0.2em] sm:tracking-[0.25em] uppercase flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <div className="font-mono text-[10px] sm:text-[11px] font-bold text-[#C9A227] tracking-[0.2em] sm:tracking-[0.25em] uppercase flex flex-wrap items-center">
                 <span>CEO</span>
-                <span className="text-white/30">|</span>
+                <span className="text-white/40 mx-2 sm:mx-2.5">|</span>
                 <span>AUTHOR</span>
-                <span className="text-white/30">|</span>
+                <span className="text-white/40 mx-2 sm:mx-2.5">|</span>
                 <span>KEYNOTE SPEAKER</span>
-                <span className="text-white/30">|</span>
+                <span className="text-white/40 mx-2 sm:mx-2.5">|</span>
                 <span>CREATOR OF THE REGENESIS PROJECT</span>
               </div>
 
@@ -92,23 +92,39 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               {/* STAT CARDS */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-6">
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
-                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">15+ YRS</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">Two Operations, Side by Side</span>
+                  <div className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF]">
+                    15+ YRS
+                  </div>
+                  <div className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold mt-2">
+                    Two Operations, Side by Side
+                  </div>
                 </div>
 
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
-                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">8 FIGURES</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">Cumulative Revenue Across Both</span>
+                  <div className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF]">
+                    8 FIGURES
+                  </div>
+                  <div className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold mt-2">
+                    Cumulative Revenue Across Both
+                  </div>
                 </div>
 
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
-                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">6 FAILURES</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">Before the First Exit</span>
+                  <div className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF]">
+                    6 FAILURES
+                  </div>
+                  <div className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold mt-2">
+                    Before the First Exit
+                  </div>
                 </div>
 
                 <div className="bg-[#151412] border border-[#C9A227]/25 rounded-xl p-3 sm:p-3.5 text-left">
-                  <span className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF] block">1 MISSION</span>
-                  <span className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold block mt-0.5">End the Internal War</span>
+                  <div className="font-playfair font-bold text-lg sm:text-2xl text-[#FFFFFF]">
+                    1 MISSION
+                  </div>
+                  <div className="font-mono text-[8px] sm:text-[9px] text-[#C9A227] tracking-wider uppercase font-semibold mt-2">
+                    End the Internal War
+                  </div>
                 </div>
               </div>
             </ScrollReveal>
@@ -120,10 +136,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             >
               <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#000000]">
                 <img 
-                  src={originDocBg} 
-                  alt="Watch: The Story & Origin of Thomas Ventura" 
+                  src={journeySilhouette} 
+                  alt="Visual Placeholder" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover filter contrast-105 brightness-75 group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover filter contrast-105 brightness-80 group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/40 to-transparent" />
@@ -142,7 +158,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   Watch: The Story &amp; Origin of Thomas Ventura
                 </p>
                 <p className="text-xs text-[#D4CEBF] font-inter mt-1 leading-relaxed">
-                  From war-zone refugee to running two operations at once — and why none of it fixed the real problem.
+                  From war-zone refugee to running two multi-million dollar operations at once — and why none of it fixed the real problem.
                 </p>
               </div>
             </div>
@@ -336,24 +352,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 Watch: The Story &amp; Origin of Thomas Ventura
               </h3>
               <p className="text-xs sm:text-sm text-[#D4CEBF] font-inter mt-1 leading-relaxed">
-                From war-zone refugee to running two operations at once — and why none of it fixed the real problem.
+                From war-zone refugee to running two multi-million dollar operations at once — and why none of it fixed the real problem.
               </p>
             </div>
 
             <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-[#C9A227]/30 mb-4 flex items-center justify-center">
               <img 
-                src={originDocBg}
-                alt="Watch: The Story & Origin of Thomas Ventura"
+                src={journeySilhouette}
+                alt="The Story & Origin of Thomas Ventura — Visual Placeholder"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover opacity-50"
               />
               <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-black flex items-center justify-center mb-3 shadow-[0_0_30px_rgba(201,162,39,0.7)]">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-black flex items-center justify-center shadow-[0_0_30px_rgba(201,162,39,0.7)]">
                   <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1 text-black" />
                 </div>
-                <p className="text-xs sm:text-sm font-inter text-[#D4CEBF] tracking-wide font-medium">
-                  Coming soon
-                </p>
               </div>
             </div>
 

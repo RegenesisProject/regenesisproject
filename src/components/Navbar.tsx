@@ -57,9 +57,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const getMobileNavLinkClass = (page: PageKey) => {
     const isActive = currentPage === page;
     if (isScrolled || isScience) {
-      return `block w-full text-left py-2 ${isActive ? 'text-[#D4AF37] font-black' : 'text-white hover:text-[#D4AF37]'}`;
+      return `block w-full text-left py-3 px-2 rounded-lg transition-colors ${isActive ? 'text-[#D4AF37] bg-white/5 font-black' : 'text-white/90 hover:text-[#D4AF37] hover:bg-white/5'}`;
     }
-    return `block w-full text-left py-2 ${isActive ? 'text-black font-black' : 'text-white hover:text-black'}`;
+    return `block w-full text-left py-3 px-2 rounded-lg transition-colors ${isActive ? 'text-black bg-black/10 font-black' : 'text-white hover:text-black hover:bg-white/10'}`;
   };
 
   const getNavContainerClass = () => {
@@ -79,25 +79,25 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <nav className={getNavContainerClass()}>
-      <div className="max-w-[1600px] mx-auto px-3 sm:px-8 lg:px-12 h-20 sm:h-24 flex items-center justify-between">
+      <div className="max-w-[1600px] mx-auto px-3 sm:px-8 lg:px-12 h-16 sm:h-24 flex items-center justify-between gap-2">
         
         {/* Editorial Brand Logo */}
         <a 
           href="/"
           onClick={(e) => { e.preventDefault(); handleNavClick('home'); }} 
-          className="flex items-center gap-2.5 sm:gap-3 group cursor-pointer text-left min-w-0"
+          className="flex items-center gap-2 sm:gap-3 group cursor-pointer text-left min-w-0"
         >
           <img 
             src={navbarLogo} 
             alt="Thomas Ventura Logo" 
             referrerPolicy="no-referrer"
-            className="h-10 sm:h-12 lg:h-14 w-auto object-contain drop-shadow shrink-0"
+            className="h-9 sm:h-12 lg:h-14 w-auto object-contain drop-shadow shrink-0"
           />
           <div className="flex flex-col items-start justify-center text-left min-w-0">
-            <span className={`font-inter text-[8px] sm:text-[9px] uppercase tracking-[0.36em] font-bold text-left text-[#FFFFFF]/85 transition-colors duration-500 leading-tight truncate ${isScrolled || isScience ? 'group-hover:text-[#D4AF37]' : 'group-hover:text-amber-100'}`}>
+            <span className={`font-inter text-[7.5px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.36em] font-bold text-left text-[#FFFFFF]/85 transition-colors duration-500 leading-tight truncate ${isScrolled || isScience ? 'group-hover:text-[#D4AF37]' : 'group-hover:text-amber-100'}`}>
               THOMAS VENTURA
             </span>
-            <span className="font-playfair font-bold text-sm sm:text-base lg:text-lg tracking-wider leading-tight text-left text-[#FFFFFF] group-hover:text-white transition-colors duration-500 mt-0.5 truncate">
+            <span className="font-playfair font-bold text-xs sm:text-base lg:text-lg tracking-wider leading-tight text-left text-[#FFFFFF] group-hover:text-white transition-colors duration-500 mt-0.5 truncate">
               THE REGENESIS PROJECT
             </span>
           </div>
@@ -147,8 +147,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         </div>
 
-        {/* Right CTA Button */}
-        <div className="hidden lg:flex items-center space-x-4">
+        {/* Right CTA Button (Desktop only) */}
+        <div className="hidden lg:flex items-center space-x-4 shrink-0">
           <a
             href="/mirror-quiz"
             onClick={(e) => { e.preventDefault(); handleNavClick('quiz'); }}
@@ -159,17 +159,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile menu trigger */}
-        <div className="lg:hidden flex items-center space-x-2 sm:space-x-3 shrink-0">
-          <a
-            href="/mirror-quiz"
-            onClick={(e) => { e.preventDefault(); handleNavClick('quiz'); }}
-            className="px-2.5 py-1 sm:px-3 sm:py-1.5 border border-white text-white font-inter text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] font-bold rounded-xs cursor-pointer whitespace-nowrap"
-          >
-            Get Early Access
-          </a>
+        <div className="lg:hidden flex items-center shrink-0">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-1.5 text-white hover:text-black focus:outline-none cursor-pointer"
+            className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center text-white hover:text-black focus:outline-none cursor-pointer rounded-md active:bg-white/10"
             aria-label="Toggle Navigation Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

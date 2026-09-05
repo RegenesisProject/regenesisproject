@@ -67,7 +67,7 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
           className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-stone-500 hover:text-[#c99a38] transition-colors cursor-pointer group"
         >
           <span className="group-hover:-translate-x-1 transition-transform">←</span>
-          <span>BACK TO HOME</span>
+          <span> BACK TO HOME</span>
         </button>
 
         {/* STEP 1: CENTERED HERO TOP HEADER */}
@@ -82,8 +82,8 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
 
             {/* Main Headline */}
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-sans font-black text-[#111111] tracking-tight leading-[1.08] uppercase max-w-3xl mx-auto">
-              One war. Three books.<br />
-              Be there when the first one lands.
+              <span className="block">One war. Three books.</span>
+              <span className="block">Be there when the first one lands.</span>
             </h1>
 
             {/* Description Subtitle */}
@@ -203,13 +203,17 @@ export const WaitlistPage: React.FC<WaitlistPageProps> = ({
         {/* STEP 4: BOTTOM CTA BUTTON */}
         <ScrollReveal>
           <div className="pt-2 text-center">
-            <button
-              onClick={handleQuizClick}
+            <a
+              href="/mirror-quiz"
+              onClick={(e) => {
+                e.preventDefault();
+                handleQuizClick();
+              }}
               className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#FCE338] hover:bg-[#ebd123] text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 shadow-lg cursor-pointer inline-flex items-center justify-center gap-2 group"
             >
               <span>WHILE YOU WAIT — GET EARLY ACCESS TO THE MIRROR QUIZ</span>
               <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
           </div>
         </ScrollReveal>
 

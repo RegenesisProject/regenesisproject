@@ -187,10 +187,10 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
 
             {/* Right Graphics Column: 3D Fan Stacked Book Covers */}
             <div className="lg:col-span-5 flex items-center justify-center pt-8 lg:pt-0">
-              <div className="relative w-full max-w-[420px] aspect-[4/3] flex items-center justify-center py-6">
+              <div className="relative w-full max-w-[420px] aspect-[4/3] flex items-center justify-center py-6 overflow-hidden sm:overflow-visible">
                 
                 {/* Back Left Book Card */}
-                <div className="absolute left-2 sm:left-4 top-4 w-44 sm:w-52 h-64 sm:h-76 -rotate-12 translate-y-2 z-10 transition-transform duration-500 hover:-rotate-16 hover:-translate-x-2">
+                <div className="absolute left-1 sm:left-4 top-4 w-32 sm:w-44 md:w-52 h-48 sm:h-64 md:h-76 -rotate-12 translate-y-2 z-10 transition-transform duration-500 hover:-rotate-16 hover:-translate-x-2">
                   <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.35)] bg-stone-900 border border-stone-800">
                     <img 
                       src={book2Img} 
@@ -202,7 +202,7 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
                 </div>
 
                 {/* Back Right Book Card */}
-                <div className="absolute right-2 sm:right-4 top-4 w-44 sm:w-52 h-64 sm:h-76 rotate-12 translate-y-2 z-10 transition-transform duration-500 hover:rotate-16 hover:translate-x-2">
+                <div className="absolute right-1 sm:right-4 top-4 w-32 sm:w-44 md:w-52 h-48 sm:h-64 md:h-76 rotate-12 translate-y-2 z-10 transition-transform duration-500 hover:rotate-16 hover:translate-x-2">
                   <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.35)] bg-stone-900 border border-stone-800">
                     <img 
                       src={book3Img} 
@@ -214,8 +214,8 @@ export const SpeakerKitPage: React.FC<SpeakerKitPageProps> = ({
                 </div>
 
                 {/* Center Highlighted Featured Book Card */}
-                <div className="relative z-20 w-48 sm:w-56 h-70 sm:h-84 scale-105 transition-transform duration-500 hover:scale-110">
-                  <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] bg-black border-4 border-white/90 ring-1 ring-amber-400/50">
+                <div className="relative z-20 w-36 sm:w-48 md:w-56 h-54 sm:h-70 md:h-84 scale-105 transition-transform duration-500 hover:scale-110">
+                  <div className="w-full h-full rounded-xl overflow-hidden shadow-[0_25px_50px_rgba(0,0,0,0.5)] bg-black border-2 sm:border-4 border-white/90 ring-1 ring-amber-400/50">
                     <img 
                       src={book1Img} 
                       alt="The Regenesis Protocol Speaker Kit" 

@@ -3,12 +3,12 @@ import { Target, Building, Users2, Briefcase } from 'lucide-react';
 
 export const AudienceSection: React.FC = () => {
   return (
-    <section className="bg-[#FFFFFF] text-[#1A1A1A] py-28 px-6 sm:px-12 lg:px-16 border-b border-[#1A1A1A]/10">
+    <section className="bg-[#FFFFFF] text-[#1A1A1A] py-16 sm:py-28 px-4 sm:px-12 lg:px-16 border-b border-[#1A1A1A]/10">
       
       <div className="max-w-[1600px] mx-auto">
         
         {/* Section Header */}
-        <div className="mb-20 pb-8 border-b border-[#1A1A1A]/15 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="mb-10 sm:mb-20 pb-6 sm:pb-8 border-b border-[#1A1A1A]/15 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <div className="flex items-center gap-3 mb-3">
               <span className="h-px w-8 bg-[#D4AF37]" />
@@ -17,7 +17,7 @@ export const AudienceSection: React.FC = () => {
               </span>
             </div>
             
-            <h2 className="font-playfair font-normal text-4xl sm:text-5xl lg:text-6xl text-[#1A1A1A]">
+            <h2 className="font-playfair font-normal text-3xl sm:text-5xl lg:text-6xl text-[#1A1A1A]">
               Who Needs This <em className="font-playfair italic font-normal text-[#D4AF37]">Work</em>?
             </h2>
           </div>
@@ -28,9 +28,9 @@ export const AudienceSection: React.FC = () => {
         </div>
 
         {/* 4 Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           
-          <div className="bg-[#FFFDF7] p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="bg-[#FFFDF7] p-6 sm:p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
             <div>
               <div className="text-xs font-mono font-bold text-[#D4AF37] uppercase tracking-widest mb-4">
                 CATEGORY 01
@@ -44,7 +44,7 @@ export const AudienceSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#FFFDF7] p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="bg-[#FFFDF7] p-6 sm:p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
             <div>
               <div className="text-xs font-mono font-bold text-[#D4AF37] uppercase tracking-widest mb-4">
                 CATEGORY 02
@@ -58,7 +58,7 @@ export const AudienceSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#FFFDF7] p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="bg-[#FFFDF7] p-6 sm:p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
             <div>
               <div className="text-xs font-mono font-bold text-[#D4AF37] uppercase tracking-widest mb-4">
                 CATEGORY 03
@@ -72,7 +72,7 @@ export const AudienceSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#FFFDF7] p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
+          <div className="bg-[#FFFDF7] p-6 sm:p-8 border-t border-[#1A1A1A] border-x border-b border-[#1A1A1A]/10 flex flex-col justify-between group hover:border-[#D4AF37] transition-all duration-500 shadow-[0_4px_24px_rgba(0,0,0,0.03)]">
             <div>
               <div className="text-xs font-mono font-bold text-[#D4AF37] uppercase tracking-widest mb-4">
                 CATEGORY 04

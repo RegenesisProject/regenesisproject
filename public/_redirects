@@ -1,0 +1,14 @@
+# Canonical URL Redirects for The REGENESIS Project
+/keynote          /keynotes         301
+/abouts           /about            301
+/sciences         /science          301
+/mythologies      /mythology        301
+/quiz             /mirror-quiz      301
+/quizzes          /mirror-quiz      301
+/mirrorquiz       /mirror-quiz      301
+/mirrorquizzes    /mirror-quiz      301
+/speaker-kits     /speaker-kit      301
+/speakerkit       /speaker-kit      301
+/speakerkits      /speaker-kit      301
+/waitlists        /waitlist         301
+/contacts         /contact          301

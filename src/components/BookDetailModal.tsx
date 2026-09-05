@@ -116,7 +116,7 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
               <input
                 type="email"
                 required
-                placeholder="Enter your executive email"
+                placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);

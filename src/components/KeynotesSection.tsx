@@ -31,10 +31,10 @@ const KEYNOTES_LIST: KeynoteDetail[] = [
         Discover why your <strong className="font-bold text-black">Biological Architecture</strong> is the invisible ceiling on your growth, and learn how to overwrite the <strong className="font-bold text-black">Survival Conditioning</strong> that is keeping your business safe, but small.
       </>
     ),
-    fullDescription: "In this flagship keynote, Thomas Ventura breaks down the neuroscience of executive resistance and limbic threat gates. Leaders learn how nervous system bandwidth directly dictates revenue scaling, risk tolerance, and decision speed.",
+    fullDescription: "In this flagship keynote, Thomas Ventura breaks down the neuroscience of leadership resistance and limbic threat gates. Leaders learn how nervous system bandwidth directly dictates revenue scaling, risk tolerance, and decision speed.",
     takeaways: [
       "Identify the 3 subconscious threat triggers that stall corporate growth",
-      "Calculate your executive biological ceiling and prefrontal bandwidth",
+      "Calculate your biological capacity ceiling and prefrontal bandwidth",
       "Re-wire autonomic coherence for high-stakes negotiation"
     ]
   },
@@ -49,11 +49,11 @@ const KEYNOTES_LIST: KeynoteDetail[] = [
         Stop running your leadership on emergency stress reserves. Learn the <strong className="font-bold text-black">REGENESIS Protocol™</strong>—the blueprint for upgrading your internal hardware to sustain exponential scale without the burnout.
       </>
     ),
-    fullDescription: "Designed for C-suite executives, founders, and high-performance teams, this session delivers the 4-pillar tactical framework for neuro-biological capacity expansion and sustainable corporate longevity.",
+    fullDescription: "Designed for founders, operators, and high-performance teams, this session delivers the 4-pillar tactical framework for neuro-biological capacity expansion and sustainable organizational longevity.",
     takeaways: [
-      "Transition from sympathetic stress lock to coherent executive focus",
+      "Transition from sympathetic stress lock to coherent leadership focus",
       "Implement the 365-day biological capacity expansion protocol",
-      "Eliminate key-person biological risk across your executive team"
+      "Reduce key-person biological risk across your leadership team"
     ]
   }
 ];
