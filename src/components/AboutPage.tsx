@@ -357,17 +357,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             </div>
 
             <div className="relative aspect-video w-full rounded-xl overflow-hidden bg-black border border-[#C9A227]/30 mb-4 flex items-center justify-center">
-              <img 
-                src={journeySilhouette}
-                alt="The Story & Origin of Thomas Ventura — Visual Placeholder"
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover opacity-50"
+              <iframe
+                src="https://www.youtube.com/embed/qKMNyDz7TnE?autoplay=1&rel=0"
+                title="Watch: The Story & Origin of Thomas Ventura"
+                className="w-full h-full border-0 absolute inset-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
               />
-              <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-6 text-center">
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-black flex items-center justify-center shadow-[0_0_30px_rgba(201,162,39,0.7)]">
-                  <Play className="w-7 h-7 sm:w-8 sm:h-8 fill-current ml-1 text-black" />
-                </div>
-              </div>
             </div>
 
             <div className="flex justify-end">

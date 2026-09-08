@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { Play, Sparkles, X, ArrowRight, Award, ChevronRight } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
+import part1Thumbnail from '../assets/images/series_part1_limit_switch_1788902240200.jpg';
+import part2Thumbnail from '../assets/images/series_part2_willpower_1788902255808.jpg';
+import part3Thumbnail from '../assets/images/series_part3_origin_1788902270549.jpg';
+import part4Thumbnail from '../assets/images/series_part4_about_you_1788902283710.jpg';
+import part5Thumbnail from '../assets/images/series_part5_spec_code_1788902297184.jpg';
 
 const HERO_BG_URL = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1784739994/sreached_yc6gwp.png';
 
@@ -18,6 +23,7 @@ interface VideoEpisode {
   duration?: string;
   thumbnailUrl: string;
   isAvailable?: boolean;
+  youtubeId?: string;
 }
 
 interface VideoItem {
@@ -31,6 +37,7 @@ interface VideoItem {
   thumbnailUrl: string;
   isStartHere?: boolean;
   seriesTitle?: string;
+  youtubeId?: string;
   episodes: VideoEpisode[];
 }
 
@@ -44,34 +51,36 @@ const VIDEOS: VideoItem[] = [
     duration: '',
     description: 'Why every attempt to expand keeps hitting the same wall — decoded by a war-zone refugee turned operator.',
     thumbnailUrl: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1784828493/regenerated_image_1784798224610-B1a6fML__1_wqi17x.png',
+    youtubeId: 'qKMNyDz7TnE',
     isStartHere: true,
-    seriesTitle: 'It Was Never Discipline',
+    seriesTitle: 'IT WAS NEVER DISCIPLINE — 5-PART SERIES',
     episodes: [
       {
         id: 'v1-ep1',
         partNumber: 1,
-        title: 'The Hook',
+        title: 'The Limit Switch',
         subline: "What you've called discipline, timing, or fear was never any of those.",
         duration: '',
-        thumbnailUrl: '',
+        thumbnailUrl: part1Thumbnail,
         isAvailable: true,
+        youtubeId: 'qKMNyDz7TnE',
       },
       {
         id: 'v1-ep2',
         partNumber: 2,
-        title: 'The War & The Proof',
-        subline: 'What the survival code actually does — and what the research shows about trying to out-muscle it.',
+        title: 'Why Willpower Loses',
+        subline: 'What the research shows about trying to out-muscle your own wiring.',
         duration: '',
-        thumbnailUrl: '',
+        thumbnailUrl: part2Thumbnail,
         isAvailable: false,
       },
       {
         id: 'v1-ep3',
         partNumber: 3,
         title: 'The Origin',
-        subline: 'Why Thomas can make this claim: a war zone, a collapse, and a decade of decoding.',
+        subline: 'A war zone, a collapse, and a decade of decoding.',
         duration: '',
-        thumbnailUrl: '',
+        thumbnailUrl: part3Thumbnail,
         isAvailable: false,
       },
       {
@@ -80,16 +89,16 @@ const VIDEOS: VideoItem[] = [
         title: 'This Is About You',
         subline: "Your past didn't need a combat zone to build one of these.",
         duration: '',
-        thumbnailUrl: '',
+        thumbnailUrl: part4Thumbnail,
         isAvailable: false,
       },
       {
         id: 'v1-ep5',
         partNumber: 5,
-        title: 'What To Do About It',
+        title: 'Reading Your Own Code',
         subline: "You can't rewrite code you've never read.",
         duration: '',
-        thumbnailUrl: '',
+        thumbnailUrl: part5Thumbnail,
         isAvailable: false,
       },
     ],
@@ -339,39 +348,43 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </button>
 
             {/* Video Player Display */}
-            <div className="relative aspect-video max-h-[36vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
-              <img 
-                src={activeEpisode?.thumbnailUrl || activeVideo.thumbnailUrl} 
-                alt={activeEpisode?.title || activeVideo.title}
-                className="w-full h-full object-cover opacity-50"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-[#000000]/40" />
-              
-              {activeVideo.id === 'v1' ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-3 text-center">
-                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-[#000000] flex items-center justify-center shadow-[0_0_25px_rgba(226,177,61,0.5)]">
-                    <Play className="w-5 h-5 sm:w-7 sm:h-7 fill-current text-[#000000] ml-1" />
-                  </div>
-                </div>
+            <div className="relative aspect-video max-h-[36vh] sm:max-h-[44vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
+              {(activeEpisode?.youtubeId || (activeVideo.id === 'v1' && (!activeEpisode || activeEpisode.partNumber === 1))) ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${activeEpisode?.youtubeId || activeVideo.youtubeId || 'qKMNyDz7TnE'}?autoplay=1&rel=0`}
+                  title={activeEpisode?.title || activeVideo.title}
+                  className="w-full h-full border-0 absolute inset-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               ) : (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center space-y-2.5">
-                  <span className="font-mono font-bold text-xs sm:text-sm uppercase tracking-[0.25em] text-[#FCE289] bg-[#000000]/90 px-4 py-1.5 rounded-full border border-[#E2B13D]/50 shadow-md">
-                    COMING SOON
-                  </span>
-                  <p className="text-xs sm:text-sm text-[#F3EFE0] font-inter">
-                    Want to know the moment it's live?
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      handleCloseModal();
-                      onOpenMirrorQuiz();
-                    }}
-                    className="mt-1 px-4 py-2 sm:px-5 sm:py-2.5 rounded bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-black font-inter font-bold text-[10px] sm:text-xs uppercase tracking-[0.15em] hover:scale-105 transition-all shadow-md cursor-pointer"
-                  >
-                    GET EARLY ACCESS TO THE MIRROR QUIZ
-                  </button>
-                </div>
+                <>
+                  <img 
+                    src={activeEpisode?.thumbnailUrl || activeVideo.thumbnailUrl} 
+                    alt={activeEpisode?.title || activeVideo.title}
+                    className="w-full h-full object-cover opacity-50"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-[#000000]/60 to-[#000000]/40" />
+                  
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center space-y-2.5">
+                    <span className="font-mono font-bold text-xs sm:text-sm uppercase tracking-[0.25em] text-[#FCE289] bg-[#000000]/90 px-4 py-1.5 rounded-full border border-[#E2B13D]/50 shadow-md">
+                      COMING SOON
+                    </span>
+                    <p className="text-xs sm:text-sm text-[#F3EFE0] font-inter">
+                      Want to know the moment it's live?
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleCloseModal();
+                        onOpenMirrorQuiz();
+                      }}
+                      className="mt-1 px-4 py-2 sm:px-5 sm:py-2.5 rounded bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-black font-inter font-bold text-[10px] sm:text-xs uppercase tracking-[0.15em] hover:scale-105 transition-all shadow-md cursor-pointer"
+                    >
+                      GET EARLY ACCESS TO THE MIRROR QUIZ
+                    </button>
+                  </div>
+                </>
               )}
             </div>
 
@@ -381,7 +394,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="flex items-center justify-between gap-2 mb-3">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#FCE289] font-bold">
-                      {activeVideo.seriesTitle || activeVideo.title} — 5-Part Series
+                      {activeVideo.seriesTitle || 'IT WAS NEVER DISCIPLINE — 5-PART SERIES'}
                     </span>
                     <span className="text-[11px] text-[#A69B89] font-inter hidden sm:inline">
                       — Select a part to view
@@ -396,7 +409,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
                   {activeVideo.episodes.map((ep) => {
                     const isCurrent = (activeEpisode?.id || activeVideo.episodes[0].id) === ep.id;
-                    const isEpAvailable = ep.isAvailable && activeVideo.id === 'v1';
                     return (
                       <button
                         key={ep.id}
@@ -408,38 +420,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                             : 'bg-[#0D0D0D] border-[#7E4F11]/40 hover:border-[#E2B13D] hover:bg-[#14110C] opacity-80 hover:opacity-100'
                         }`}
                       >
-                        {/* Plain Dark/Gold Number Card Thumbnail */}
-                        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-gradient-to-br from-[#1C150C] via-[#0E0B07] to-[#050403] mb-2 border border-[#7E4F11]/40 flex items-center justify-center">
-                          <div className="text-center">
+                        {/* Artwork Thumbnail */}
+                        <div className="relative aspect-video w-full rounded-lg overflow-hidden bg-[#050403] mb-2 border border-[#7E4F11]/40 flex items-center justify-center">
+                          {ep.thumbnailUrl ? (
+                            <img 
+                              src={ep.thumbnailUrl} 
+                              alt={ep.title} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            />
+                          ) : (
                             <span className="font-playfair font-bold text-lg sm:text-xl text-[#FCE289]/90 tracking-wider">
                               0{ep.partNumber}
                             </span>
-                          </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                           {/* Number Badge */}
                           <div className="absolute top-1.5 left-1.5 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#E2B13D] text-[#000000] font-bold font-inter text-[10px] sm:text-xs flex items-center justify-center shadow-md border border-[#FCE289]">
                             {ep.partNumber}
                           </div>
 
-                          {/* Mini Play Icon / Status */}
+                          {/* Mini Play Indicator */}
                           <div className="absolute inset-0 flex items-center justify-center">
                             {isCurrent ? (
-                              <div className="px-2 py-0.5 rounded bg-black/85 border border-[#FCE289] text-[#FCE289] text-[9px] font-mono tracking-wider uppercase font-bold">
-                                {isEpAvailable ? 'PLAYING' : 'SELECTED'}
+                              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#E2B13D] text-black flex items-center justify-center shadow-[0_0_12px_rgba(226,177,61,0.7)]">
+                                <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current ml-0.5" />
                               </div>
                             ) : (
-                              <div className="w-6 h-6 rounded-full bg-black/70 text-[#E2B13D] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#E2B13D] group-hover:text-black transition-all">
-                                <Play className="w-3 h-3 fill-current ml-0.5" />
+                              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-black/70 text-[#E2B13D] flex items-center justify-center group-hover:scale-110 group-hover:bg-[#E2B13D] group-hover:text-black transition-all">
+                                <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current ml-0.5" />
                               </div>
                             )}
                           </div>
-
-                          {/* Start Here Flag on Part 1 */}
-                          {ep.partNumber === 1 && (
-                            <div className="absolute bottom-1 right-1 px-1.5 py-0.5 rounded bg-[#E2B13D] text-[#000000] text-[8px] font-bold tracking-wider uppercase">
-                              START
-                            </div>
-                          )}
                         </div>
 
                         {/* Episode Title */}
@@ -469,7 +481,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
                 <h3 className="font-playfair font-bold text-lg sm:text-xl md:text-2xl text-[#FFFFFF] mb-1.5 sm:mb-2">
                   {activeVideo.id === 'v1'
-                    ? `PART ${activeEpisode?.partNumber || 1} — ${activeEpisode?.title || 'The Hook'}`
+                    ? `PART ${activeEpisode?.partNumber || 1} — ${activeEpisode?.title || 'The Limit Switch'}`
                     : activeVideo.title}
                 </h3>
 
