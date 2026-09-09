@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Sparkles, Calendar, FileText, ArrowRight, Shield, Zap, CheckCircle, Send } from 'lucide-react';
-import { portraitImg as keynoteBiologyBg } from '../data/content';
 import keynoteStageImg from '../assets/images/keynote_stage_lighting_1788618057460.jpg';
 
 interface KeynotesPageProps {
@@ -17,7 +16,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
     name: '',
     email: '',
     organization: '',
-    eventType: 'Conference',
+    eventType: '',
     eventDate: '',
     notes: ''
   });
@@ -99,8 +98,8 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
       {/* Full Page Keynote Background Image */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <img 
-          src={keynoteBiologyBg} 
-          alt="Keynote Biology & Neural Pathways Background" 
+          src={keynoteStageImg} 
+          alt="Keynote Stage & Auditorium Lighting" 
           className="w-full h-full object-cover opacity-55"
           referrerPolicy="no-referrer"
         />
@@ -490,6 +489,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
                       onChange={(e) => setFormData({ ...formData, eventType: e.target.value })}
                       className="w-full h-10 px-3.5 rounded-lg bg-[#161B2A] border border-gray-700 text-white focus:outline-none focus:border-[#D4AF37] transition-all"
                     >
+                      <option value="" disabled className="bg-[#161B2A] text-gray-400">Select event type...</option>
                       <option value="Conference" className="bg-[#161B2A] text-white">Conference</option>
                       <option value="Leadership offsite" className="bg-[#161B2A] text-white">Leadership offsite</option>
                       <option value="Accelerator or founder program" className="bg-[#161B2A] text-white">Accelerator or founder program</option>

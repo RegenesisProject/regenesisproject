@@ -88,8 +88,10 @@ export const Footer: React.FC<FooterProps> = ({
             
             <ul className="space-y-3 font-inter text-xs text-[#6C6863]">
               <li>
-                <button 
-                  onClick={() => {
+                <a 
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
                     if (onNavigatePage) {
                       onNavigatePage('contact');
                     } else {
@@ -100,11 +102,13 @@ export const Footer: React.FC<FooterProps> = ({
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
                   <span>Contact & Press</span>
-                </button>
+                </a>
               </li>
               <li>
-                <button 
-                  onClick={() => {
+                <a 
+                  href="/keynotes"
+                  onClick={(e) => {
+                    e.preventDefault();
                     if (onNavigatePage) {
                       onNavigatePage('keynotes');
                     } else {
@@ -115,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
                   <span>Keynotes & Speaker Kit</span>
-                </button>
+                </a>
               </li>
               <li>
                 <button 

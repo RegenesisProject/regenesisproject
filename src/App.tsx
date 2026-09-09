@@ -122,13 +122,17 @@ export const ROUTE_REDIRECTS: Record<string, string> = {
   '/mythologies': '/mythology',
   '/quiz': '/mirror-quiz',
   '/quizzes': '/mirror-quiz',
+  '/mirror': '/mirror-quiz',
   '/mirrorquiz': '/mirror-quiz',
   '/mirrorquizzes': '/mirror-quiz',
+  '/mirror-quizzes': '/mirror-quiz',
   '/speaker-kits': '/speaker-kit',
   '/speakerkit': '/speaker-kit',
   '/speakerkits': '/speaker-kit',
   '/waitlists': '/waitlist',
   '/contacts': '/contact',
+  '/contact-us': '/contact',
+  '/press': '/contact',
 };
 
 export const getPageFromPath = (path: string): PageKey => {

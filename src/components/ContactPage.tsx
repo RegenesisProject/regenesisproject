@@ -22,12 +22,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     name: '',
     email: '',
     company: '',
-    inquiryType: 'Keynote Booking / Speaking',
+    inquiryType: '',
     message: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name || !formData.email || !formData.inquiryType || !formData.message) {
+      return;
+    }
     setIsSubmitting(true);
 
     try {
@@ -60,7 +63,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       name: '',
       email: '',
       company: '',
-      inquiryType: 'Keynote Booking / Speaking',
+      inquiryType: '',
       message: ''
     });
   };
@@ -81,8 +84,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             }}
             className="inline-flex items-center gap-2 text-xs font-inter font-bold uppercase tracking-[0.2em] text-[#6C6863] hover:text-[#D4AF37] transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Return to Home</span>
+            <span>← BACK TO HOME</span>
           </button>
         </div>
 
@@ -179,14 +181,16 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       Inquiry Category
                     </label>
                     <select
+                      required
                       value={formData.inquiryType}
                       onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
                       className="w-full bg-[#FFFFFF] border-b border-[#1A1A1A] text-[#1A1A1A] p-3 outline-none focus:border-[#D4AF37] rounded-none font-inter text-xs"
                     >
-                      <option>Keynote Booking / Speaking</option>
-                      <option>Media & Podcast Interview</option>
-                      <option>Working With Thomas</option>
-                      <option>Something Else</option>
+                      <option value="" disabled>Select inquiry category...</option>
+                      <option value="Keynote Booking / Speaking">Keynote Booking / Speaking</option>
+                      <option value="Media & Podcast Interview">Media & Podcast Interview</option>
+                      <option value="Working With Thomas">Working With Thomas</option>
+                      <option value="Something Else">Something Else</option>
                     </select>
                   </div>
                 </div>
@@ -228,42 +232,45 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             <div className="border border-[#1A1A1A]/15 p-6 bg-white space-y-3">
               <div className="flex items-center gap-2 text-[#D4AF37] font-semibold text-xs uppercase tracking-wider">
                 <Calendar className="w-4 h-4" />
-                <span>Keynote Engagements</span>
+                <span>KEYNOTE ENGAGEMENTS</span>
               </div>
               <p className="text-xs text-[#6C6863] leading-relaxed">
-                For corporate summits, conferences, or leadership assemblies, please specify dates, location, and audience size.
+                For conferences, team events, and leadership offsites. Include your dates, location, and rough audience size.
               </p>
-              <button
-                onClick={() => {
-                  if (onNavigatePage) {
-                    onNavigatePage('keynotes');
-                  } else if (onOpenSpeakerKit) {
-                    onOpenSpeakerKit();
-                  }
-                }}
-                className="text-xs font-semibold text-[#1A1A1A] hover:text-[#D4AF37] inline-flex items-center gap-1 cursor-pointer transition-colors"
-              >
-                <span>View Keynotes & Topics →</span>
-              </button>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onNavigatePage) {
+                      onNavigatePage('keynotes');
+                    } else if (onOpenSpeakerKit) {
+                      onOpenSpeakerKit();
+                    }
+                  }}
+                  className="text-xs font-semibold text-[#1A1A1A] hover:text-[#D4AF37] inline-flex items-center gap-1 cursor-pointer transition-colors"
+                >
+                  <span>→ View Keynotes & Topics</span>
+                </button>
+              </div>
             </div>
 
             <div className="border border-[#1A1A1A]/15 p-6 bg-white space-y-3">
               <div className="flex items-center gap-2 text-[#D4AF37] font-semibold text-xs uppercase tracking-wider">
                 <Mic className="w-4 h-4" />
-                <span>Press & Media Inquiries</span>
+                <span>PRESS & MEDIA</span>
               </div>
               <p className="text-xs text-[#6C6863] leading-relaxed">
-                For podcast invitations, broadcast appearances, and editorial coverage, please note your production timeline and format.
+                For podcasts, interviews, and editorial coverage. Let us know your format and your timeline.
               </p>
             </div>
 
             <div className="border border-[#1A1A1A]/15 p-6 bg-white space-y-3">
               <div className="flex items-center gap-2 text-[#D4AF37] font-semibold text-xs uppercase tracking-wider">
                 <UserCheck className="w-4 h-4" />
-                <span>Working With Thomas</span>
+                <span>WORKING WITH THOMAS</span>
               </div>
               <p className="text-xs text-[#6C6863] leading-relaxed">
-                Direct inquiries regarding high-level leadership engagements and framework applications.
+                For anyone who wants to work with Thomas directly on their own configuration. Tell us where you&apos;re stuck.
               </p>
             </div>
 

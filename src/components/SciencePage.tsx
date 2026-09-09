@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ScrollReveal } from './ScrollReveal';
 import lensesSectionBg from '../assets/images/magnifier_dna_human_1785264440424.jpg';
@@ -182,20 +182,64 @@ export const SciencePage: React.FC<SciencePageProps> = ({
 }) => {
   const [selectedLens, setSelectedLens] = useState<{ lens: ScienceLens; blockTitle: string } | null>(null);
   
-  // Mobile accordion state: all 4 blocks closed by default on mobile.
-  // On desktop (md:), all 4 blocks are open by default (always visible 3-column grid).
-  const [mobileOpenBlocks, setMobileOpenBlocks] = useState<Record<string, boolean>>({
-    'BLOCK 1': false,
-    'BLOCK 2': false,
-    'BLOCK 3': false,
-    'BLOCK 4': false,
+  // Desktop vs Mobile default state:
+  // On desktop (>= 768px): all four blocks open by default (zero clicks to see all 12 lenses).
+  // On mobile (< 768px): all four blocks closed by default (prevents excessive vertical scrolling).
+  const [openBlocks, setOpenBlocks] = useState<Record<string, boolean>>(() => {
+    if (typeof window !== 'undefined') {
+      const isDesktop = window.innerWidth >= 768;
+      return {
+        'BLOCK 1': isDesktop,
+        'BLOCK 2': isDesktop,
+        'BLOCK 3': isDesktop,
+        'BLOCK 4': isDesktop,
+      };
+    }
+    // SSR / prerender default: open on desktop
+    return {
+      'BLOCK 1': true,
+      'BLOCK 2': true,
+      'BLOCK 3': true,
+      'BLOCK 4': true,
+    };
   });
 
-  const toggleMobileBlock = (blockNumber: string) => {
-    setMobileOpenBlocks(prev => ({
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const isDesktop = window.innerWidth >= 768;
+    setOpenBlocks({
+      'BLOCK 1': isDesktop,
+      'BLOCK 2': isDesktop,
+      'BLOCK 3': isDesktop,
+      'BLOCK 4': isDesktop,
+    });
+  }, []);
+
+  const toggleBlock = (blockNumber: string) => {
+    setOpenBlocks(prev => ({
       ...prev,
       [blockNumber]: !prev[blockNumber]
     }));
+  };
+
+  const handleMirrorQuizClick = () => {
+    if (onOpenMirrorQuiz) {
+      onOpenMirrorQuiz();
+    } else if (onNavigatePage) {
+      onNavigatePage('quiz');
+    } else {
+      window.location.href = '/mirror-quiz';
+    }
+  };
+
+  const handleKeynotesClick = () => {
+    if (onNavigateKeynotes) {
+      onNavigateKeynotes();
+    } else if (onNavigatePage) {
+      onNavigatePage('keynotes');
+    } else {
+      window.location.href = '/keynotes';
+    }
   };
 
   return (
@@ -229,10 +273,12 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                 <span>THE SCIENCE</span>
               </div>
 
-              <h1 className="font-sans font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl text-white tracking-tight leading-[1.05] uppercase drop-shadow-xl space-y-1">
-                <span className="block">YOU WERE BORN</span>
-                <span className="block">AS ONE SYSTEM.</span>
-                <span className="text-[#FCE289] font-playfair italic font-extrabold normal-case block pt-1 drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
+              <h1 className="font-sans font-black text-4xl sm:text-6xl lg:text-6xl xl:text-7xl text-white tracking-tight leading-[1.15] uppercase drop-shadow-xl">
+                <span>YOU WERE BORN</span>
+                <br />
+                <span>AS ONE SYSTEM.</span>
+                <br />
+                <span className="text-[#FCE289] font-playfair italic font-extrabold normal-case drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)] inline-block pt-1 sm:pt-2">
                   Another was installed on top.
                 </span>
               </h1>
@@ -274,7 +320,7 @@ export const SciencePage: React.FC<SciencePageProps> = ({
 
               <div className="pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <button
-                  onClick={onOpenMirrorQuiz}
+                  onClick={handleMirrorQuizClick}
                   className="px-8 py-3.5 bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] hover:opacity-95 text-black font-inter text-xs sm:text-sm font-black uppercase tracking-[0.2em] rounded-xl transition-all duration-300 shadow-[0_0_35px_rgba(201,162,39,0.35)] cursor-pointer inline-flex items-center justify-center gap-2.5 hover:scale-[1.02]"
                 >
                   <Sparkles className="w-4 h-4 text-black" />
@@ -320,16 +366,16 @@ export const SciencePage: React.FC<SciencePageProps> = ({
               <ScrollReveal key={block.number} delay={blockIdx * 0.1} yOffset={20}>
                 <div className="bg-[#28221C]/95 border border-[#C9A227]/40 rounded-3xl p-6 sm:p-10 relative overflow-hidden backdrop-blur-md shadow-2xl">
                   
-                  {/* Block Header (Interactive toggle on mobile, static on desktop) */}
+                  {/* Block Header (Interactive toggle on desktop and mobile) */}
                   <div 
-                    onClick={() => toggleMobileBlock(block.number)}
-                    className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#C9A227]/20 pb-6 mb-8 gap-4 cursor-pointer md:cursor-default select-none"
+                    onClick={() => toggleBlock(block.number)}
+                    className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#C9A227]/20 pb-6 mb-8 gap-4 cursor-pointer select-none group"
                   >
                     <div>
                       <span className="font-mono text-xs font-bold text-[#C9A227] tracking-[0.2em] uppercase block mb-1">
                         {block.number}
                       </span>
-                      <h3 className="font-sans font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">
+                      <h3 className="font-sans font-black text-2xl sm:text-3xl text-white uppercase tracking-tight group-hover:text-[#FFE18A] transition-colors">
                         {block.title}
                       </h3>
                     </div>
@@ -337,29 +383,37 @@ export const SciencePage: React.FC<SciencePageProps> = ({
                       <p className="font-playfair italic text-base sm:text-lg text-[#FCE289] max-w-xl">
                         {block.subtitle}
                       </p>
-                      {/* Mobile Expand / Collapse Indicator */}
-                      <div className="md:hidden inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#362E25] border border-[#C9A227]/40 text-[#FCE289] text-xs font-mono font-bold tracking-wider mt-1">
-                        <span>{mobileOpenBlocks[block.number] ? 'Collapse' : 'View 3 Lenses'}</span>
-                        <ChevronDown className={`w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200 ${mobileOpenBlocks[block.number] ? 'rotate-180' : ''}`} />
-                      </div>
+                      {/* Expand / Collapse Indicator (Functional on both desktop & mobile) */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleBlock(block.number);
+                        }}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#362E25] border border-[#C9A227]/40 text-[#FCE289] text-xs font-mono font-bold tracking-wider hover:bg-[#43392E] hover:border-[#C9A227]/70 transition-all cursor-pointer mt-1 md:mt-0"
+                      >
+                        <span>{openBlocks[block.number] ? 'Collapse' : 'View 3 Lenses'}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-[#C9A227] transition-transform duration-200 ${openBlocks[block.number] ? 'rotate-180' : ''}`} />
+                      </button>
                     </div>
                   </div>
 
-                  {/* 3 Lenses Grid — Collapsed by default on mobile, always visible 3-column grid on desktop */}
-                  <div className={`grid-cols-1 md:grid-cols-3 gap-6 ${mobileOpenBlocks[block.number] ? 'grid' : 'hidden'} md:grid`}>
-                    {block.lenses.map((lens) => {
+                  {/* 3 Lenses Grid — Open by default on desktop, closed by default on mobile */}
+                  <div className={`gap-6 ${openBlocks[block.number] ? 'grid grid-cols-1 md:grid-cols-3' : 'hidden'}`}>
+                    {block.lenses.map((lens, lensIdx) => {
                       const IconComponent = lens.icon;
+                      const lensNumber = lens.number || String(blockIdx * 3 + lensIdx + 1).padStart(2, '0');
 
                       return (
                         <div
                           key={lens.id}
-                          onClick={() => setSelectedLens({ lens, blockTitle: block.title })}
+                          onClick={() => setSelectedLens({ lens: { ...lens, number: lensNumber }, blockTitle: block.title })}
                           className="group bg-[#362E25]/90 border border-[#C9A227]/35 hover:border-[#C9A227]/70 hover:bg-[#3D342A]/90 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer"
                         >
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                              <span className="font-mono text-xs font-bold text-[#C9A227] tracking-wider">
-                                {lens.number}
+                              <span className="font-mono text-xs sm:text-sm font-bold text-[#C9A227] tracking-wider">
+                                {lensNumber}
                               </span>
                               <div className="w-9 h-9 rounded-xl bg-[#C9A227]/10 border border-[#C9A227]/30 flex items-center justify-center text-[#C9A227] group-hover:scale-105 transition-transform">
                                 <IconComponent className="w-4 h-4" />
@@ -574,22 +628,20 @@ export const SciencePage: React.FC<SciencePageProps> = ({
 
               <div className="pt-4 flex flex-col items-center gap-4">
                 <button
-                  onClick={onOpenMirrorQuiz}
+                  onClick={handleMirrorQuizClick}
                   className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] hover:opacity-95 text-black font-inter text-xs sm:text-sm font-black uppercase tracking-[0.2em] rounded-xl transition-all duration-300 shadow-[0_0_35px_rgba(201,162,39,0.35)] cursor-pointer inline-flex items-center justify-center gap-2.5 hover:scale-[1.02]"
                 >
                   <Sparkles className="w-5 h-5 text-black" />
                   <span>GET EARLY ACCESS TO THE MIRROR QUIZ</span>
                 </button>
 
-                {onNavigateKeynotes && (
-                  <button
-                    onClick={onNavigateKeynotes}
-                    className="text-xs sm:text-sm font-mono text-[#C9A227] hover:text-white transition-colors inline-flex items-center gap-2 pt-2 cursor-pointer"
-                  >
-                    <span>Bringing REGENESIS to a leadership team or event? → Explore Keynotes</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                )}
+                <button
+                  onClick={handleKeynotesClick}
+                  className="text-xs sm:text-sm font-mono text-[#C9A227] hover:text-white transition-colors inline-flex items-center gap-2 pt-2 cursor-pointer"
+                >
+                  <span>Bringing REGENESIS to a leadership team or event? → Explore Keynotes</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
               </div>
 
             </div>

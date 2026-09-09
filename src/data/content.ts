@@ -1,6 +1,8 @@
 import keynoteStageImg from '../assets/images/keynote_stage_lighting_1788618057460.jpg';
+import magnifierDnaImg from '../assets/images/magnifier_dna_human_1785264440424.jpg';
+import goldenFigureImg from '../assets/images/golden_figure_bg_1785192950234.jpg';
 
-export const portraitImg = 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=2000';
+export const portraitImg = keynoteStageImg;
 export const speakerKitVenueImg = keynoteStageImg;
 export const thomasCutoutImg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1784828493/regenerated_image_1784798224610-B1a6fML__1_wqi17x.png';
 export const heroGraphicImg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1784739994/sreached_yc6gwp.png';
@@ -9,10 +11,10 @@ export const book1Img = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v17851
 export const book2Img = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_2.2_awqfr6.png';
 export const book3Img = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_3.2_nptruj.png';
 
-export const scienceBgImg = 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=2000';
-export const dnaMagnifierLogoImg = 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=800';
-export const dnaGeneStemLogoImg = 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=800';
-export const magnifierDnaZoomImg = 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=1200';
+export const scienceBgImg = magnifierDnaImg;
+export const dnaMagnifierLogoImg = magnifierDnaImg;
+export const dnaGeneStemLogoImg = goldenFigureImg;
+export const magnifierDnaZoomImg = magnifierDnaImg;
 
 export const SITE_METADATA = {
   title: 'Thomas Ventura — Systems Architect & Author',

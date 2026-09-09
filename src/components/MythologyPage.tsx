@@ -51,7 +51,7 @@ const CAST_MEMBERS: CastMember[] = [
     description: 'The part of you that decides. Runs the day, holds the line under pressure, and can talk the rest of the system down mid-reaction.',
     wounded: 'Goes offline. When the load gets heavy enough, the Commander shuts down and the reactive parts take the wheel — which is why you can know exactly what to do and do the opposite anyway.',
     integrated: 'Stays online when it counts. The steady hand that keeps the whole cast working for you instead of against you.',
-    science: 'Prefrontal neural regulation — regulation and top-down control',
+    science: 'Prefrontal executive function — regulation and top-down control',
     woundedTrigger: 'Being under heavy load',
     costsYou: 'The decisions you\'d never have made if you\'d been fully at the wheel.',
     quote: '"A plan is worth nothing if nobody\'s at the wheel when the pressure hits."'
@@ -190,10 +190,9 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
               <span>THE MYTHOLOGY</span>
             </div>
 
-            <h1 className="font-playfair font-black text-3xl sm:text-5xl lg:text-7xl text-white tracking-tight uppercase leading-[1.05] mb-6">
-              THE CAST OF YOUR
-              <br />
-              <span className="bg-gradient-to-r from-[#FFE18A] via-[#C9A227] to-[#8C6D1F] bg-clip-text text-transparent">
+            <h1 className="font-playfair font-black text-3xl sm:text-5xl lg:text-7xl text-white tracking-tight uppercase leading-[1.08] mb-6">
+              <span className="block">THE CAST OF YOUR</span>
+              <span className="block bg-gradient-to-r from-[#FFE18A] via-[#C9A227] to-[#8C6D1F] bg-clip-text text-transparent mt-1 sm:mt-2">
                 INTERNAL THEATER
               </span>
             </h1>
@@ -288,24 +287,29 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
           </ScrollReveal>
 
           {/* Quick-Select Character Tabs */}
-          <div className="grid grid-cols-8 gap-2.5 mb-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-8 gap-2 mb-8 max-w-5xl mx-auto">
             {CAST_MEMBERS.map((member, idx) => {
               const isActive = idx === activeCastIndex;
+              const num = String(idx + 1).padStart(2, '0');
+              const name = member.name.replace('THE ', '');
               return (
                 <button
                   key={member.id}
                   onClick={() => setActiveCastIndex(idx)}
-                  className={`p-2.5 rounded-xl border text-center transition-all duration-300 cursor-pointer flex flex-col items-center gap-1.5 ${
+                  className={`py-3 px-1.5 rounded-xl border text-center transition-all duration-300 cursor-pointer flex items-center justify-center ${
                     isActive
                       ? 'bg-gradient-to-b from-[#2A2010] to-[#140E08] border-[#C9A227] shadow-[0_0_20px_rgba(201,162,39,0.35)] ring-1 ring-[#FFE18A] scale-[1.02]'
                       : 'bg-[#100D09]/85 border-[#C9A227]/25 hover:border-[#C9A227]/60 hover:bg-[#18130C]'
                   }`}
                 >
-                  <span className={`font-mono text-[10px] font-bold ${isActive ? 'text-[#FFE18A]' : 'text-[#C9A227]/70'}`}>
-                    {String(idx + 1).padStart(2, '0')}
-                  </span>
-                  <span className={`font-mono text-[11px] font-bold uppercase tracking-wider truncate w-full text-center ${isActive ? 'text-white' : 'text-stone-300'}`}>
-                    {member.name.replace('THE ', '')}
+                  <span className="font-mono text-[10px] xl:text-[11px] font-bold uppercase tracking-wider whitespace-pre text-center">
+                    <span className={isActive ? 'text-[#FFE18A]' : 'text-[#C9A227]/80'}>
+                      {num}
+                    </span>
+                    {'  '}
+                    <span className={isActive ? 'text-white' : 'text-stone-300'}>
+                      {name}
+                    </span>
                   </span>
                 </button>
               );
@@ -384,18 +388,22 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                   </div>
 
                   {/* Field 4 & 5: Science & What It Costs You */}
-                  <div className="p-4 rounded-xl bg-[#090705] border border-[#C9A227]/25 space-y-2.5 font-inter text-xs">
-                    <div>
-                      <strong className="text-[#C9A227] block text-[10px] font-mono font-bold uppercase tracking-wider mb-0.5">
-                        The Science
-                      </strong>
-                      <span className="text-stone-200 leading-normal">{currentMember.science}</span>
+                  <div className="p-4 sm:p-5 rounded-xl bg-[#090705] border border-[#C9A227]/25 space-y-4 font-inter text-xs">
+                    <div className="space-y-1.5">
+                      <div className="font-mono text-[10px] sm:text-[11px] font-bold text-[#C9A227] uppercase tracking-widest">
+                        THE SCIENCE
+                      </div>
+                      <p className="text-stone-200 leading-relaxed font-sans text-xs sm:text-sm">
+                        {currentMember.science}
+                      </p>
                     </div>
-                    <div>
-                      <strong className="text-[#C9A227] block text-[10px] font-mono font-bold uppercase tracking-wider mb-0.5">
-                        What It Costs You
-                      </strong>
-                      <span className="text-stone-200 leading-normal">{currentMember.costsYou}</span>
+                    <div className="space-y-1.5 pt-2 border-t border-[#C9A227]/15">
+                      <div className="font-mono text-[10px] sm:text-[11px] font-bold text-[#C9A227] uppercase tracking-widest">
+                        WHAT IT COSTS YOU
+                      </div>
+                      <p className="text-stone-200 leading-relaxed font-sans text-xs sm:text-sm">
+                        {currentMember.costsYou}
+                      </p>
                     </div>
                   </div>
 
@@ -569,9 +577,13 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                       </div>
                     </div>
 
+                    <p className="text-xs text-stone-200 leading-relaxed font-sans whitespace-pre-line">
+                      {item.description}
+                    </p>
+
                     <div className="space-y-1">
                       <span className="text-[10px] font-mono font-black uppercase text-[#E2B13D] tracking-wider block">
-                        WHAT DRIVES IT
+                        THE SCIENCE
                       </span>
                       <p className="text-xs text-stone-200 leading-relaxed bg-[#1A130B] p-2.5 rounded-lg border border-[#E2B13D]/20">
                         {item.science}
@@ -709,7 +721,15 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                 </button>
 
                 <button
-                  onClick={onOpenContact || onOpenSpeakerKit}
+                  onClick={() => {
+                    if (onOpenContact) {
+                      onOpenContact();
+                    } else if (onNavigatePage) {
+                      onNavigatePage('home', 'contact');
+                    } else {
+                      onOpenSpeakerKit();
+                    }
+                  }}
                   className="text-xs font-mono font-semibold text-[#C9A227] hover:text-[#FFE18A] uppercase tracking-wider underline underline-offset-4 cursor-pointer transition-colors pt-2"
                 >
                   Work With Thomas

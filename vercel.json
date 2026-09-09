@@ -3,7 +3,22 @@
   "outputDirectory": "dist",
   "redirects": [
     { "source": "/keynote", "destination": "/keynotes", "permanent": true },
-    { "source": "/quiz", "destination": "/mirror-quiz", "permanent": true }
+    { "source": "/abouts", "destination": "/about", "permanent": true },
+    { "source": "/sciences", "destination": "/science", "permanent": true },
+    { "source": "/mythologies", "destination": "/mythology", "permanent": true },
+    { "source": "/quiz", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/quizzes", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/mirror", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/mirrorquiz", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/mirrorquizzes", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/mirror-quizzes", "destination": "/mirror-quiz", "permanent": true },
+    { "source": "/speaker-kits", "destination": "/speaker-kit", "permanent": true },
+    { "source": "/speakerkit", "destination": "/speaker-kit", "permanent": true },
+    { "source": "/speakerkits", "destination": "/speaker-kit", "permanent": true },
+    { "source": "/waitlists", "destination": "/waitlist", "permanent": true },
+    { "source": "/contacts", "destination": "/contact", "permanent": true },
+    { "source": "/contact-us", "destination": "/contact", "permanent": true },
+    { "source": "/press", "destination": "/contact", "permanent": true }
   ],
   "rewrites": [
     { "source": "/about", "destination": "/about/index.html" },
