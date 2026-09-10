@@ -302,11 +302,10 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                       : 'bg-[#100D09]/85 border-[#C9A227]/25 hover:border-[#C9A227]/60 hover:bg-[#18130C]'
                   }`}
                 >
-                  <span className="font-mono text-[10px] xl:text-[11px] font-bold uppercase tracking-wider whitespace-pre text-center">
+                  <span className="font-mono text-[10px] xl:text-[11px] font-bold uppercase tracking-wider inline-flex items-center justify-center gap-1.5 text-center">
                     <span className={isActive ? 'text-[#FFE18A]' : 'text-[#C9A227]/80'}>
                       {num}
                     </span>
-                    {'  '}
                     <span className={isActive ? 'text-white' : 'text-stone-300'}>
                       {name}
                     </span>
@@ -718,21 +717,6 @@ export const MythologyPage: React.FC<MythologyPageProps> = ({
                 >
                   <span>GET EARLY ACCESS TO THE MIRROR QUIZ</span>
                   <ArrowRight className="w-4 h-4 text-[#000000]" />
-                </button>
-
-                <button
-                  onClick={() => {
-                    if (onOpenContact) {
-                      onOpenContact();
-                    } else if (onNavigatePage) {
-                      onNavigatePage('home', 'contact');
-                    } else {
-                      onOpenSpeakerKit();
-                    }
-                  }}
-                  className="text-xs font-mono font-semibold text-[#C9A227] hover:text-[#FFE18A] uppercase tracking-wider underline underline-offset-4 cursor-pointer transition-colors pt-2"
-                >
-                  Work With Thomas
                 </button>
               </div>
 

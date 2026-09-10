@@ -30,9 +30,9 @@ export const BOOKS_DATA: BookInfo[] = [
     tagline: 'Book Two',
     description: 'Hands you the protocol for interrupting survival conditioning and reconfiguring the patterns silently capping your capacity.',
     chapters: [
-      'Section I: Mechanics of Pattern Interruption',
-      'Section II: Deconditioning the Survival Loop',
-      'Section III: Biological Capacity Reconfiguration'
+      'Theme I: Mechanics of Pattern Interruption',
+      'Theme II: Deconditioning the Survival Loop',
+      'Theme III: Biological Capacity Reconfiguration'
     ],
     coverColor: 'from-[#4a2e0e] to-[#1a1005]',
     coverImage: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_2.2_awqfr6.png',

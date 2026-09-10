@@ -16,6 +16,9 @@
     { "source": "/speakerkit", "destination": "/speaker-kit", "permanent": true },
     { "source": "/speakerkits", "destination": "/speaker-kit", "permanent": true },
     { "source": "/waitlists", "destination": "/waitlist", "permanent": true },
+    { "source": "/wait-list", "destination": "/waitlist", "permanent": true },
+    { "source": "/trilogy", "destination": "/waitlist", "permanent": true },
+    { "source": "/books", "destination": "/waitlist", "permanent": true },
     { "source": "/contacts", "destination": "/contact", "permanent": true },
     { "source": "/contact-us", "destination": "/contact", "permanent": true },
     { "source": "/press", "destination": "/contact", "permanent": true }
@@ -29,5 +32,31 @@
     { "source": "/speaker-kit", "destination": "/speaker-kit/index.html" },
     { "source": "/waitlist", "destination": "/waitlist/index.html" },
     { "source": "/contact", "destination": "/contact/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)\\.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(about|keynotes|science|mythology|mirror-quiz|speaker-kit|waitlist|contact)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }

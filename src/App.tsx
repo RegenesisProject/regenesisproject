@@ -58,7 +58,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/about",
     ogTitle: "About Thomas Ventura — Creator of The REGENESIS Project",
     ogDescription: "From a war-zone refugee to two multi-million dollar operations run side by side for over fifteen years — and the framework he built after his own biology stopped him.",
-    image: "https://res.cloudinary.com/ew2ztpgz/image/upload/v1784828493/regenerated_image_1784798224610-B1a6fML__1_wqi17x.png",
+    image: "https://www.regenesisproject.com/assets/journey_silhouette_1788616759304-6wzvBsDT.jpg",
   },
   keynotes: {
     title: "Keynotes — Thomas Ventura | The REGENESIS Project",
@@ -130,6 +130,9 @@ export const ROUTE_REDIRECTS: Record<string, string> = {
   '/speakerkit': '/speaker-kit',
   '/speakerkits': '/speaker-kit',
   '/waitlists': '/waitlist',
+  '/wait-list': '/waitlist',
+  '/trilogy': '/waitlist',
+  '/books': '/waitlist',
   '/contacts': '/contact',
   '/contact-us': '/contact',
   '/press': '/contact',

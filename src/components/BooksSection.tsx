@@ -60,7 +60,7 @@ export const TrilogySection: React.FC<TrilogySectionProps> = ({ onSelectBook, on
                     {book.subtitle}
                   </span>
                   <p className="text-[11px] text-stone-300 font-inter font-medium leading-relaxed">
-                    Click to explore table of contents & details
+                    {book.id === 'survival-source-code' ? 'Click to explore table of contents & details' : 'Click to explore themes & overview'}
                   </p>
                 </div>
               </div>

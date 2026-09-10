@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Play, Sparkles, X, ArrowRight, Award, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Play, Sparkles, X, ArrowRight, Award, ChevronRight, HelpCircle, BookOpen } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
 import part1Thumbnail from '../assets/images/series_part1_limit_switch_1788902240200.jpg';
 import part2Thumbnail from '../assets/images/series_part2_willpower_1788902255808.jpg';
@@ -150,6 +150,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [trilogyLoading, setTrilogyLoading] = useState(false);
   const [trilogySubmitted, setTrilogySubmitted] = useState(false);
 
+  // Auto-advance sequence: when a video finishes playing (onStateChange === 0), advance to the next part
+  useEffect(() => {
+    if (!activeVideo || activeVideo.id !== 'v1') return;
+
+    const handleWindowMessage = (event: MessageEvent) => {
+      try {
+        let data = event.data;
+        if (typeof data === 'string') {
+          data = JSON.parse(data);
+        }
+        // YouTube Player API event (info: 0 is YT.PlayerState.ENDED)
+        if (data?.event === 'onStateChange' && data?.info === 0) {
+          setActiveEpisode((current) => {
+            const currentPart = current?.partNumber || 1;
+            const nextPart = currentPart + 1;
+            const nextEp = activeVideo.episodes?.find((ep) => ep.partNumber === nextPart);
+            if (nextEp) {
+              return nextEp;
+            }
+            return current;
+          });
+        }
+      } catch {
+        // Ignore non-JSON postMessages from other browser extensions/iframes
+      }
+    };
+
+    window.addEventListener('message', handleWindowMessage);
+    return () => window.removeEventListener('message', handleWindowMessage);
+  }, [activeVideo]);
+
   const handleOpenVideo = (video: VideoItem) => {
     setActiveVideo(video);
     setActiveEpisode(video.episodes?.[0] || null);
@@ -282,9 +313,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       </span>
                     )}
                   </div>
+                  {!vid.isStartHere && (
+                    <span className="inline-block px-2 py-0.5 rounded bg-[#000000]/90 text-[#FCE289] border border-[#E2B13D]/30 font-mono text-[9px] uppercase tracking-wider">
+                      {vid.id === 'v5' ? 'WAITLIST' : 'COMING SOON'}
+                    </span>
+                  )}
                 </div>
 
-                {/* Bottom Content: Title, Sub-line & Floating Circular Play Icon */}
+                {/* Bottom Content: Title, Sub-line & Action Icon */}
                 <div className="relative z-10 pt-6">
                   <div className="flex items-end justify-between gap-2.5">
                     <div className="pr-1 flex-1 min-w-0">
@@ -299,10 +335,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       </p>
                     </div>
 
-                    {/* Floating Gold Play Icon */}
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full bg-[#000000]/90 border border-[#E2B13D] flex items-center justify-center shrink-0 text-[#E2B13D] group-hover:bg-gradient-to-r group-hover:from-[#C9962F] group-hover:to-[#FCE289] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-300 shadow-[0_0_15px_rgba(226,177,61,0.4)]">
-                      <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current ml-0.5" />
-                    </div>
+                    {/* Floating Gold Play Icon ONLY for Video with playable stream; chevron/arrow for info cards */}
+                    {vid.isStartHere ? (
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full bg-[#000000]/90 border border-[#E2B13D] flex items-center justify-center shrink-0 text-[#E2B13D] group-hover:bg-gradient-to-r group-hover:from-[#C9962F] group-hover:to-[#FCE289] group-hover:text-[#000000] group-hover:scale-110 transition-all duration-300 shadow-[0_0_15px_rgba(226,177,61,0.4)]">
+                        <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current ml-0.5" />
+                      </div>
+                    ) : (
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full bg-[#000000]/80 border border-[#7E4F11]/60 flex items-center justify-center shrink-0 text-[#E2B13D]/80 group-hover:border-[#E2B13D] group-hover:text-[#FCE289] group-hover:scale-105 transition-all duration-300 shadow-sm">
+                        <ChevronRight className="w-4 h-4" />
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -351,7 +393,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="relative aspect-video max-h-[36vh] sm:max-h-[44vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
               {(activeEpisode?.youtubeId || (activeVideo.id === 'v1' && (!activeEpisode || activeEpisode.partNumber === 1))) ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${activeEpisode?.youtubeId || activeVideo.youtubeId || 'qKMNyDz7TnE'}?autoplay=1&rel=0`}
+                  src={`https://www.youtube.com/embed/${activeEpisode?.youtubeId || activeVideo.youtubeId || 'qKMNyDz7TnE'}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
                   title={activeEpisode?.title || activeVideo.title}
                   className="w-full h-full border-0 absolute inset-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

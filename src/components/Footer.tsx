@@ -122,13 +122,21 @@ export const Footer: React.FC<FooterProps> = ({
                 </a>
               </li>
               <li>
-                <button 
-                  onClick={onOpenWaitlist}
+                <a 
+                  href="/waitlist"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (onNavigatePage) {
+                      onNavigatePage('waitlist');
+                    } else {
+                      onOpenWaitlist();
+                    }
+                  }}
                   className="hover:text-[#D4AF37] transition-colors font-semibold tracking-wider uppercase cursor-pointer flex items-center gap-2"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
                   <span>Trilogy Waitlist</span>
-                </button>
+                </a>
               </li>
             </ul>
           </div>

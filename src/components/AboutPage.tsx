@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   ArrowUpRight, 
   Sparkles, 
@@ -99,6 +99,37 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   // Default to Part 3 — The Origin on the About page
   const [activeEpisode, setActiveEpisode] = useState<VideoEpisode>(SERIES_EPISODES[2]);
+  const playerIframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Auto-advance sequence setup via YouTube IFrame message listener
+  useEffect(() => {
+    if (!isVideoOpen) return;
+
+    const handleWindowMessage = (event: MessageEvent) => {
+      try {
+        let data = event.data;
+        if (typeof data === 'string') {
+          data = JSON.parse(data);
+        }
+        // YouTube API postMessage state change event (0 === YT.PlayerState.ENDED)
+        if (data?.event === 'onStateChange' && data?.info === 0) {
+          setActiveEpisode((current) => {
+            const nextPart = current.partNumber + 1;
+            const nextEp = SERIES_EPISODES.find((ep) => ep.partNumber === nextPart);
+            if (nextEp) {
+              return nextEp;
+            }
+            return current;
+          });
+        }
+      } catch {
+        // Ignore cross-origin non-JSON messages
+      }
+    };
+
+    window.addEventListener('message', handleWindowMessage);
+    return () => window.removeEventListener('message', handleWindowMessage);
+  }, [isVideoOpen]);
 
   return (
     <div className="bg-[#0C0B0A] text-[#F3EFE0] min-h-screen py-10 sm:py-16 px-4 sm:px-8 lg:px-16 border-b border-[#C9A227]/20 relative overflow-hidden font-inter">
@@ -444,7 +475,8 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             <div className="relative aspect-video max-h-[36vh] sm:max-h-[44vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
               {activeEpisode?.youtubeId ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${activeEpisode.youtubeId}?autoplay=1&rel=0`}
+                  ref={playerIframeRef}
+                  src={`https://www.youtube.com/embed/${activeEpisode.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
                   title={activeEpisode.title}
                   className="w-full h-full border-0 absolute inset-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
