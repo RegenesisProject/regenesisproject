@@ -58,7 +58,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/about",
     ogTitle: "About Thomas Ventura — Creator of The REGENESIS Project",
     ogDescription: "From a war-zone refugee to two multi-million dollar operations run side by side for over fifteen years — and the framework he built after his own biology stopped him.",
-    image: "https://www.regenesisproject.com/assets/journey_silhouette_1788616759304-6wzvBsDT.jpg",
+    image: "https://res.cloudinary.com/f7kaiylj/image/upload/v1789076815/journey_silhouette_1788616759304-6wzvBsDT.jpg",
   },
   keynotes: {
     title: "Keynotes — Thomas Ventura | The REGENESIS Project",
