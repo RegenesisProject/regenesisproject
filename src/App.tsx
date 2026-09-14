@@ -51,6 +51,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/",
     ogTitle: "Thomas Ventura — The REGENESIS Project™",
     ogDescription: "The hardest part of building your dreams isn't strategy, mindset, or willpower. REGENESIS decodes the Survival Operating System beneath your habits — and reconfigures the patterns silently capping your capacity.",
+    image: "https://res.cloudinary.com/f7kaiylj/image/upload/v1789153082/regenesis_wings_5.png",
   },
   about: {
     title: "About Thomas Ventura — Creator of The REGENESIS Project",
@@ -66,6 +67,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/keynotes",
     ogTitle: "Keynotes — Thomas Ventura | The REGENESIS Project",
     ogDescription: "Keynote speaking for teams, events, and organizations. Thomas Ventura on why biology — not strategy — becomes the ceiling on performance, and what it takes to move it.",
+    image: "https://www.regenesisproject.com/assets/keynote_stage_lighting_1788618057460-gss4TnVm.jpg",
   },
   science: {
     title: "The Science — The Twelve Lenses | The REGENESIS Project",
@@ -112,6 +114,7 @@ export const ROUTE_METADATA: Record<PageKey, RouteMeta> = {
     canonical: "https://www.regenesisproject.com/contact",
     ogTitle: "Contact Thomas Ventura — The REGENESIS Project",
     ogDescription: "For keynote bookings, press and media enquiries, or anything else. Inquire directly with Thomas Ventura.",
+    image: "https://res.cloudinary.com/f7kaiylj/image/upload/v1789153082/regenesis_wings_5.png",
   },
 };
 
@@ -234,10 +237,16 @@ export default function App({ initialPath }: AppProps) {
     const twDescEl = document.querySelector('meta[name="twitter:description"]');
     if (twDescEl) twDescEl.setAttribute('content', meta.ogDescription);
 
-    const brandImg = 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1785187163/book_1.2_-_Copy_op3afs.png';
+    const brandImg = 'https://res.cloudinary.com/f7kaiylj/image/upload/v1789153082/regenesis_wings_5.png';
     const pageImg = meta.image || brandImg;
     const ogImgEl = document.querySelector('meta[property="og:image"]');
     if (ogImgEl) ogImgEl.setAttribute('content', pageImg);
+
+    const ogImgUrlEl = document.querySelector('meta[property="og:image:url"]');
+    if (ogImgUrlEl) ogImgUrlEl.setAttribute('content', pageImg);
+
+    const ogImgSecEl = document.querySelector('meta[property="og:image:secure_url"]');
+    if (ogImgSecEl) ogImgSecEl.setAttribute('content', pageImg);
 
     const twImgEl = document.querySelector('meta[name="twitter:image"]');
     if (twImgEl) twImgEl.setAttribute('content', pageImg);

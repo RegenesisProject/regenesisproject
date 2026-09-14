@@ -153,9 +153,11 @@ async function prerender() {
         html = html.replace(/<meta name="twitter:title" content="[^"]*"/, `<meta name="twitter:title" content="${meta.ogTitle}"`);
         html = html.replace(/<meta name="twitter:description" content="[^"]*"/, `<meta name="twitter:description" content="${meta.ogDescription}"`);
 
-        // Social Image (og:image & twitter:image)
+        // Social Image (og:image, og:image:url, og:image:secure_url & twitter:image)
         if (meta.image) {
           html = html.replace(/<meta property="og:image" content="[^"]*"/, `<meta property="og:image" content="${meta.image}"`);
+          html = html.replace(/<meta property="og:image:url" content="[^"]*"/, `<meta property="og:image:url" content="${meta.image}"`);
+          html = html.replace(/<meta property="og:image:secure_url" content="[^"]*"/, `<meta property="og:image:secure_url" content="${meta.image}"`);
           html = html.replace(/<meta name="twitter:image" content="[^"]*"/, `<meta name="twitter:image" content="${meta.image}"`);
         }
       }

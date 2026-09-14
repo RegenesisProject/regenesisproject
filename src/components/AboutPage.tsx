@@ -221,39 +221,38 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               </div>
             </ScrollReveal>
 
-            {/* VIDEO PLACEHOLDER */}
-            <div 
-              onClick={() => {
-                setActiveEpisode(SERIES_EPISODES[2]); // Default to Part 3 — The Origin on the About page
-                setIsVideoOpen(true);
-              }}
-              className="group relative my-4 sm:my-6 bg-[#14120F] border border-[#C9A227]/30 hover:border-[#C9A227] rounded-xl overflow-hidden shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-            >
+            {/* VIDEO PLACEHOLDER — RESERVED FOR THE ORIGIN DOCUMENTARY */}
+            <div className="my-4 sm:my-6 bg-[#14120F] border border-[#C9A227]/30 rounded-xl overflow-hidden shadow-2xl">
               <div className="relative h-48 sm:h-56 w-full overflow-hidden bg-[#000000]">
                 <img 
                   src={journeySilhouette} 
                   alt="From a war zone to a business — the same wiring, two different worlds" 
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover filter contrast-105 brightness-80 group-hover:scale-105 transition-transform duration-700 ease-out"
+                  className="w-full h-full object-cover filter contrast-105 brightness-80"
                 />
-                
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0C0B0A] via-[#0C0B0A]/40 to-transparent" />
-
-                {/* Center Play Button */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-r from-[#C9962F] to-[#E2B13D] text-[#000000] shadow-[0_0_25px_rgba(226,177,61,0.6)] flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-current ml-1 text-[#000000]" />
-                  </div>
-                </div>
               </div>
 
               {/* Caption */}
-              <div className="p-4 sm:p-5 bg-[#12100d] border-t border-[#C9A227]/20">
-                <p className="text-xs sm:text-sm font-playfair font-bold text-[#FFFFFF] leading-snug">
-                  Watch: The Story &amp; Origin of Thomas Ventura
+              <div className="p-4 sm:p-6 bg-[#12100d] border-t border-[#C9A227]/20 space-y-3">
+                <p className="font-playfair font-bold text-sm sm:text-base text-[#FFFFFF] tracking-wider uppercase">
+                  THE ORIGIN DOCUMENTARY
                 </p>
-                <p className="text-xs text-[#D4CEBF] font-inter mt-1 leading-relaxed">
-                  From war-zone refugee to running two multi-million dollar operations at once — and why none of it fixed the real problem.
+                <p className="text-xs sm:text-sm text-[#D4CEBF] font-inter leading-relaxed">
+                  Scheduled for production.
+                </p>
+                <p className="text-xs sm:text-sm text-[#D4CEBF] font-inter leading-relaxed">
+                  Until then, the highlights are in{' '}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveEpisode(SERIES_EPISODES[2]); // Part 3 — The Origin
+                      setIsVideoOpen(true);
+                    }}
+                    className="text-[#C9A227] hover:text-[#FCE289] underline underline-offset-4 font-semibold transition-colors cursor-pointer text-left inline"
+                  >
+                    &ldquo;It Was Never Discipline&rdquo; — Part 3, The Origin &rarr;
+                  </button>
                 </p>
               </div>
             </div>
@@ -261,7 +260,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             {/* BIO TEXT */}
             <div className="space-y-4 sm:space-y-5 text-xs sm:text-base text-[#D4CEBF] leading-relaxed font-inter pt-1">
               <p>
-                Thomas Ventura is not a theorist. He is a veteran operator who decoded his own machine because his life depended on it.
+                Thomas Ventura is not a theorist. He's a veteran operator who decoded his own survival code — because nothing else worked.
               </p>
 
               <p>
@@ -414,7 +413,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   <span className="sr-only">LinkedIn</span>
                 </a>
                 <a 
-                  href="https://www.youtube.com/@IamThomasVentura" 
+                  href="https://www.youtube.com/channel/UC-jBzT4s7waD6C5VVVC2QBQ" 
                   target="_blank" 
                   rel="noreferrer" 
                   className="w-10 h-10 rounded-lg bg-[#181613] border border-[#C9A227]/30 flex items-center justify-center text-[#C9A227] hover:bg-[#C9A227] hover:text-[#0C0B0A] transition-colors"
