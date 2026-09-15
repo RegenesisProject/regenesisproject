@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Sparkles, X, ArrowRight, Award, ChevronRight, HelpCircle, BookOpen } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
 import part1Thumbnail from '../assets/images/series_part1_limit_switch_1788902240200.jpg';
@@ -72,7 +72,8 @@ const VIDEOS: VideoItem[] = [
         subline: 'What the research shows about trying to out-muscle your own wiring.',
         duration: '',
         thumbnailUrl: part2Thumbnail,
-        isAvailable: false,
+        isAvailable: true,
+        youtubeId: 'qKeIaRXrXpg',
       },
       {
         id: 'v1-ep3',
@@ -145,50 +146,213 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [activeEpisode, setActiveEpisode] = useState<VideoEpisode | null>(null);
+  const [currentIframeVideoId, setCurrentIframeVideoId] = useState<string | null>(null);
   const [hoveredVideo, setHoveredVideo] = useState<VideoItem | null>(null);
   const [trilogyEmail, setTrilogyEmail] = useState('');
   const [trilogyLoading, setTrilogyLoading] = useState(false);
   const [trilogySubmitted, setTrilogySubmitted] = useState(false);
 
-  // Auto-advance sequence: when a video finishes playing (onStateChange === 0), advance to the next part
-  useEffect(() => {
-    if (!activeVideo || activeVideo.id !== 'v1') return;
+  const playerRef = useRef<any>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const activeVideoRef = useRef<VideoItem | null>(activeVideo);
+  const activeEpisodeRef = useRef<VideoEpisode | null>(activeEpisode);
 
+  useEffect(() => {
+    activeVideoRef.current = activeVideo;
+  }, [activeVideo]);
+
+  useEffect(() => {
+    activeEpisodeRef.current = activeEpisode;
+  }, [activeEpisode]);
+
+  // Advance to the next part in the series and automatically play it
+  const advanceToNextEpisode = useCallback(() => {
+    const video = activeVideoRef.current;
+    if (!video || video.id !== 'v1') return;
+
+    const currentPart = activeEpisodeRef.current?.partNumber || 1;
+    const nextPart = currentPart + 1;
+    const nextEp = video.episodes?.find((ep) => ep.partNumber === nextPart);
+
+    if (nextEp) {
+      setActiveEpisode(nextEp);
+      if (nextEp.youtubeId) {
+        if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+          try {
+            playerRef.current.loadVideoById({
+              videoId: nextEp.youtubeId,
+              startSeconds: 0,
+            });
+            playerRef.current.playVideo?.();
+          } catch (e) {
+            console.error('Error auto-playing next part:', e);
+          }
+        }
+      } else {
+        // Next part is Coming Soon
+        if (playerRef.current) {
+          try {
+            playerRef.current.destroy();
+          } catch {
+            // ignore
+          }
+          playerRef.current = null;
+        }
+        setCurrentIframeVideoId(null);
+      }
+    }
+  }, []);
+
+  const handleSelectEpisode = (ep: VideoEpisode) => {
+    setActiveEpisode(ep);
+    if (ep.youtubeId) {
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+        try {
+          playerRef.current.loadVideoById({
+            videoId: ep.youtubeId,
+            startSeconds: 0,
+          });
+          playerRef.current.playVideo?.();
+          return;
+        } catch (e) {
+          console.error('Error loading video on episode selection:', e);
+        }
+      }
+      setCurrentIframeVideoId(ep.youtubeId);
+    } else {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // ignore
+        }
+        playerRef.current = null;
+      }
+      setCurrentIframeVideoId(null);
+    }
+  };
+
+  // Setup YouTube player controls and event listeners for auto-playing subsequent parts
+  useEffect(() => {
+    if (!activeVideo || !currentIframeVideoId) {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // ignore
+        }
+        playerRef.current = null;
+      }
+      return;
+    }
+
+    let isMounted = true;
+
+    const attachYTPlayer = () => {
+      if (!isMounted) return;
+      const YT = (window as any).YT;
+      const iframeEl = iframeRef.current;
+      if (!YT || !YT.Player || !iframeEl) return;
+
+      if (playerRef.current) {
+        return;
+      }
+
+      try {
+        playerRef.current = new YT.Player(iframeEl, {
+          events: {
+            onReady: (event: any) => {
+              if (isMounted) {
+                try {
+                  event.target.playVideo();
+                } catch {
+                  // ignore
+                }
+              }
+            },
+            onStateChange: (event: any) => {
+              // Sync episode button if YouTube's playlist automatically advanced
+              try {
+                const currentData = event.target?.getVideoData?.();
+                if (currentData?.video_id === 'qKeIaRXrXpg' && activeEpisodeRef.current?.partNumber !== 2) {
+                  const ep2 = activeVideoRef.current?.episodes?.find((ep) => ep.partNumber === 2);
+                  if (ep2) setActiveEpisode(ep2);
+                } else if (currentData?.video_id === 'qKMNyDz7TnE' && activeEpisodeRef.current?.partNumber !== 1) {
+                  const ep1 = activeVideoRef.current?.episodes?.find((ep) => ep.partNumber === 1);
+                  if (ep1) setActiveEpisode(ep1);
+                }
+              } catch {
+                // ignore
+              }
+
+              // event.data === 0 is YT.PlayerState.ENDED: auto-advance & play next part
+              if (event.data === 0) {
+                advanceToNextEpisode();
+              }
+            },
+          },
+        });
+      } catch (err) {
+        console.warn('YouTube Player initialization fallback:', err);
+      }
+    };
+
+    const timer = setTimeout(attachYTPlayer, 100);
+
+    // Fallback cross-origin postMessage listener
     const handleWindowMessage = (event: MessageEvent) => {
       try {
         let data = event.data;
         if (typeof data === 'string') {
           data = JSON.parse(data);
         }
-        // YouTube Player API event (info: 0 is YT.PlayerState.ENDED)
         if (data?.event === 'onStateChange' && data?.info === 0) {
-          setActiveEpisode((current) => {
-            const currentPart = current?.partNumber || 1;
-            const nextPart = currentPart + 1;
-            const nextEp = activeVideo.episodes?.find((ep) => ep.partNumber === nextPart);
-            if (nextEp) {
-              return nextEp;
-            }
-            return current;
-          });
+          advanceToNextEpisode();
         }
       } catch {
-        // Ignore non-JSON postMessages from other browser extensions/iframes
+        // Ignore non-JSON postMessages
       }
     };
-
     window.addEventListener('message', handleWindowMessage);
-    return () => window.removeEventListener('message', handleWindowMessage);
-  }, [activeVideo]);
+
+    // Handshake ping to ensure YouTube iframe dispatches postMessage events
+    const pingInterval = setInterval(() => {
+      if (iframeRef.current?.contentWindow) {
+        try {
+          iframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
+        } catch {
+          // ignore
+        }
+      }
+    }, 1000);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+      clearInterval(pingInterval);
+      window.removeEventListener('message', handleWindowMessage);
+    };
+  }, [activeVideo?.id, currentIframeVideoId, advanceToNextEpisode]);
 
   const handleOpenVideo = (video: VideoItem) => {
     setActiveVideo(video);
-    setActiveEpisode(video.episodes?.[0] || null);
+    const initialEp = video.episodes?.[0] || null;
+    setActiveEpisode(initialEp);
+    setCurrentIframeVideoId(initialEp?.youtubeId || video.youtubeId || null);
   };
 
   const handleCloseModal = () => {
+    if (playerRef.current) {
+      try {
+        playerRef.current.destroy();
+      } catch {
+        // ignore
+      }
+      playerRef.current = null;
+    }
     setActiveVideo(null);
     setActiveEpisode(null);
+    setCurrentIframeVideoId(null);
   };
 
   const handleTrilogySubmit = async (e: React.FormEvent) => {
@@ -391,9 +555,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             {/* Video Player Display */}
             <div className="relative aspect-video max-h-[36vh] sm:max-h-[44vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
-              {(activeEpisode?.youtubeId || (activeVideo.id === 'v1' && (!activeEpisode || activeEpisode.partNumber === 1))) ? (
+              {currentIframeVideoId ? (
                 <iframe
-                  src={`https://www.youtube.com/embed/${activeEpisode?.youtubeId || activeVideo.youtubeId || 'qKMNyDz7TnE'}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
+                  id="hero-yt-player-iframe"
+                  ref={iframeRef}
+                  src={`https://www.youtube.com/embed/${currentIframeVideoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1${activeVideo.id === 'v1' && currentIframeVideoId === 'qKMNyDz7TnE' ? '&playlist=qKMNyDz7TnE,qKeIaRXrXpg' : ''}&origin=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : '')}`}
                   title={activeEpisode?.title || activeVideo.title}
                   className="w-full h-full border-0 absolute inset-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -455,7 +621,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       <button
                         key={ep.id}
                         type="button"
-                        onClick={() => setActiveEpisode(ep)}
+                        onClick={() => handleSelectEpisode(ep)}
                         className={`group relative text-left rounded-xl p-2 transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
                           isCurrent
                             ? 'bg-[#1D160C] border-[#FCE289] ring-2 ring-[#FCE289]/70 shadow-[0_0_20px_rgba(252,226,137,0.4)] -translate-y-0.5'

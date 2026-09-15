@@ -11,7 +11,7 @@ interface BookDetailModalProps {
 export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [buttonText, setButtonText] = useState('Notify Me');
+  const [buttonText, setButtonText] = useState('JOIN THE WAITLIST');
 
   if (!book) return null;
 
@@ -93,7 +93,7 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
           <div>
             <h3 className="font-inter font-bold text-xs uppercase tracking-[0.25em] text-[#D4AF37] mb-4 flex items-center gap-2">
               <BookOpen className="w-4 h-4" />
-              <span>{book.id === 'survival-source-code' ? 'Table of Contents · Chapter Breakdown' : 'Core Themes · Overview'}</span>
+              <span>{book.id === 'survival-source-code' ? 'TABLE OF CONTENTS · SELECTED CHAPTERS' : 'Core Themes · Overview'}</span>
             </h3>
 
             <div className="space-y-3">
@@ -109,29 +109,34 @@ export const BookDetailModal: React.FC<BookDetailModalProps> = ({ book, onClose 
           {/* Drop Notification Form */}
           <div className="pt-6 border-t border-[#1A1A1A]/15">
             <h4 className="font-playfair font-bold text-lg text-[#1A1A1A] mb-3">
-              Get Notified First When Pre-Orders Open
+              Be first to know when it's ready
             </h4>
 
-            <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-3">
-              <input
-                type="email"
-                required
-                placeholder="Enter your email address"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (buttonText !== 'Notify Me') setButtonText('Notify Me');
-                }}
-                className="input-editorial flex-1 text-xs font-inter"
-              />
-              <button
-                type="submit"
-                disabled={loading || buttonText === 'Subscribed ✓'}
-                className="btn-gold-slide h-12 px-8 text-xs uppercase tracking-[0.2em] font-inter font-medium flex items-center justify-center gap-2 cursor-pointer shrink-0 disabled:opacity-80"
-              >
-                <Bell className="w-3.5 h-3.5 text-[#D4AF37]" />
-                <span>{buttonText}</span>
-              </button>
+            <form onSubmit={handleNotify} className="space-y-2">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  required
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (buttonText !== 'JOIN THE WAITLIST') setButtonText('JOIN THE WAITLIST');
+                  }}
+                  className="input-editorial flex-1 text-xs font-inter"
+                />
+                <button
+                  type="submit"
+                  disabled={loading || buttonText === 'Subscribed ✓'}
+                  className="btn-gold-slide h-12 px-8 text-xs uppercase tracking-[0.2em] font-inter font-medium flex items-center justify-center gap-2 cursor-pointer shrink-0 disabled:opacity-80"
+                >
+                  <Bell className="w-3.5 h-3.5 text-[#D4AF37]" />
+                  <span>{buttonText}</span>
+                </button>
+              </div>
+              <p className="text-[11px] text-[#7E796D] font-inter">
+                You're signing up to receive emails from Thomas Ventura.
+              </p>
             </form>
           </div>
 

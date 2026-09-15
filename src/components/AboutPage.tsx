@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   ArrowUpRight, 
   Sparkles, 
@@ -51,7 +51,8 @@ const SERIES_EPISODES: VideoEpisode[] = [
     subline: 'What the research shows about trying to out-muscle your own wiring.',
     duration: '',
     thumbnailUrl: part2Thumbnail,
-    isAvailable: false,
+    isAvailable: true,
+    youtubeId: 'qKeIaRXrXpg',
   },
   {
     id: 'v1-ep3',
@@ -99,11 +100,157 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   // Default to Part 3 — The Origin on the About page
   const [activeEpisode, setActiveEpisode] = useState<VideoEpisode>(SERIES_EPISODES[2]);
+  const [currentIframeVideoId, setCurrentIframeVideoId] = useState<string | null>(null);
   const playerIframeRef = useRef<HTMLIFrameElement>(null);
+  const playerRef = useRef<any>(null);
+  const activeEpisodeRef = useRef<VideoEpisode>(activeEpisode);
 
-  // Auto-advance sequence setup via YouTube IFrame message listener
   useEffect(() => {
-    if (!isVideoOpen) return;
+    activeEpisodeRef.current = activeEpisode;
+  }, [activeEpisode]);
+
+  const advanceToNextEpisode = useCallback(() => {
+    const nextPart = activeEpisodeRef.current.partNumber + 1;
+    const nextEp = SERIES_EPISODES.find((ep) => ep.partNumber === nextPart);
+    if (nextEp) {
+      setActiveEpisode(nextEp);
+      if (nextEp.youtubeId) {
+        if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+          try {
+            playerRef.current.loadVideoById({
+              videoId: nextEp.youtubeId,
+              startSeconds: 0,
+            });
+            playerRef.current.playVideo?.();
+          } catch (e) {
+            console.error('Error auto-playing next part:', e);
+          }
+        }
+      } else {
+        if (playerRef.current) {
+          try {
+            playerRef.current.destroy();
+          } catch {
+            // ignore
+          }
+          playerRef.current = null;
+        }
+        setCurrentIframeVideoId(null);
+      }
+    }
+  }, []);
+
+  const handleSelectEpisode = (ep: VideoEpisode) => {
+    setActiveEpisode(ep);
+    if (ep.youtubeId) {
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+        try {
+          playerRef.current.loadVideoById({
+            videoId: ep.youtubeId,
+            startSeconds: 0,
+          });
+          playerRef.current.playVideo?.();
+          return;
+        } catch (e) {
+          console.error('Error loading selected episode:', e);
+        }
+      }
+      setCurrentIframeVideoId(ep.youtubeId);
+    } else {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // ignore
+        }
+        playerRef.current = null;
+      }
+      setCurrentIframeVideoId(null);
+    }
+  };
+
+  const handleOpenVideo = (ep: VideoEpisode) => {
+    setActiveEpisode(ep);
+    setCurrentIframeVideoId(ep.youtubeId || null);
+    setIsVideoOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    if (playerRef.current) {
+      try {
+        playerRef.current.destroy();
+      } catch {
+        // ignore
+      }
+      playerRef.current = null;
+    }
+    setIsVideoOpen(false);
+    setCurrentIframeVideoId(null);
+  };
+
+  useEffect(() => {
+    if (!isVideoOpen || !currentIframeVideoId) {
+      if (playerRef.current) {
+        try {
+          playerRef.current.destroy();
+        } catch {
+          // ignore
+        }
+        playerRef.current = null;
+      }
+      return;
+    }
+
+    let isMounted = true;
+
+    const attachYTPlayer = () => {
+      if (!isMounted) return;
+      const YT = (window as any).YT;
+      const iframeEl = playerIframeRef.current;
+      if (!YT || !YT.Player || !iframeEl) return;
+
+      if (playerRef.current) {
+        return;
+      }
+
+      try {
+        playerRef.current = new YT.Player(iframeEl, {
+          events: {
+            onReady: (event: any) => {
+              if (isMounted) {
+                try {
+                  event.target.playVideo();
+                } catch {
+                  // ignore
+                }
+              }
+            },
+            onStateChange: (event: any) => {
+              try {
+                const currentData = event.target?.getVideoData?.();
+                if (currentData?.video_id === 'qKeIaRXrXpg' && activeEpisodeRef.current?.partNumber !== 2) {
+                  const ep2 = SERIES_EPISODES.find((ep) => ep.partNumber === 2);
+                  if (ep2) setActiveEpisode(ep2);
+                } else if (currentData?.video_id === 'qKMNyDz7TnE' && activeEpisodeRef.current?.partNumber !== 1) {
+                  const ep1 = SERIES_EPISODES.find((ep) => ep.partNumber === 1);
+                  if (ep1) setActiveEpisode(ep1);
+                }
+              } catch {
+                // ignore
+              }
+
+              if (event.data === 0) {
+                advanceToNextEpisode();
+              }
+            },
+          },
+        });
+      } catch (err) {
+        console.warn('YouTube Player initialization fallback:', err);
+      }
+    };
+
+    const timer = setTimeout(attachYTPlayer, 100);
 
     const handleWindowMessage = (event: MessageEvent) => {
       try {
@@ -111,25 +258,32 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         if (typeof data === 'string') {
           data = JSON.parse(data);
         }
-        // YouTube API postMessage state change event (0 === YT.PlayerState.ENDED)
         if (data?.event === 'onStateChange' && data?.info === 0) {
-          setActiveEpisode((current) => {
-            const nextPart = current.partNumber + 1;
-            const nextEp = SERIES_EPISODES.find((ep) => ep.partNumber === nextPart);
-            if (nextEp) {
-              return nextEp;
-            }
-            return current;
-          });
+          advanceToNextEpisode();
         }
       } catch {
-        // Ignore cross-origin non-JSON messages
+        // Ignore
       }
     };
-
     window.addEventListener('message', handleWindowMessage);
-    return () => window.removeEventListener('message', handleWindowMessage);
-  }, [isVideoOpen]);
+
+    const pingInterval = setInterval(() => {
+      if (playerIframeRef.current?.contentWindow) {
+        try {
+          playerIframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
+        } catch {
+          // ignore
+        }
+      }
+    }, 1000);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+      clearInterval(pingInterval);
+      window.removeEventListener('message', handleWindowMessage);
+    };
+  }, [isVideoOpen, currentIframeVideoId, advanceToNextEpisode]);
 
   return (
     <div className="bg-[#0C0B0A] text-[#F3EFE0] min-h-screen py-10 sm:py-16 px-4 sm:px-8 lg:px-16 border-b border-[#C9A227]/20 relative overflow-hidden font-inter">
@@ -245,10 +399,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   Until then, the highlights are in{' '}
                   <button
                     type="button"
-                    onClick={() => {
-                      setActiveEpisode(SERIES_EPISODES[2]); // Part 3 — The Origin
-                      setIsVideoOpen(true);
-                    }}
+                    onClick={() => handleOpenVideo(SERIES_EPISODES[2])}
                     className="text-[#C9A227] hover:text-[#FCE289] underline underline-offset-4 font-semibold transition-colors cursor-pointer text-left inline"
                   >
                     &ldquo;It Was Never Discipline&rdquo; — Part 3, The Origin &rarr;
@@ -413,7 +564,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   <span className="sr-only">LinkedIn</span>
                 </a>
                 <a 
-                  href="https://www.youtube.com/channel/UC-jBzT4s7waD6C5VVVC2QBQ" 
+                  href="https://www.youtube.com/@IamThomasVentura" 
                   target="_blank" 
                   rel="noreferrer" 
                   className="w-10 h-10 rounded-lg bg-[#181613] border border-[#C9A227]/30 flex items-center justify-center text-[#C9A227] hover:bg-[#C9A227] hover:text-[#0C0B0A] transition-colors"
@@ -454,7 +605,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       {/* Interactive Video Player Modal — Full 5-Part Series */}
       {isVideoOpen && (
         <div 
-          onClick={() => setIsVideoOpen(false)}
+          onClick={handleCloseModal}
           className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 pt-16 sm:pt-24 pb-3 bg-[#000000]/90 backdrop-blur-md animate-fadeIn"
         >
           <div 
@@ -463,7 +614,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           >
             {/* Close Button */}
             <button
-              onClick={() => setIsVideoOpen(false)}
+              onClick={handleCloseModal}
               className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 w-9 h-9 flex items-center justify-center text-[#E2B13D] hover:text-[#FFFFFF] bg-[#000000]/80 border border-[#7E4F11] hover:border-[#E2B13D] rounded-full transition-colors cursor-pointer z-20 active:scale-95"
               aria-label="Close modal"
             >
@@ -472,10 +623,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
 
             {/* Video Player Display */}
             <div className="relative aspect-video max-h-[36vh] sm:max-h-[44vh] w-full rounded-xl overflow-hidden bg-[#000000] border border-[#7E4F11]/50 mb-3 sm:mb-4 flex items-center justify-center group shrink-0">
-              {activeEpisode?.youtubeId ? (
+              {currentIframeVideoId ? (
                 <iframe
                   ref={playerIframeRef}
-                  src={`https://www.youtube.com/embed/${activeEpisode.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`}
+                  src={`https://www.youtube.com/embed/${currentIframeVideoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1${currentIframeVideoId === 'qKMNyDz7TnE' ? '&playlist=qKMNyDz7TnE,qKeIaRXrXpg' : ''}&origin=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : '')}`}
                   title={activeEpisode.title}
                   className="w-full h-full border-0 absolute inset-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -536,7 +687,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     <button
                       key={ep.id}
                       type="button"
-                      onClick={() => setActiveEpisode(ep)}
+                      onClick={() => handleSelectEpisode(ep)}
                       className={`group relative text-left rounded-xl p-2 transition-all duration-300 flex flex-col justify-between border cursor-pointer ${
                         isCurrent
                           ? 'bg-[#1D160C] border-[#FCE289] ring-2 ring-[#FCE289]/70 shadow-[0_0_20px_rgba(252,226,137,0.4)] -translate-y-0.5'
@@ -613,7 +764,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               <div className="mt-4 pt-3 border-t border-[#7E4F11]/30 flex items-center justify-between">
                 <button
                   type="button"
-                  onClick={() => setIsVideoOpen(false)}
+                  onClick={handleCloseModal}
                   className="px-4 py-2 rounded-lg bg-[#181613] border border-[#C9A227]/40 hover:border-[#C9A227] text-xs font-mono font-bold text-[#C9A227] uppercase tracking-wider transition-colors cursor-pointer"
                 >
                   Close Player
@@ -621,7 +772,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 <button
                   type="button"
                   onClick={() => {
-                    setIsVideoOpen(false);
+                    handleCloseModal();
                     onOpenMirrorQuiz();
                   }}
                   className="px-4 py-2 rounded-lg bg-gradient-to-r from-[#7E4F11] via-[#C9962F] to-[#E2B13D] text-black font-inter font-bold text-[10px] sm:text-xs uppercase tracking-[0.15em] hover:scale-105 transition-all shadow-md cursor-pointer"

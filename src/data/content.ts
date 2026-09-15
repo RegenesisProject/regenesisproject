@@ -21,7 +21,7 @@ export const SITE_METADATA = {
   description: 'Thomas Ventura integrates Twelve Lenses of Science to transition leaders from SOS to O.N.E. capacity.',
   socials: {
     linkedin: 'https://www.linkedin.com/in/thomasventura',
-    youtube: 'https://www.youtube.com/@thomasventura',
+    youtube: 'https://www.youtube.com/@IamThomasVentura',
     facebook: 'https://www.facebook.com/thomasventura',
     instagram: 'https://www.instagram.com/thomasventura',
   }

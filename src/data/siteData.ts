@@ -13,7 +13,7 @@ export const BOOKS_DATA: BookInfo[] = [
     description: 'Decodes the survival hardware written in your earliest years — the code shaping your behavior, identity, and drive today.',
     chapters: [
       'Chapter 01: The War You Didn\'t Choose',
-      'Chapter 02: The Architecture of the Survival OS',
+      'Chapter 02: The Architecture of the Survival Operating System',
       'Chapter 03: Decoding Early Neural Wiring',
       'Chapter 04: The Biological Ceiling on Drive',
       'Chapter 05: Mapping Your Origin Hardware'
