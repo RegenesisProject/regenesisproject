@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Send, CheckCircle2 } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
 import footerLogo from '../assets/images/regenerated_image_1788305533708.png';
+import { PageKey } from '../types';
 
 interface FooterProps {
   onOpenContact: () => void;
@@ -9,7 +10,7 @@ interface FooterProps {
   onOpenWaitlist: () => void;
   onOpenPrivacy: () => void;
   onOpenTerms: () => void;
-  onNavigatePage?: (page: 'home' | 'science' | 'mythology' | 'about' | 'quiz' | 'speaker-kit' | 'waitlist' | 'keynotes', sectionId?: string) => void;
+  onNavigatePage?: (page: PageKey, sectionId?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({

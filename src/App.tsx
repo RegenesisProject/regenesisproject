@@ -34,6 +34,7 @@ import { ContactModal } from './components/ContactModal';
 import { LegalModal } from './components/LegalModal';
 
 import { BookInfo, KeynoteInfo, PageKey } from './types';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 export interface RouteMeta {
   title: string;
@@ -168,13 +169,21 @@ export default function App({ initialPath }: AppProps) {
   const [currentPage, setCurrentPage] = useState<PageKey>(() => {
     let initial = initialPath;
     if (!initial && typeof window !== 'undefined') {
-      initial = window.location.pathname;
+      try {
+        initial = window.location.pathname;
+      } catch {
+        initial = '/';
+      }
     }
     const clean = (initial || '/').toLowerCase().replace(/\/$/, '') || '/';
     if (ROUTE_REDIRECTS[clean]) {
       const dest = ROUTE_REDIRECTS[clean];
       if (typeof window !== 'undefined') {
-        window.history.replaceState({}, '', dest);
+        try {
+          window.history.replaceState({}, '', dest);
+        } catch {
+          // sandbox/iframe fallback
+        }
       }
       return getPageFromPath(dest);
     }
@@ -195,61 +204,81 @@ export default function App({ initialPath }: AppProps) {
     if (typeof window === 'undefined') return;
 
     const syncRouteFromLocation = () => {
-      const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
-      if (ROUTE_REDIRECTS[path]) {
-        const canonicalDest = ROUTE_REDIRECTS[path];
-        window.history.replaceState({}, '', canonicalDest);
-        setCurrentPage(getPageFromPath(canonicalDest));
-        return;
+      try {
+        const path = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+        if (ROUTE_REDIRECTS[path]) {
+          const canonicalDest = ROUTE_REDIRECTS[path];
+          try {
+            window.history.replaceState({}, '', canonicalDest);
+          } catch {
+            // sandbox/iframe fallback
+          }
+          setCurrentPage(getPageFromPath(canonicalDest));
+          return;
+        }
+        const page = getPageFromPath(window.location.pathname);
+        setCurrentPage(page);
+      } catch {
+        // ignore
       }
-      const page = getPageFromPath(window.location.pathname);
-      setCurrentPage(page);
     };
 
-    const initialClean = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
-    if (ROUTE_REDIRECTS[initialClean]) {
-      const canonicalDest = ROUTE_REDIRECTS[initialClean];
-      window.history.replaceState({}, '', canonicalDest);
+    try {
+      const initialClean = window.location.pathname.toLowerCase().replace(/\/$/, '') || '/';
+      if (ROUTE_REDIRECTS[initialClean]) {
+        const canonicalDest = ROUTE_REDIRECTS[initialClean];
+        try {
+          window.history.replaceState({}, '', canonicalDest);
+        } catch {
+          // sandbox/iframe fallback
+        }
+      }
+    } catch {
+      // ignore
     }
 
     // Update document head metadata dynamically when page changes in browser
-    const meta = ROUTE_METADATA[currentPage] || ROUTE_METADATA.home;
-    document.title = meta.title;
+    try {
+      const meta = ROUTE_METADATA[currentPage] || ROUTE_METADATA.home;
+      document.title = meta.title;
 
-    const descEl = document.querySelector('meta[name="description"]');
-    if (descEl) descEl.setAttribute('content', meta.description);
+      const descEl = document.querySelector('meta[name="description"]');
+      if (descEl) descEl.setAttribute('content', meta.description);
 
-    const canonicalEl = document.querySelector('link[rel="canonical"]');
-    if (canonicalEl) canonicalEl.setAttribute('href', meta.canonical);
+      const canonicalEl = document.querySelector('link[rel="canonical"]');
+      if (canonicalEl) canonicalEl.setAttribute('href', meta.canonical);
 
-    const ogTitleEl = document.querySelector('meta[property="og:title"]');
-    if (ogTitleEl) ogTitleEl.setAttribute('content', meta.ogTitle);
+      const ogTitleEl = document.querySelector('meta[property="og:title"]');
+      if (ogTitleEl) ogTitleEl.setAttribute('content', meta.ogTitle);
 
-    const ogDescEl = document.querySelector('meta[property="og:description"]');
-    if (ogDescEl) ogDescEl.setAttribute('content', meta.ogDescription);
+      const ogDescEl = document.querySelector('meta[property="og:description"]');
+      if (ogDescEl) ogDescEl.setAttribute('content', meta.ogDescription);
 
-    const ogUrlEl = document.querySelector('meta[property="og:url"]');
-    if (ogUrlEl) ogUrlEl.setAttribute('content', meta.canonical);
+      const ogUrlEl = document.querySelector('meta[property="og:url"]');
+      if (ogUrlEl) ogUrlEl.setAttribute('content', meta.canonical);
 
-    const twTitleEl = document.querySelector('meta[name="twitter:title"]');
-    if (twTitleEl) twTitleEl.setAttribute('content', meta.ogTitle);
+      const twTitleEl = document.querySelector('meta[name="twitter:title"]');
+      if (twTitleEl) twTitleEl.setAttribute('content', meta.ogTitle);
 
-    const twDescEl = document.querySelector('meta[name="twitter:description"]');
-    if (twDescEl) twDescEl.setAttribute('content', meta.ogDescription);
+      const twDescEl = document.querySelector('meta[name="twitter:description"]');
+      if (twDescEl) twDescEl.setAttribute('content', meta.ogDescription);
 
-    const brandImg = 'https://res.cloudinary.com/f7kaiylj/image/upload/v1789153082/regenesis_wings_5.png';
-    const pageImg = meta.image || brandImg;
-    const ogImgEl = document.querySelector('meta[property="og:image"]');
-    if (ogImgEl) ogImgEl.setAttribute('content', pageImg);
+      const brandImg = 'https://res.cloudinary.com/f7kaiylj/image/upload/v1789153082/regenesis_wings_5.png';
+      const pageImg = meta.image || brandImg;
+      const ogImgEl = document.querySelector('meta[property="og:image"]');
+      if (ogImgEl) ogImgEl.setAttribute('content', pageImg);
 
-    const ogImgUrlEl = document.querySelector('meta[property="og:image:url"]');
-    if (ogImgUrlEl) ogImgUrlEl.setAttribute('content', pageImg);
+      const ogImgUrlEl = document.querySelector('meta[property="og:image:url"]');
+      if (ogImgUrlEl) ogImgUrlEl.setAttribute('content', pageImg);
 
-    const ogImgSecEl = document.querySelector('meta[property="og:image:secure_url"]');
-    if (ogImgSecEl) ogImgSecEl.setAttribute('content', pageImg);
+      const ogImgSecEl = document.querySelector('meta[property="og:image:secure_url"]');
+      if (ogImgSecEl) ogImgSecEl.setAttribute('content', pageImg);
 
-    const twImgEl = document.querySelector('meta[name="twitter:image"]');
-    if (twImgEl) twImgEl.setAttribute('content', pageImg);
+      const twImgEl = document.querySelector('meta[name="twitter:image"]');
+      if (twImgEl) twImgEl.setAttribute('content', pageImg);
+    } catch {
+      // ignore in environments where head modifications are restricted
+    }
 
     window.addEventListener('popstate', syncRouteFromLocation);
     return () => window.removeEventListener('popstate', syncRouteFromLocation);
@@ -271,8 +300,12 @@ export default function App({ initialPath }: AppProps) {
     const targetPath = pageToPathMap[page] || '/';
 
     if (typeof window !== 'undefined') {
-      if (window.location.pathname !== targetPath) {
-        window.history.pushState({}, '', targetPath);
+      try {
+        if (window.location.pathname !== targetPath) {
+          window.history.pushState({}, '', targetPath);
+        }
+      } catch {
+        // sandbox/iframe fallback
       }
     }
 
@@ -280,14 +313,22 @@ export default function App({ initialPath }: AppProps) {
 
     if (sectionId) {
       setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+        try {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        } catch {
+          // ignore
         }
       }, 100);
     } else {
       if (typeof window !== 'undefined') {
-        window.scrollTo(0, 0);
+        try {
+          window.scrollTo(0, 0);
+        } catch {
+          // ignore
+        }
       }
     }
   };
@@ -301,7 +342,8 @@ export default function App({ initialPath }: AppProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] font-inter antialiased flex flex-col selection:bg-[#D4AF37] selection:text-[#1A1A1A] relative">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-[#FFFFFF] text-[#1A1A1A] font-inter antialiased flex flex-col selection:bg-[#D4AF37] selection:text-[#1A1A1A] relative">
       
       {/* Subtle Gold Reading Progress Bar across the whole site */}
       <ScrollProgress />
@@ -490,6 +532,7 @@ export default function App({ initialPath }: AppProps) {
         onClose={() => setLegalType(null)} 
       />
 
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }

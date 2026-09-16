@@ -1,22 +1,21 @@
 import { StrictMode } from 'react';
-import { createRoot, hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-const rootElement = document.getElementById('root')!;
+const rootElement = document.getElementById('root');
 
-if (rootElement.hasChildNodes()) {
-  hydrateRoot(
-    rootElement,
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
-} else {
-  createRoot(rootElement).render(
-    <StrictMode>
-      <App />
-    </StrictMode>
-  );
+if (rootElement) {
+  try {
+    const root = createRoot(rootElement);
+    root.render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+  } catch (err) {
+    console.error('Failed to render root application:', err);
+  }
 }
+
 

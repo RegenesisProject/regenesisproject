@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Play, Sparkles, X, ArrowRight, Award, ChevronRight, HelpCircle, BookOpen } from 'lucide-react';
+import { Play, Sparkles, X, ArrowRight, Award, ChevronRight, HelpCircle, BookOpen, CheckCircle2, RotateCcw } from 'lucide-react';
 import { submitEmail } from '../utils/sheetApi';
 import part1Thumbnail from '../assets/images/series_part1_limit_switch_1788902240200.jpg';
 import part2Thumbnail from '../assets/images/series_part2_willpower_1788902255808.jpg';
@@ -147,6 +147,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [activeVideo, setActiveVideo] = useState<VideoItem | null>(null);
   const [activeEpisode, setActiveEpisode] = useState<VideoEpisode | null>(null);
   const [currentIframeVideoId, setCurrentIframeVideoId] = useState<string | null>(null);
+  const [isSeriesCompleted, setIsSeriesCompleted] = useState(false);
   const [hoveredVideo, setHoveredVideo] = useState<VideoItem | null>(null);
   const [trilogyEmail, setTrilogyEmail] = useState('');
   const [trilogyLoading, setTrilogyLoading] = useState(false);
@@ -165,45 +166,92 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     activeEpisodeRef.current = activeEpisode;
   }, [activeEpisode]);
 
+  const isAdvancingRef = useRef(false);
+
   // Advance to the next part in the series and automatically play it
   const advanceToNextEpisode = useCallback(() => {
+    if (isAdvancingRef.current) return;
+    isAdvancingRef.current = true;
+    setTimeout(() => {
+      isAdvancingRef.current = false;
+    }, 1500);
+
     const video = activeVideoRef.current;
     if (!video || video.id !== 'v1') return;
 
     const currentPart = activeEpisodeRef.current?.partNumber || 1;
+    // If Part 2 (or any episode with no next released video) ended, mark series complete
+    if (currentPart >= 2) {
+      setIsSeriesCompleted(true);
+      try {
+        playerRef.current?.pauseVideo?.();
+      } catch {
+        // ignore
+      }
+      return;
+    }
+
     const nextPart = currentPart + 1;
     const nextEp = video.episodes?.find((ep) => ep.partNumber === nextPart);
 
-    if (nextEp) {
+    if (nextEp && nextEp.youtubeId) {
+      setIsSeriesCompleted(false);
       setActiveEpisode(nextEp);
-      if (nextEp.youtubeId) {
-        if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
-          try {
-            playerRef.current.loadVideoById({
-              videoId: nextEp.youtubeId,
-              startSeconds: 0,
-            });
-            playerRef.current.playVideo?.();
-          } catch (e) {
-            console.error('Error auto-playing next part:', e);
-          }
+
+      // Attempt to load and play Part 2 seamlessly inside the active player
+      let switchedViaPlayer = false;
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+        try {
+          playerRef.current.loadVideoById({
+            videoId: nextEp.youtubeId,
+            startSeconds: 0,
+          });
+          playerRef.current.playVideo?.();
+          switchedViaPlayer = true;
+        } catch (e) {
+          console.warn('Error auto-playing next part via API, falling back to iframe src:', e);
         }
-      } else {
-        // Next part is Coming Soon
-        if (playerRef.current) {
-          try {
-            playerRef.current.destroy();
-          } catch {
-            // ignore
-          }
-          playerRef.current = null;
-        }
-        setCurrentIframeVideoId(null);
+      }
+
+      // Fallback: If player wasn't attached yet or failed, update iframe src to trigger autoplay
+      if (!switchedViaPlayer) {
+        setCurrentIframeVideoId(nextEp.youtubeId);
+      }
+    } else {
+      // Next part is Coming Soon
+      setIsSeriesCompleted(true);
+      try {
+        playerRef.current?.pauseVideo?.();
+      } catch {
+        // ignore
       }
     }
   }, []);
 
+  const handleReplayPart = (partNum: number) => {
+    setIsSeriesCompleted(false);
+    const video = activeVideoRef.current || activeVideo;
+    const ep = video?.episodes?.find((e) => e.partNumber === partNum);
+    if (ep && ep.youtubeId) {
+      setActiveEpisode(ep);
+      if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
+        try {
+          playerRef.current.loadVideoById({
+            videoId: ep.youtubeId,
+            startSeconds: 0,
+          });
+          playerRef.current.playVideo?.();
+          return;
+        } catch (err) {
+          console.warn('Replay error via API:', err);
+        }
+      }
+      setCurrentIframeVideoId(ep.youtubeId);
+    }
+  };
+
   const handleSelectEpisode = (ep: VideoEpisode) => {
+    setIsSeriesCompleted(false);
     setActiveEpisode(ep);
     if (ep.youtubeId) {
       if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
@@ -215,18 +263,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           playerRef.current.playVideo?.();
           return;
         } catch (e) {
-          console.error('Error loading video on episode selection:', e);
+          console.error('Error loading video on episode selection via player:', e);
         }
       }
       setCurrentIframeVideoId(ep.youtubeId);
     } else {
-      if (playerRef.current) {
-        try {
-          playerRef.current.destroy();
-        } catch {
-          // ignore
-        }
-        playerRef.current = null;
+      try {
+        playerRef.current?.pauseVideo?.();
+      } catch {
+        // ignore
       }
       setCurrentIframeVideoId(null);
     }
@@ -237,7 +282,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     if (!activeVideo || !currentIframeVideoId) {
       if (playerRef.current) {
         try {
-          playerRef.current.destroy();
+          playerRef.current.pauseVideo?.();
         } catch {
           // ignore
         }
@@ -247,15 +292,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     }
 
     let isMounted = true;
+    let pollTimer: any = null;
+    let pingInterval: any = null;
 
     const attachYTPlayer = () => {
-      if (!isMounted) return;
+      if (!isMounted) return false;
       const YT = (window as any).YT;
       const iframeEl = iframeRef.current;
-      if (!YT || !YT.Player || !iframeEl) return;
+      if (!YT || !YT.Player || !iframeEl) return false;
 
       if (playerRef.current) {
-        return;
+        return true;
       }
 
       try {
@@ -271,33 +318,49 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               }
             },
             onStateChange: (event: any) => {
-              // Sync episode button if YouTube's playlist automatically advanced
+              // Sync episode button if player video changed
               try {
                 const currentData = event.target?.getVideoData?.();
                 if (currentData?.video_id === 'qKeIaRXrXpg' && activeEpisodeRef.current?.partNumber !== 2) {
                   const ep2 = activeVideoRef.current?.episodes?.find((ep) => ep.partNumber === 2);
-                  if (ep2) setActiveEpisode(ep2);
+                  if (ep2) {
+                    setActiveEpisode(ep2);
+                  }
                 } else if (currentData?.video_id === 'qKMNyDz7TnE' && activeEpisodeRef.current?.partNumber !== 1) {
                   const ep1 = activeVideoRef.current?.episodes?.find((ep) => ep.partNumber === 1);
-                  if (ep1) setActiveEpisode(ep1);
+                  if (ep1) {
+                    setActiveEpisode(ep1);
+                  }
                 }
               } catch {
                 // ignore
               }
 
-              // event.data === 0 is YT.PlayerState.ENDED: auto-advance & play next part
+              // event.data === 0 is YT.PlayerState.ENDED
               if (event.data === 0) {
                 advanceToNextEpisode();
               }
             },
           },
         });
+        return true;
       } catch (err) {
         console.warn('YouTube Player initialization fallback:', err);
+        return false;
       }
     };
 
-    const timer = setTimeout(attachYTPlayer, 100);
+    // Retry attaching until YT is ready
+    let retries = 0;
+    const tryAttach = () => {
+      if (!isMounted) return;
+      const success = attachYTPlayer();
+      if (!success && retries < 40) {
+        retries++;
+        pollTimer = setTimeout(tryAttach, 150);
+      }
+    };
+    tryAttach();
 
     // Fallback cross-origin postMessage listener
     const handleWindowMessage = (event: MessageEvent) => {
@@ -306,7 +369,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         if (typeof data === 'string') {
           data = JSON.parse(data);
         }
-        if (data?.event === 'onStateChange' && data?.info === 0) {
+
+        // YouTube infoDelivery with playerState 0 (ENDED)
+        if (data?.event === 'infoDelivery' && data?.info) {
+          if (data.info.playerState === 0) {
+            advanceToNextEpisode();
+          }
+        }
+
+        // Standard onStateChange with info === 0 or data === 0
+        if (data?.event === 'onStateChange' && (data?.info === 0 || data?.data === 0)) {
           advanceToNextEpisode();
         }
       } catch {
@@ -315,26 +387,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     };
     window.addEventListener('message', handleWindowMessage);
 
-    // Handshake ping to ensure YouTube iframe dispatches postMessage events
-    const pingInterval = setInterval(() => {
+    // Handshake ping to ensure YouTube iframe dispatches postMessage events + backup status checker
+    pingInterval = setInterval(() => {
+      if (!isMounted) return;
       if (iframeRef.current?.contentWindow) {
         try {
-          iframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
+          iframeRef.current.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1, channel: 'widget' }), '*');
         } catch {
           // ignore
         }
       }
-    }, 1000);
+
+      // Backup check on player state
+      if (playerRef.current) {
+        try {
+          const state = playerRef.current.getPlayerState?.();
+          if (state === 0) {
+            advanceToNextEpisode();
+          } else if (typeof playerRef.current.getCurrentTime === 'function' && typeof playerRef.current.getDuration === 'function') {
+            const current = playerRef.current.getCurrentTime();
+            const duration = playerRef.current.getDuration();
+            if (duration > 5 && current >= duration - 0.5) {
+              advanceToNextEpisode();
+            }
+          }
+        } catch {
+          // ignore
+        }
+      }
+    }, 600);
 
     return () => {
       isMounted = false;
-      clearTimeout(timer);
+      clearTimeout(pollTimer);
       clearInterval(pingInterval);
       window.removeEventListener('message', handleWindowMessage);
     };
   }, [activeVideo?.id, currentIframeVideoId, advanceToNextEpisode]);
 
   const handleOpenVideo = (video: VideoItem) => {
+    setIsSeriesCompleted(false);
     setActiveVideo(video);
     const initialEp = video.episodes?.[0] || null;
     setActiveEpisode(initialEp);
@@ -342,9 +434,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   };
 
   const handleCloseModal = () => {
+    setIsSeriesCompleted(false);
     if (playerRef.current) {
       try {
-        playerRef.current.destroy();
+        playerRef.current.pauseVideo?.();
       } catch {
         // ignore
       }
@@ -559,9 +652,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <iframe
                   id="hero-yt-player-iframe"
                   ref={iframeRef}
-                  src={`https://www.youtube.com/embed/${currentIframeVideoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1${activeVideo.id === 'v1' && currentIframeVideoId === 'qKMNyDz7TnE' ? '&playlist=qKMNyDz7TnE,qKeIaRXrXpg' : ''}&origin=${encodeURIComponent(typeof window !== 'undefined' ? window.location.origin : '')}`}
+                  style={{ backgroundColor: '#000000' }}
+                  src={`https://www.youtube.com/embed/${currentIframeVideoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1${typeof window !== 'undefined' && window.location?.origin && window.location.origin.startsWith('http') ? `&origin=${encodeURIComponent(window.location.origin)}` : ''}`}
                   title={activeEpisode?.title || activeVideo.title}
-                  className="w-full h-full border-0 absolute inset-0"
+                  className="w-full h-full border-0 absolute inset-0 bg-[#000000]"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 />
@@ -593,6 +687,47 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </button>
                   </div>
                 </>
+              )}
+
+              {/* Completion Overlay for Series (Parts 1 & 2 completed) */}
+              {isSeriesCompleted && (
+                <div className="absolute inset-0 z-30 bg-[#000000]/95 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-fadeIn">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1A150D] border border-[#E2B13D]/60 flex items-center justify-center text-[#FCE289] mb-2 sm:mb-3 shadow-[0_0_20px_rgba(226,177,61,0.3)]">
+                    <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#FCE289]" />
+                  </div>
+
+                  <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#FCE289] bg-[#000000] px-3.5 py-1 rounded-full border border-[#E2B13D]/40 mb-2">
+                    Parts 1 &amp; 2 Complete
+                  </span>
+
+                  <h3 className="font-plus-jakarta font-bold text-sm sm:text-base md:text-lg text-[#F3EFE0] max-w-md mb-1 sm:mb-1.5">
+                    You've Completed the Available Episodes
+                  </h3>
+
+                  <p className="font-inter text-xs sm:text-sm text-[#A69B89] max-w-md mb-3 sm:mb-4 leading-relaxed">
+                    Part 3 (<span className="text-[#E2B13D]">The Origin</span>) is currently in production. Replay either part below.
+                  </p>
+
+                  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleReplayPart(1)}
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-[#1D160C] border border-[#E2B13D]/60 text-[#FCE289] font-inter font-semibold text-xs uppercase tracking-[0.1em] hover:bg-[#2A2012] hover:border-[#FCE289] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      Replay Part 1
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleReplayPart(2)}
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-[#1D160C] border border-[#E2B13D]/60 text-[#FCE289] font-inter font-semibold text-xs uppercase tracking-[0.1em] hover:bg-[#2A2012] hover:border-[#FCE289] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      Replay Part 2
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
 

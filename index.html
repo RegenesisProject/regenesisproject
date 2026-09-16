@@ -46,8 +46,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
-    <!-- YouTube IFrame API for seamless video auto-play & sequence progression -->
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- YouTube IFrame API for video progression -->
+    <script>
+      window.onYouTubeIframeAPIReady = window.onYouTubeIframeAPIReady || function() {};
+    </script>
+    <script async src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Schema.org Structured Data (JSON-LD) for AI Search Engines & Knowledge Graphs -->
     <script type="application/ld+json">
