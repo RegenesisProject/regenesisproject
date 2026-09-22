@@ -63,7 +63,8 @@ const SERIES_EPISODES: VideoEpisode[] = [
     subline: 'A war zone, a collapse, and a decade of decoding.',
     duration: '',
     thumbnailUrl: part3Thumbnail,
-    isAvailable: false,
+    isAvailable: true,
+    youtubeId: 'MVAgPXjPIo4',
   },
   {
     id: 'v1-ep4',
@@ -123,23 +124,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       }, 1500);
 
       const currentPart = activeEpisodeRef.current?.partNumber || 1;
-      if (currentPart >= 2) {
-        setIsSeriesCompleted(true);
-        try {
-          playerRef.current?.pauseVideo?.();
-        } catch {
-          // ignore
-        }
-        return;
-      }
-
       const nextPart = currentPart + 1;
       const nextEp = SERIES_EPISODES.find((ep) => ep.partNumber === nextPart);
-      if (nextEp && nextEp.youtubeId) {
+      if (nextEp && nextEp.youtubeId && nextEp.isAvailable) {
         setIsSeriesCompleted(false);
         setActiveEpisode(nextEp);
 
-        // Attempt to load and play Part 2 seamlessly inside the active player
+        // Attempt to load and play next part seamlessly inside the active player
         let switchedViaPlayer = false;
         if (playerRef.current && typeof playerRef.current.loadVideoById === 'function') {
           try {
@@ -283,15 +274,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
             onStateChange: (event: any) => {
               try {
                 const currentData = event.target?.getVideoData?.();
-                if (currentData?.video_id === 'qKeIaRXrXpg' && activeEpisodeRef.current?.partNumber !== 2) {
-                  const ep2 = SERIES_EPISODES.find((ep) => ep.partNumber === 2);
-                  if (ep2) {
-                    setActiveEpisode(ep2);
-                  }
-                } else if (currentData?.video_id === 'qKMNyDz7TnE' && activeEpisodeRef.current?.partNumber !== 1) {
-                  const ep1 = SERIES_EPISODES.find((ep) => ep.partNumber === 1);
-                  if (ep1) {
-                    setActiveEpisode(ep1);
+                if (currentData?.video_id) {
+                  const matchingEp = SERIES_EPISODES.find((ep) => ep.youtubeId === currentData.video_id);
+                  if (matchingEp && activeEpisodeRef.current?.partNumber !== matchingEp.partNumber) {
+                    setActiveEpisode(matchingEp);
                   }
                 }
               } catch {
@@ -773,7 +759,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   </div>
 
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#FCE289] bg-[#000000] px-3.5 py-1 rounded-full border border-[#E2B13D]/40 mb-2">
-                    Parts 1 &amp; 2 Complete
+                    Parts 1–3 Complete
                   </span>
 
                   <h3 className="font-plus-jakarta font-bold text-sm sm:text-base md:text-lg text-[#F3EFE0] max-w-md mb-1 sm:mb-1.5">
@@ -781,7 +767,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                   </h3>
 
                   <p className="font-inter text-xs sm:text-sm text-[#A69B89] max-w-md mb-3 sm:mb-4 leading-relaxed">
-                    Part 3 (<span className="text-[#E2B13D]">The Origin</span>) is currently in production. Replay either part below.
+                    Part 4 (<span className="text-[#E2B13D]">This Is About You</span>) is currently in production. Replay any part below.
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -801,6 +787,15 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       Replay Part 2
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleReplayPart(3)}
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-[#1D160C] border border-[#E2B13D]/60 text-[#FCE289] font-inter font-semibold text-xs uppercase tracking-[0.1em] hover:bg-[#2A2012] hover:border-[#FCE289] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      Replay Part 3
                     </button>
                   </div>
                 </div>
