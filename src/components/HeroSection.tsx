@@ -102,7 +102,8 @@ const VIDEOS: VideoItem[] = [
         subline: "You can't rewrite code you've never read.",
         duration: '',
         thumbnailUrl: part5Thumbnail,
-        isAvailable: false,
+        isAvailable: true,
+        youtubeId: '9xF0NiFZ1xA',
       },
     ],
   },
@@ -677,7 +678,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </>
               )}
 
-              {/* Completion Overlay for Series (Parts 1-4 completed) */}
+              {/* Completion Overlay for Series (All 5 parts completed) */}
               {isSeriesCompleted && (
                 <div className="absolute inset-0 z-30 bg-[#000000]/95 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6 text-center animate-fadeIn">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1A150D] border border-[#E2B13D]/60 flex items-center justify-center text-[#FCE289] mb-2 sm:mb-3 shadow-[0_0_20px_rgba(226,177,61,0.3)]">
@@ -685,15 +686,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   </div>
 
                   <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] text-[#FCE289] bg-[#000000] px-3.5 py-1 rounded-full border border-[#E2B13D]/40 mb-2">
-                    Parts 1–4 Complete
+                    All 5 Parts Complete
                   </span>
 
                   <h3 className="font-plus-jakarta font-bold text-sm sm:text-base md:text-lg text-[#F3EFE0] max-w-md mb-1 sm:mb-1.5">
-                    You've Completed the Available Episodes
+                    You've Completed the Full Series
                   </h3>
 
                   <p className="font-inter text-xs sm:text-sm text-[#A69B89] max-w-md mb-3 sm:mb-4 leading-relaxed">
-                    Part 5 (<span className="text-[#E2B13D]">Reading Your Own Code</span>) is currently in production. Replay any part below.
+                    <span className="text-[#E2B13D]">It Was Never Discipline</span> — All 5 parts watched. Replay any part below or explore the Mirror Quiz.
                   </p>
 
                   <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
@@ -731,6 +732,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       Replay Part 4
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleReplayPart(5)}
+                      className="px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-[#1D160C] border border-[#E2B13D]/60 text-[#FCE289] font-inter font-semibold text-xs uppercase tracking-[0.1em] hover:bg-[#2A2012] hover:border-[#FCE289] transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      Replay Part 5
                     </button>
                   </div>
                 </div>
