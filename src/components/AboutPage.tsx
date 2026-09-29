@@ -64,7 +64,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part3Thumbnail,
     isAvailable: true,
-    youtubeId: '8aR7t6ZIY8I',
+    youtubeId: 'MVAgPXjPIo4',
   },
   {
     id: 'v1-ep4',
@@ -74,7 +74,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part4Thumbnail,
     isAvailable: true,
-    youtubeId: '8aR7t6ZIY8I',
+    youtubeId: 'X-nmerh0l4w',
   },
   {
     id: 'v1-ep5',
