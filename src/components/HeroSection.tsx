@@ -83,7 +83,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part3Thumbnail,
         isAvailable: true,
-        youtubeId: 'MVAgPXjPIo4',
+        youtubeId: '8aR7t6ZIY8I',
       },
       {
         id: 'v1-ep4',
@@ -93,7 +93,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part4Thumbnail,
         isAvailable: true,
-        youtubeId: '8HbRqxvD01Q',
+        youtubeId: '8aR7t6ZIY8I',
       },
       {
         id: 'v1-ep5',
@@ -103,7 +103,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part5Thumbnail,
         isAvailable: true,
-        youtubeId: '9xF0NiFZ1xA',
+        youtubeId: '6BtgoXa2Btc',
       },
     ],
   },

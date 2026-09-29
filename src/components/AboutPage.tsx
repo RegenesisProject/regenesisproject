@@ -64,7 +64,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part3Thumbnail,
     isAvailable: true,
-    youtubeId: 'MVAgPXjPIo4',
+    youtubeId: '8aR7t6ZIY8I',
   },
   {
     id: 'v1-ep4',
@@ -74,7 +74,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part4Thumbnail,
     isAvailable: true,
-    youtubeId: '8HbRqxvD01Q',
+    youtubeId: '8aR7t6ZIY8I',
   },
   {
     id: 'v1-ep5',
@@ -84,7 +84,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part5Thumbnail,
     isAvailable: true,
-    youtubeId: '9xF0NiFZ1xA',
+    youtubeId: '6BtgoXa2Btc',
   },
 ];
 
