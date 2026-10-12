@@ -51,7 +51,7 @@ const VIDEOS: VideoItem[] = [
     duration: '',
     description: 'Why every attempt to expand keeps hitting the same wall — decoded by a war-zone refugee turned operator.',
     thumbnailUrl: 'https://res.cloudinary.com/ew2ztpgz/image/upload/v1784828493/regenerated_image_1784798224610-B1a6fML__1_wqi17x.png',
-    youtubeId: 'qKMNyDz7TnE',
+    youtubeId: 'tm_Y6NiaHiM',
     isStartHere: true,
     seriesTitle: 'IT WAS NEVER DISCIPLINE — 5-PART SERIES',
     episodes: [
@@ -63,7 +63,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part1Thumbnail,
         isAvailable: true,
-        youtubeId: 'qKMNyDz7TnE',
+        youtubeId: 'tm_Y6NiaHiM',
       },
       {
         id: 'v1-ep2',
@@ -73,7 +73,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part2Thumbnail,
         isAvailable: true,
-        youtubeId: 'qKeIaRXrXpg',
+        youtubeId: 'gLXopKoLxdY',
       },
       {
         id: 'v1-ep3',
@@ -83,7 +83,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part3Thumbnail,
         isAvailable: true,
-        youtubeId: 'MVAgPXjPIo4',
+        youtubeId: 'IvNTdDn2B-8',
       },
       {
         id: 'v1-ep4',
@@ -93,7 +93,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part4Thumbnail,
         isAvailable: true,
-        youtubeId: 'X-nmerh0l4w',
+        youtubeId: 'QuuKgajfj64',
       },
       {
         id: 'v1-ep5',
@@ -103,7 +103,7 @@ const VIDEOS: VideoItem[] = [
         duration: '',
         thumbnailUrl: part5Thumbnail,
         isAvailable: true,
-        youtubeId: '6BtgoXa2Btc',
+        youtubeId: '2hNw-Bsfcys',
       },
     ],
   },

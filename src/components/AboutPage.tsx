@@ -44,7 +44,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part1Thumbnail,
     isAvailable: true,
-    youtubeId: 'qKMNyDz7TnE',
+    youtubeId: 'tm_Y6NiaHiM',
   },
   {
     id: 'v1-ep2',
@@ -54,7 +54,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part2Thumbnail,
     isAvailable: true,
-    youtubeId: 'qKeIaRXrXpg',
+    youtubeId: 'gLXopKoLxdY',
   },
   {
     id: 'v1-ep3',
@@ -64,7 +64,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part3Thumbnail,
     isAvailable: true,
-    youtubeId: 'MVAgPXjPIo4',
+    youtubeId: 'IvNTdDn2B-8',
   },
   {
     id: 'v1-ep4',
@@ -74,7 +74,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part4Thumbnail,
     isAvailable: true,
-    youtubeId: 'X-nmerh0l4w',
+    youtubeId: 'QuuKgajfj64',
   },
   {
     id: 'v1-ep5',
@@ -84,7 +84,7 @@ const SERIES_EPISODES: VideoEpisode[] = [
     duration: '',
     thumbnailUrl: part5Thumbnail,
     isAvailable: true,
-    youtubeId: '6BtgoXa2Btc',
+    youtubeId: '2hNw-Bsfcys',
   },
 ];
 
