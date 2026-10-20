@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle2 } from 'lucide-react';
-import { submitEmail } from '../utils/sheetApi';
+import { submitNewsletterToBrevo } from '../utils/newsletterApi';
 import footerLogo from '../assets/images/regenerated_image_1788305533708.png';
 import { PageKey } from '../types';
 
@@ -32,7 +32,7 @@ export const Footer: React.FC<FooterProps> = ({
     setLoading(true);
     setButtonText('JOINING...');
 
-    const res = await submitEmail(email, 'newsletter');
+    const res = await submitNewsletterToBrevo(email);
 
     if (res.status === 'success') {
       setButtonText('JOINED ✓');
