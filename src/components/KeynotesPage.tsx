@@ -33,26 +33,46 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
     setErrorMessage('');
 
     try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
-        {
+      const [scriptRes, brevoRes] = await Promise.allSettled([
+        fetch(
+          'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+              source: 'Request the Speaker Kit',
+              name: formData.name,
+              email: formData.email,
+              organization: formData.organization,
+              eventType: formData.eventType,
+              eventDate: formData.eventDate,
+              message: formData.notes,
+            }),
+          }
+        ).then(async (r) => r.json().catch(() => ({}))),
+        fetch('/api/subscribe', {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            source: 'Request the Speaker Kit',
-            name: formData.name,
             email: formData.email,
+            name: formData.name,
             organization: formData.organization,
+            company: formData.organization,
             eventType: formData.eventType,
             eventDate: formData.eventDate,
+            eventDetails: formData.notes,
             message: formData.notes,
+            listId: 8,
           }),
-        }
-      );
+        }).then(async (r) => r.json().catch(() => ({}))),
+      ]);
 
-      const data = await response.json();
+      const scriptData = scriptRes.status === 'fulfilled' ? scriptRes.value : null;
+      const brevoData = brevoRes.status === 'fulfilled' ? brevoRes.value : null;
 
-      if (data.status === 'success') {
+      if (brevoData?.status === 'duplicate' || scriptData?.status === 'duplicate') {
+        setFormStatus('duplicate');
+      } else if (brevoData?.ok || scriptData?.status === 'success') {
         try {
           const existing = JSON.parse(localStorage.getItem('speaker_kit_inquiries') || '[]');
           existing.push({
@@ -69,9 +89,7 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
           // localStorage error handling
         }
         setFormStatus('success');
-      } else if (data.status === 'duplicate') {
-        setFormStatus('duplicate');
-      } else if (data.status === 'invalid') {
+      } else if (brevoData?.status === 'invalid' || scriptData?.status === 'invalid') {
         setFormStatus('invalid');
         setErrorMessage('Please check your email address and try again.');
       } else {
@@ -130,14 +148,18 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-            <button
-              onClick={onOpenBooking}
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                onOpenBooking();
+              }}
               className="w-full sm:w-auto px-8 py-4 rounded-md bg-gradient-to-r from-[#D4AF37] via-[#C5A028] to-[#9A7B2C] text-[#090A0C] font-extrabold text-xs sm:text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_25px_rgba(212,175,55,0.4)] cursor-pointer flex items-center justify-center gap-2 group"
             >
               <Calendar className="w-4 h-4" />
               <span>BOOK THOMAS</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
+            </a>
 
             <button
               onClick={handleScrollToSpeakerKit}
@@ -340,13 +362,17 @@ export const KeynotesPage: React.FC<KeynotesPageProps> = ({
               </h2>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto pt-2">
-                <button
-                  onClick={onOpenBooking}
+                <a
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onOpenBooking();
+                  }}
                   className="w-full sm:w-auto px-8 py-4 rounded-md bg-gradient-to-r from-[#D4AF37] via-[#C5A028] to-[#9A7B2C] text-[#090A0C] font-extrabold text-xs sm:text-sm uppercase tracking-widest hover:brightness-110 transition-all shadow-[0_0_25px_rgba(212,175,55,0.4)] cursor-pointer flex items-center justify-center gap-2 group"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>BOOK A CALL</span>
-                </button>
+                </a>
 
                 <button
                   onClick={handleScrollToSpeakerKit}

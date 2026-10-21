@@ -30,30 +30,48 @@ export const SpeakerKitModal: React.FC<SpeakerKitModalProps> = ({ isOpen, onClos
     setErrorMessage('');
 
     try {
-      const response = await fetch(
-        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
-        {
+      const [scriptRes, brevoRes] = await Promise.allSettled([
+        fetch(
+          'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+              source: 'Request the Speaker Kit',
+              name: formData.name,
+              email: formData.email,
+              organization: formData.organization,
+              eventType: formData.eventType,
+              eventDate: formData.eventDate,
+              message: formData.notes,
+            }),
+          }
+        ).then(async (r) => r.json().catch(() => ({}))),
+        fetch('/api/subscribe', {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            source: 'Request the Speaker Kit',
-            name: formData.name,
             email: formData.email,
+            name: formData.name,
             organization: formData.organization,
+            company: formData.organization,
             eventType: formData.eventType,
             eventDate: formData.eventDate,
+            eventDetails: formData.notes,
             message: formData.notes,
+            listId: 8,
           }),
-        }
-      );
+        }).then(async (r) => r.json().catch(() => ({}))),
+      ]);
 
-      const data = await response.json();
+      const scriptData = scriptRes.status === 'fulfilled' ? scriptRes.value : null;
+      const brevoData = brevoRes.status === 'fulfilled' ? brevoRes.value : null;
 
-      if (data.status === 'success') {
-        setFormStatus('success');
-      } else if (data.status === 'duplicate') {
+      if (brevoData?.status === 'duplicate' || scriptData?.status === 'duplicate') {
         setFormStatus('duplicate');
-      } else if (data.status === 'invalid') {
+      } else if (brevoData?.ok || scriptData?.status === 'success') {
+        setFormStatus('success');
+      } else if (brevoData?.status === 'invalid' || scriptData?.status === 'invalid') {
         setFormStatus('invalid');
         setErrorMessage('Please check your email address and try again.');
       } else {

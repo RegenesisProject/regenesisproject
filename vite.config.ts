@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { defineConfig, type Plugin } from 'vite';
 
 dotenv.config();
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env.local', override: true });
 
 function devApiMiddleware(): Plugin {
   return {
@@ -18,6 +18,18 @@ function devApiMiddleware(): Plugin {
             await handler(req, res);
           } catch (err: any) {
             console.error('Local dev error in /api/newsletter:', err);
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ ok: false, status: 'error', message: err?.message || 'Server error' }));
+          }
+          return;
+        }
+        if (req.url && req.url.startsWith('/api/subscribe')) {
+          try {
+            const { default: handler } = await server.ssrLoadModule('/api/subscribe.ts');
+            await handler(req, res);
+          } catch (err: any) {
+            console.error('Local dev error in /api/subscribe:', err);
             res.statusCode = 500;
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify({ ok: false, status: 'error', message: err?.message || 'Server error' }));

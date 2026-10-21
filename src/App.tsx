@@ -399,7 +399,7 @@ export default function App({ initialPath }: AppProps) {
               />
             ) : currentPage === 'keynotes' ? (
               <KeynotesPage 
-                onOpenBooking={() => setContactOpen(true)}
+                onOpenBooking={() => handleNavigatePage('contact')}
                 onOpenSpeakerKit={handleOpenSpeakerKit}
               />
             ) : currentPage === 'quiz' ? (
@@ -509,7 +509,7 @@ export default function App({ initialPath }: AppProps) {
       <KeynoteDetailModal 
         keynote={selectedKeynote} 
         onClose={() => setSelectedKeynote(null)} 
-        onOpenContact={() => setContactOpen(true)} 
+        onOpenContact={() => handleNavigatePage('contact')} 
       />
 
       <SpeakerKitModal 

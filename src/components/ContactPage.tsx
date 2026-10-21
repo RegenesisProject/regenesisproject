@@ -34,21 +34,43 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     setIsSubmitting(true);
 
     try {
-      await fetch(
-        'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
-        {
+      const isKeynoteOrSpeaking =
+        formData.inquiryType === 'Keynote Booking / Speaking' ||
+        formData.inquiryType.toLowerCase().includes('keynote') ||
+        formData.inquiryType.toLowerCase().includes('speaking');
+      const targetListId = isKeynoteOrSpeaking ? 7 : 6;
+
+      await Promise.allSettled([
+        // 1. Preserved Google Apps Script submission
+        fetch(
+          'https://script.google.com/macros/s/AKfycby3fGmfvW5bSGVpN65mlWMsMOrIklpI1izN8YenhYoR1OhmAJ-REVn-gyXB1YqW9K-BsA/exec',
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+              source: 'Contact Page Inquiry',
+              name: formData.name,
+              email: formData.email,
+              company: formData.company,
+              inquiryType: formData.inquiryType,
+              message: formData.message,
+            }),
+          }
+        ),
+        // 2. Brevo contact list subscription
+        fetch('/api/subscribe', {
           method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            source: 'Contact Page Inquiry',
-            name: formData.name,
             email: formData.email,
+            name: formData.name,
             company: formData.company,
             inquiryType: formData.inquiryType,
             message: formData.message,
+            listId: targetListId,
           }),
-        }
-      );
+        }),
+      ]);
     } catch {
       // Gracefully continue to display confirmation
     } finally {
